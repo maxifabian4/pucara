@@ -17,6 +17,7 @@ import com.pucara.common.CustomLogger.LoggerLevel;
 import com.pucara.core.entities.Category;
 import com.pucara.core.entities.Product;
 import com.pucara.core.entities.ProductsCollection;
+import com.pucara.core.generic.Utilities;
 import com.pucara.core.response.CategoryResponse;
 import com.pucara.core.response.DatabaseResponse;
 import com.pucara.core.response.ErrorMessage;
@@ -924,8 +925,7 @@ public class MySqlAccess {
 	 * @return boolean
 	 */
 	private static boolean connectDatabase() {
-		String dbURL = "jdbc:mysql://localhost:3306/pucaratest";
-		// String dbURL = "jdbc:mysql://192.168.1.68:3306/pucaratest";
+		String dbURL = String.format("jdbc:mysql://%s:3306/pucaratest", Utilities.getIp());
 		String username = "root";
 		String password = "pucara";
 

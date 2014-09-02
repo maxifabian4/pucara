@@ -6,10 +6,15 @@ import java.awt.geom.AffineTransform;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
 
@@ -372,6 +377,34 @@ public class Utilities {
 		}
 
 		return null;
+	}
+
+	public static String getIp() {
+		String ipAddress = null;
+		Enumeration<NetworkInterface> net = null;
+		try {
+			net = NetworkInterface.getNetworkInterfaces();
+		} catch (SocketException e) {
+			throw new RuntimeException(e);
+		}
+
+		while (net.hasMoreElements()) {
+			NetworkInterface element = net.nextElement();
+			Enumeration<InetAddress> addresses = element.getInetAddresses();
+			while (addresses.hasMoreElements()) {
+				InetAddress ip = addresses.nextElement();
+				if (ip instanceof Inet4Address) {
+
+					if (ip.isSiteLocalAddress()) {
+
+						ipAddress = ip.getHostAddress();
+					}
+
+				}
+
+			}
+		}
+		return ipAddress;
 	}
 
 }

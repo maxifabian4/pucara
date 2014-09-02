@@ -78,19 +78,13 @@ public class StockView extends ProductView {
 		return tf.getText();
 	}
 
-	// public String getProductStock() {
-	// JTextField tf = (JTextField)
-	// form.getComponentFormAt(CommonUIComponents.STOCK);
-	// return tf.getText();
-	// }
-
 	public String getProductStockMin() {
 		JTextField tf = (JTextField) form.getComponentFormAt(CommonUIComponents.MIN_STOCK);
 		return tf.getText();
 	}
 
 	public Category getProductCategory() {
-		JComboBox<?> cb = (JComboBox<?>) form.getComponentFormAt(CommonUIComponents.CATEGORY);
+		JComboBox cb = (JComboBox) form.getComponentFormAt(CommonUIComponents.CATEGORY);
 		return (Category) cb.getSelectedItem();
 	}
 

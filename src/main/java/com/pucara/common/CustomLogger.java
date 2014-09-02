@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 /**
- * This class is intended to be used with the default logging clase of java. It
+ * This class is intended to be used with the default logging class of java. It
  * save the log in a log file and display a simple message to the user.
  * 
  * @author Maximiliano Fabian
