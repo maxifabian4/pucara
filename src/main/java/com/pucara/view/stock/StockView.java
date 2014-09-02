@@ -90,7 +90,7 @@ public class StockView extends ProductView {
 	}
 
 	public Category getProductCategory() {
-		JComboBox cb = (JComboBox) form.getComponentFormAt(CommonUIComponents.CATEGORY);
+		JComboBox<?> cb = (JComboBox<?>) form.getComponentFormAt(CommonUIComponents.CATEGORY);
 		return (Category) cb.getSelectedItem();
 	}
 
