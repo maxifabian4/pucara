@@ -64,6 +64,7 @@ public class CommonData {
 	 * Constraints.
 	 */
 	public static final Integer MAX_LONG_VALUE_PRODUCT_DESCRIPTION = 50;
+	public static final Long DEFAULT_LONG_IDENTIFIER = 0L;
 
 	/**
 	 * Conditions for queries.
@@ -130,6 +131,9 @@ public class CommonData {
 	 */
 	public static final String LOGGER_PATH = "logs/logout.txt";
 	public static final String DEBUG_PATH = "logs/debugout.txt";
-	public static final Long DEFAULT_LONG_IDENTIFIER = 0L;
 
+	/**
+	 * Resources path.
+	 */
+	public static final String RESOURCES_PATH = "/images/";
 }

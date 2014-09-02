@@ -59,7 +59,7 @@ public class ProductSalePotentialCellRenderer extends JPanel implements ListCell
 		// if (Integer.parseInt(entry.getStock()) == 0) {
 		if (entry.getStock().equals(0)) {
 			iconContainer.setBackground(new Color(0, 0, 255, 1));
-			iconLabel.setIcon(createImageIcon("resources/withoutstock11x10.png"));
+			iconLabel.setIcon(createImageIcon(CommonData.RESOURCES_PATH + "withoutstock11x10.png"));
 			description.setForeground(Color.GRAY);
 		}
 

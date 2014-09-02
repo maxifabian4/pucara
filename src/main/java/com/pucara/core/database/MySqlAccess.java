@@ -935,8 +935,8 @@ public class MySqlAccess {
 
 		try {
 			// getting database connection to MySQL server
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			mySqlConnect = (Connection) DriverManager.getConnection(dbURL, username, password);
+			Class.forName("com.mysql.jdbc.Driver");
+			mySqlConnect = DriverManager.getConnection(dbURL, username, password);
 
 			return true;
 		} catch (ClassNotFoundException e) {
@@ -945,10 +945,11 @@ public class MySqlAccess {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			return false;
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
-			return false;
 		}
+		// catch (InstantiationException | IllegalAccessException e) {
+		// e.printStackTrace();
+		// return false;
+		// }
 	}
 
 }

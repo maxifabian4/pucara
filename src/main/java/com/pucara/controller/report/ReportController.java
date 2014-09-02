@@ -134,6 +134,7 @@ public class ReportController {
 		}
 
 		barchart.createChart();
+//		barchart.saveChart("soyunbarchart", 500, 500);
 
 		return barchart.getChart();
 	}

@@ -55,7 +55,7 @@ public class ProductStockCellRenderer extends JPanel implements ListCellRenderer
 		iconContainer.setLayout(new GridBagLayout());
 		iconContainer.setBackground(new Color(0, 0, 255, 0));
 
-		ImageIcon icon = createImageIcon("resources/withstock.png");
+		ImageIcon icon = createImageIcon(CommonData.RESOURCES_PATH + "withstock.png");
 		JLabel iconLabel = new JLabel("", icon, JLabel.LEFT);
 		iconLabel.setBackground(new Color(0, 0, 255, 0));
 		iconLabel.setOpaque(true);
@@ -63,9 +63,9 @@ public class ProductStockCellRenderer extends JPanel implements ListCellRenderer
 		iconContainer.add(CommonUIComponents.createNewHorizontalSeparatorBox(10));
 
 		if (Integer.valueOf(entry.getStock()).equals(0)) {
-			iconLabel.setIcon(createImageIcon("resources/withoutstock.png"));
+			iconLabel.setIcon(createImageIcon(CommonData.RESOURCES_PATH + "withoutstock.png"));
 		} else if (Integer.valueOf(entry.getStock()) <= entry.getMinStock()) {
-			iconLabel.setIcon(createImageIcon("resources/minstock.png"));
+			iconLabel.setIcon(createImageIcon(CommonData.RESOURCES_PATH + "minstock.png"));
 		}
 
 		JPanel container = new JPanel();

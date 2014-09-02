@@ -48,7 +48,9 @@ public abstract class Chart {
 			}
 
 			if (outfileprefix != null) {
-				filename = fullpath + File.separator + outfileprefix + ".jpg";
+				// filename = fullpath + File.separator + outfileprefix +
+				// ".jpg";
+				filename = outfileprefix + ".jpg";
 				File imgfile = new File(filename);
 				ChartUtilities.saveChartAsJPEG(imgfile, chart, width, height);
 			}
