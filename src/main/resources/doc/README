@@ -1,0 +1,221 @@
+****************
+PROYECTO PUCARA
+****************
+
+REQUERIMIENTOS
+--------------
+
+Implementar un sistema de gestión básico de stock de manera tal de poder gestionar los movimientos del stock de entrada y salida, 
+como así también los gastos y ventas de un negocio determinado (kiosco, polirrubro, almacen, etc...).
+Inicialmente se requiere poder realizar una venta de un producto y ser actualizado en el stock del sistema.
+
+
+ENTIDADES INICIALES
+-------------------
+
+PRODUCT (barcode, description, cost, percentage, date, stock, minstock, categoryid)
+
+SALE (id, date, gain) 
+
+CATEGORY (id, name, description)
+
+SUPPLIER (id, description, address, phone)
+
+PROVIDES (barcode, supplier_id)
+
+PURCHASE (idCompra, idProveedor, fecha, monto)
+
+
+SERVICIOS A IMPLEMENTAR
+-----------------------
+
+[Servicio de Categorias]
+
+	* agregar una categoria
+		parámetros: datos para crear una categoría
+		retorno: identificador generado
+		> pendiente: realizar validaciones de los datos ingresados para algunos parametros (se debe realizar en los Servicios)
+
+	* eliminar una categoría (queremos eliminar una categoría??? NO POR EL MOMENTO)
+		> pendiente: tener la opción de inhabilitar una categoría existente y no mostrarla en dicho caso.
+		parámetros: nombre
+		retorno: respuesta satisfactoria
+
+	* actualizar una categoría
+		parámetros: categoría existente
+		retorno: respuesta satisfactoria
+
+	* buscar categoría por nombre
+		parámetros: nombre de la categoría
+		retorno: boolean
+
+	* obtener todas las categorías almacenadas
+		retorno: Lista de categorías
+
+	* queda deshabilitada por el momento, sólo unas pocas quedan operando.
+
+[Servicio de Stock]
+
+	* agregar un nuevo producto
+		parámetros: datos para crear un producto
+		retorno: identificador generado
+		> pendiente: realizar validaciones de los datos ingresados para algunos parametros (se debe realizar en los Servicios) < DONE >
+		> al insertar un producto nuevo se setea por defecto en cero, para ser actualizado en el gasto < DONE >
+
+	* eliminar un producto (queremos eliminar un producto??? NO POR EL MOMENTO)
+		> pendiente: tener la opción de inhabilitar un producto existente y no mostrarlo en dicho caso.
+		parámetros: código
+		retorno: respuesta satisfactoria
+
+	* actualizar un producto
+		parámetros: producto existente
+		retorna: respuesta satisfactoria
+			> descripción
+			> precio
+			> porcentaje
+			> stock mínimo
+
+	* buscar un producto por código y descripción (Lista de productos que extiende de Response)
+		parámetros: código
+		retorno: producto (objeto que extiende de Respuesta)
+
+	* obtener todos los productos de la base de datos
+		retorno: Lista de Productos
+
+[Servicio Venta]
+
+	* add a product to the parcial list
+		parameters: existing barcode
+		return: simple response
+			> based on the barcode, verify if the product exists in the system
+			> then add product to the list
+			> increase the product count if it already exists in the list
+
+	* remove a product from the parcial list
+		parameters: barcode
+		return: simple response
+			> based on the barcode, remove the product from the parcial list
+			
+	* incrementar/decrementar un elemento en particular
+		> si al decrementar llega a cero (0), se debe eliminar.
+		> especificamos un tope de venta en cantidad por producto de manera que sea personalizable?
+		tiene sentido limitar la cantidad de productos a vender ya que afectaría (a nivel valor numérico)
+		los resultados, por ejemplo [prod1 - MAX_INT times].
+
+	* realizar la venta en base a los elementos de una lista parcial
+		parámetros: -
+		retorno: respuesta simple
+			> realizar los cálculos necesarios para almacenar la información de la venta realizada en el sistema.
+	
+	* crear label para mostrar el total hasta el momento en el panel de ventas < DONE >
+		> ejemplo:
+			productos 22 total $32.75
+	
+	* crear una venta extra, de manera de ingresar una entrada en pesos al sistema. Dicha implementación debe modificarse
+	usando algún patron de diseño. < PENDING >
+
+[Servicio de Reportes]
+
+	* Generar un resumen diario con la siguiente información:
+		> caja inicial. Ingresar mediante un input text y calcular en base a dicho valor < DONE >
+		> monto de productos vendidos + #vendidos < DONE >
+		  ej: Se han vendido N productos con un valor en venta de $NNNNN
+		> lista de costos efectuados en el día (descipción - valor) < DONE - sólo el valor total >
+		  ej:
+		  		* gasto interno, $300.00
+		  		* compra proveedores [LOS GORDOS], $1832.00
+		  		* ...
+		> total < DONE >
+		> generar un índice por fecha < PENDIENTE >
+	
+	* Generar un reporte gráfico por día.
+	** obtener todas las ganancias/gastos correspondientes a X días anteriores.
+		> SELECT dayname(from_days(to_days(date))) AS 'day', from_days(to_days(date)) AS 'date', SUM(gain) AS 'gain' FROM sale 
+		  WHERE date > date_add(curdate(), INTERVAL -6 DAY)
+		  GROUP BY from_days(to_days(date))
+		  ORDER BY date DESC
+		> el valor -6 es variable ...
+		
+	* Generar un reporte gráfico por año.
+		> SELECT LOWER(monthname(from_days(to_days(date)))) AS 'month', SUM(gain) AS 'gain' 
+		  FROM sale 
+		  WHERE YEAR(date) = 2014 
+		  GROUP BY monthname(from_days(to_days(date))) 
+		  ORDER BY date DESC 
+
+[Servicio de Compras/Gastos/Salidas]
+
+	* add a product to the parcial list
+		parameters: existing barcode
+		return: simple response
+			> based on the barcode, verify if the product exists in the system
+			> then add product to the list
+			> increase the product count if it already exists in the list
+
+	* remove a product from the parcial list
+		parameters: barcode
+		return: simple response
+			> based on the barcode, remove the product from the parcial list
+			
+	* incrementar/decrementar un elemento en particular
+		> si al decrementar llega a cero (0), se debe eliminar.
+		> especificamos un tope de compra en cantidad por producto de manera que sea personalizable?
+		tiene sentido limitar la cantidad de productos a comprar ya que afectaría (a nivel valor numérico)
+		los resultados, por ejemplo [prod1 - MAX_INT times].
+
+	* concretar una compra basados en la lista parcial
+		parameters: -
+		return: simple response
+			> realizar los calculos necesarios para concretar la compra/gasto
+			> si la lista parcial no contiene elementos, es una simple compra (gasto)
+
+	* permitir editar un producto, menos el stock. Dicho stock se modifica SOLAMENTE cuando se compran nuevos productos.
+		> se debe condiderar crear un producto con stock cero [Si, DONE]
+
+[Servicio de Proveedores] (*)
+
+
+ACCESO A BASE DE DATOS
+----------------------
+
+El almacenamiento de la información se realizará mediante mysql, y será representado por la clase MySqlAccess,
+	
+	* abrir conexión
+	* cerrar conexión
+	* actualizar una categoría en la base de datos
+	* eliminar una instancia en la base de datos
+	* actualizar un producto en la base de datos
+	* crear una categoría en la base de datos
+	* craer un producto en la base de datos
+
+
+VISTA
+-----
+
+Para implementar la vista de la aplicación se debe crear un formulario, en el que cada transacción será representada con un nuevo 
+panel en dicho formulario.
+
+
+PENDIENTE
+---------
+
+* Crear índices para las tablas necesarias ... (aplicado para la tabla productos)
+* Usar la información de la base de datos que se encuentra en CommonData.java ...
+* Test rollback ...
+* Crear archivo de log ... DONE
+* Loggear eventos importantes ... IN PROGRESS
+* Recortar MakeASale() ...
+* Verificar que los productos parciales almacenados posean stock para poder venderse ... DONE
+* Realizar rollback si falla la actualización de los productos parciales a la hora de decrementar el stock (post venta) ...
+* Eliminar clases obsoletas ... IN PROGRESS
+
+
+PROBLEMAS
+---------
+
+No se puede establecer la conexión a MySQL desde java,
+	* en /opt/lampp/etc/my.conf comentar la siguiente línea, "skip-networking".
+	* /opt/lampp/lampp startmysql
+
+Condiderar el formato de fechas al insertar datos,
+	* cambiar el formato de años 'Y' por 'y'.

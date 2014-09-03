@@ -925,7 +925,7 @@ public class MySqlAccess {
 	 * @return boolean
 	 */
 	private static boolean connectDatabase() {
-		String dbURL = String.format("jdbc:mysql://%s:3306/pucaratest", Utilities.getIp());
+		String dbURL = "jdbc:mysql://192.168.1.69:3306/pucaratest";
 		String username = "root";
 		String password = "pucara";
 
@@ -946,10 +946,6 @@ public class MySqlAccess {
 			ex.printStackTrace();
 			return false;
 		}
-		// catch (InstantiationException | IllegalAccessException e) {
-		// e.printStackTrace();
-		// return false;
-		// }
 	}
 
 }
