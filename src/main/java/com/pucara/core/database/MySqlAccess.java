@@ -17,7 +17,6 @@ import com.pucara.common.CustomLogger.LoggerLevel;
 import com.pucara.core.entities.Category;
 import com.pucara.core.entities.Product;
 import com.pucara.core.entities.ProductsCollection;
-import com.pucara.core.generic.Utilities;
 import com.pucara.core.response.CategoryResponse;
 import com.pucara.core.response.DatabaseResponse;
 import com.pucara.core.response.ErrorMessage;
@@ -916,7 +915,6 @@ public class MySqlAccess {
 			e.printStackTrace();
 			return null;
 		}
-
 	}
 
 	/**
