@@ -1,5 +1,8 @@
 package com.pucara.core.services.transaction;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
 import com.pucara.common.CustomLogger;
@@ -19,6 +22,8 @@ import com.pucara.core.services.product.ProductService;
  * @author Maximiliano Fabian
  */
 public class PurchaseService extends AbstractTransactionService {
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(PurchaseService.class);
 	private String purchaseDescription;
 	private String purchaseExpense;
 
@@ -30,8 +35,8 @@ public class PurchaseService extends AbstractTransactionService {
 
 	@Override
 	public Response addProductToList(String barcode) {
-		ProductListResponse response = ProductService.existsProduct(new SearchProductRequest(
-				barcode, null));
+		ProductListResponse response = ProductService
+				.existsProduct(new SearchProductRequest(barcode, null));
 
 		if (response.wasSuccessful()) {
 			// Initialize product collection if it doesn't exists.
@@ -39,15 +44,18 @@ public class PurchaseService extends AbstractTransactionService {
 
 			return new Response();
 		} else {
-			return new Response(new ErrorMessage(ErrorType.ELEMENT_NOT_FOUND, String.format(
-					CommonMessageError.BARCODE_NOT_FOUND, barcode)));
+			return new Response(
+					new ErrorMessage(ErrorType.ELEMENT_NOT_FOUND,
+							String.format(CommonMessageError.BARCODE_NOT_FOUND,
+									barcode)));
 		}
 	}
 
 	@Override
 	public Response performTransaction() {
-		ByIdResponse purchaseResponse = MySqlAccess.addNewPurchase(purchaseDescription,
-				Utilities.getCurrentDate(), purchaseExpense);
+		ByIdResponse purchaseResponse = MySqlAccess.addNewPurchase(
+				purchaseDescription, Utilities.getCurrentDate(),
+				purchaseExpense);
 
 		if (!purchaseResponse.wasSuccessful()) {
 			return new Response(purchaseResponse.getErrorsMessages());
@@ -60,34 +68,38 @@ public class PurchaseService extends AbstractTransactionService {
 			return new Response(purchaseDetailsResponse.getErrorsMessages());
 		}
 
-		ByIdResponse purchaseNxNResponse = MySqlAccess.addNxNPurchase(purchaseResponse.getId(),
-				purchaseDetailsResponse.getId());
+		ByIdResponse purchaseNxNResponse = MySqlAccess.addNxNPurchase(
+				purchaseResponse.getId(), purchaseDetailsResponse.getId());
 
 		if (!purchaseNxNResponse.wasSuccessful()) {
 			return new Response(purchaseNxNResponse.getErrorsMessages());
 		}
 
-		ByIdResponse purchaseFinal = MySqlAccess.addNewPurchasePurchaseDetailProduct(
-				productsCollection, purchaseResponse.getId(), purchaseDetailsResponse.getId());
+		ByIdResponse purchaseFinal = MySqlAccess
+				.addNewPurchasePurchaseDetailProduct(productsCollection,
+						purchaseResponse.getId(),
+						purchaseDetailsResponse.getId());
 
 		if (!purchaseFinal.wasSuccessful()) {
-			CustomLogger.log(LoggerLevel.ERROR, String.format(
-					"Error creating new detail expense: product collection size: %d",
-					productsCollection.getSize()));
+			CustomLogger
+					.log(LoggerLevel.ERROR,
+							String.format(
+									"Error creating new detail expense: product collection size: %d",
+									productsCollection.getSize()));
 			return new Response(purchaseFinal.getErrorsMessages());
 		}
 
 		// Increase stock all products.
 		if (productsCollection.getSize() > 0) {
-			Response updateStockResponse = MySqlAccess
-					.modifyProductStocks(productsCollection, true);
+			Response updateStockResponse = MySqlAccess.modifyProductStocks(
+					productsCollection, true);
 
 			if (!updateStockResponse.wasSuccessful()) {
 				return new Response(updateStockResponse.getErrorsMessages());
 			}
 		}
 
-		CustomLogger.log(LoggerLevel.INFO, "Transaction performed successfully ...");
+		LOGGER.info("Transaction performed successfully ...");
 		return new Response();
 	}
 
