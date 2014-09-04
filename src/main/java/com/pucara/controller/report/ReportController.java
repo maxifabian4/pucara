@@ -59,12 +59,15 @@ public class ReportController {
 
 			@Override
 			public void mouseExited(MouseEvent e) {
+				JLabel label = (JLabel) e.getSource();
+				label.setForeground(CommonData.DARK_FONT_COLOR);
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				JLabel label = (JLabel) e.getSource();
 				label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				label.setForeground(CommonData.DEFAULT_SELECTION_COLOR);
 			}
 
 			@Override
@@ -134,7 +137,7 @@ public class ReportController {
 		}
 
 		barchart.createChart();
-//		barchart.saveChart("soyunbarchart", 500, 500);
+		// barchart.saveChart("soyunbarchart", 500, 500);
 
 		return barchart.getChart();
 	}

@@ -18,9 +18,11 @@ public class MysqlConnectionTest extends TestCase {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MysqlConnectionTest.class);
 
 	public void testConnection() {
-		String dbUrl = "jdbc:mysql://192.168.1.69:3306/mysql";
+		String dbUrl = "jdbc:mysql://192.168.1.69:3306/pucaratest";
 		String dbClass = "com.mysql.jdbc.Driver";
-		String query = "select distinct(table_name) from INFORMATION_SCHEMA.TABLES";
+		// String query =
+		// "select distinct(table_name) from INFORMATION_SCHEMA.TABLES";
+		String query = "select description from product";
 		String username = "root";
 		String password = "pucara";
 
@@ -32,17 +34,17 @@ public class MysqlConnectionTest extends TestCase {
 
 			while (resultSet.next()) {
 				String tableName = resultSet.getString(1);
-				System.out.println("Table name : " + tableName);
+				LOGGER.debug("Porduct: {}", tableName);
 			}
 
-			LOGGER.info("All table have been displayed! {}", true);
-			LOGGER.error("Error!");
-			LOGGER.debug("Debug!");
+			LOGGER.debug("Clossing connection ...");
 			connection.close();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			statement.close();
+			resultSet.close();
+		} catch (ClassNotFoundException cnfe) {
+			LOGGER.debug("Class Not Found: {}", cnfe);
+		} catch (SQLException se) {
+			LOGGER.debug("SQL: {}", se);
 		}
 	}
 }

@@ -10,6 +10,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
 import com.pucara.common.CustomLogger;
@@ -32,6 +35,7 @@ import com.pucara.core.services.sale.SaleService;
  * @author Maximiliano Fabian
  */
 public class MySqlAccess {
+	private static final Logger LOGGER = LoggerFactory.getLogger(MySqlAccess.class);
 	private static Connection mySqlConnect;
 	private static Statement statement;
 	private static ResultSet resultSet;
@@ -45,7 +49,7 @@ public class MySqlAccess {
 	public static CategoryResponse findCategoryCondition(String condition) {
 		// Statements allow to issue SQL queries to the database
 		try {
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			resultSet = statement.executeQuery(String.format(
 					"SELECT id, name, description FROM pucaratest.category %s", condition));
@@ -68,7 +72,7 @@ public class MySqlAccess {
 	public static ProductListResponse findProductByCondition(String whereCondition) {
 		// Statements allow to issue SQL queries to the database
 		try {
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			resultSet = statement.executeQuery(String.format(
 					"SELECT barcode, description, cost, percentage, date, stock, minstock, categoryid "
@@ -94,7 +98,7 @@ public class MySqlAccess {
 			String newDescription) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement.executeUpdate("UPDATE pucaratest.category SET name = '"
 					+ newName + "', description = '" + newDescription + "' WHERE name = '"
@@ -123,7 +127,7 @@ public class MySqlAccess {
 	public static StatementResponse updateProduct(Product productToUpdate) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement.executeUpdate(makeUpdateSentece(productToUpdate));
 
@@ -150,7 +154,7 @@ public class MySqlAccess {
 	public static StatementResponse removeCategory(String name) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement
 					.executeUpdate("DELETE FROM pucaratest.category WHERE name = '" + name + "'");
@@ -172,7 +176,7 @@ public class MySqlAccess {
 	public static StatementResponse removeSale(Long id) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement.executeUpdate(String.format(
 					"DELETE FROM %s.%s WHERE %s = '%s'", CommonData.DATABASE_NAME,
@@ -197,7 +201,7 @@ public class MySqlAccess {
 	public static StatementResponse removeSaleSaleDetail(Long saleId, Long saleDetailId) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement.executeUpdate(String.format(
 					"DELETE FROM %s.%s WHERE %s = '%s' AND %s = '%s'", CommonData.DATABASE_NAME,
@@ -222,7 +226,7 @@ public class MySqlAccess {
 	public static StatementResponse removeSaleSaleDetailProduct(Long saleId, Long saleDetailId) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement.executeUpdate(String.format(
 					"DELETE FROM %s.%s WHERE %s = '%s' AND %s = '%s'", CommonData.DATABASE_NAME,
@@ -247,7 +251,7 @@ public class MySqlAccess {
 	public static StatementResponse removeProduct(String barcode) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement
 					.executeUpdate("DELETE FROM pucaratest.product WHERE barcode = '" + barcode
@@ -271,7 +275,7 @@ public class MySqlAccess {
 	public static StatementResponse insertNewProduct(Product product) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement.executeUpdate("INSERT INTO pucaratest.product VALUES('"
 					+ product.getBarcode() + "', '" + product.getDescription() + "', '"
@@ -297,7 +301,7 @@ public class MySqlAccess {
 	public static StatementResponse insertNewCategory(Category category) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement
 					.executeUpdate("INSERT INTO pucaratest.category (name, description) VALUES('"
@@ -319,7 +323,6 @@ public class MySqlAccess {
 	 * @throws Exception
 	 */
 	public static DatabaseResponse establishConection() {
-		// boolean mysqlConnected = startMySqlServer();
 		boolean mysqlConnected = true;
 
 		if (mysqlConnected) {
@@ -347,7 +350,7 @@ public class MySqlAccess {
 			}
 
 			if (statement != null) {
-				statement.close();
+//				statement.close();
 			}
 
 		} catch (Exception e) {
@@ -430,7 +433,7 @@ public class MySqlAccess {
 	public static ByIdResponse addNewPurchase(String description, String currentDate, String expense) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			statement
 					.executeUpdate(String
@@ -464,7 +467,7 @@ public class MySqlAccess {
 	public static ByIdResponse addNewPurchaseDetail(Integer totalNumberOfProducts) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			statement.executeUpdate(String.format(
 					"INSERT INTO pucaratest.purchase_detail (number_of_products) VALUES ('%s')",
@@ -497,7 +500,7 @@ public class MySqlAccess {
 	public static ByIdResponse addNxNPurchase(Long purchaseId, Long purchaseDetailId) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			statement
 					.executeUpdate(String
@@ -534,7 +537,7 @@ public class MySqlAccess {
 	public static ByIdResponse addNewSale(String currentDate, double gain) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			statement.executeUpdate(String.format(
 					"INSERT INTO pucaratest.sale (date, gain) VALUES ('%s', '" + gain + "')",
@@ -558,7 +561,7 @@ public class MySqlAccess {
 	public static ByIdResponse addNewSaleDetail(Integer totalNumberOfProducts) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			statement.executeUpdate(String.format(
 					"INSERT INTO pucaratest.sale_detail (number_of_products) VALUES ('%d')",
@@ -583,7 +586,7 @@ public class MySqlAccess {
 	public static ByIdResponse addNewSaleSaleDetail(Long saleId, Long saleDetailId) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			statement
 					.executeUpdate(String
@@ -612,7 +615,7 @@ public class MySqlAccess {
 			Long saleId, Long saleDetailId) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			String barcode;
 
 			for (int i = 0; i < products.getSize(); i++) {
@@ -647,7 +650,7 @@ public class MySqlAccess {
 			Long purchaseId, Long purchaseDetailId) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 
 			for (int i = 0; i < products.getSize(); i++) {
 				// Result set get the result of the SQL query
@@ -699,7 +702,7 @@ public class MySqlAccess {
 		try {
 			int affectedRows = 0;
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// statement = mySqlConnect.createStatement();
 			String barcode;
 
 			for (int i = 0; i < products.getSize(); i++) {
@@ -752,12 +755,13 @@ public class MySqlAccess {
 	private static ResultSet performStatement(String stringStatement) {
 		try {
 			// Statements allow to issue SQL queries to the database
-			statement = mySqlConnect.createStatement();
+			// //statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			resultSet = statement.executeQuery(stringStatement);
 
 			return resultSet;
 		} catch (SQLException e) {
+			LOGGER.error("SQL Exception: {}", e);
 			return null;
 		}
 	}
@@ -891,7 +895,7 @@ public class MySqlAccess {
 
 	/**
 	 * Execute a Linux command.
-	 * 
+	 * TODO: REMOVE!!
 	 * @param command
 	 * @return String
 	 */
@@ -929,12 +933,12 @@ public class MySqlAccess {
 
 		mySqlConnect = null;
 		statement = null;
-		resultSet = null;
 
 		try {
 			// getting database connection to MySQL server
 			Class.forName("com.mysql.jdbc.Driver");
 			mySqlConnect = DriverManager.getConnection(dbURL, username, password);
+			statement = mySqlConnect.createStatement();
 
 			return true;
 		} catch (ClassNotFoundException e) {
