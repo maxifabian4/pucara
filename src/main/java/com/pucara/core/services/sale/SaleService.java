@@ -5,8 +5,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.pucara.common.CommonMessageError;
-import com.pucara.common.CustomLogger;
-import com.pucara.common.CustomLogger.LoggerLevel;
 import com.pucara.core.database.MySqlAccess;
 import com.pucara.core.entities.PartialElement;
 import com.pucara.core.entities.Product;
@@ -54,11 +52,11 @@ public class SaleService {
 
 				return new Response();
 			} else {
-				CustomLogger.log(
-						null,
-						LoggerLevel.WARNING,
-						String.format("Insufficient stock for the product [%s]", response
-								.getProducts().get(0).getBarcode()));
+//				CustomLogger.log(
+//						null,
+//						LoggerLevel.WARNING,
+//						String.format("Insufficient stock for the product [%s]", response
+//								.getProducts().get(0).getBarcode()));
 
 				return new Response(new ErrorMessage(ErrorType.INSUFFICIENT_STOCK, String.format(
 						CommonMessageError.INSUFFICIENT_STOCK, response.getProducts().get(0)
@@ -137,31 +135,31 @@ public class SaleService {
 					if (xSaleSaleDetailResponse.wasSuccessful()) {
 						return finalSaleStep(saleResponse, saleDetailResponse);
 					} else {
-						CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR,
-								xSaleSaleDetailResponse.getErrorsMessages().get(0).getMessage());
+//						CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR,
+//								xSaleSaleDetailResponse.getErrorsMessages().get(0).getMessage());
 
 						// Rollback of sale and sale_detail ...
 						StatementResponse response = MySqlAccess.removeSaleSaleDetail(
 								saleResponse.getId(), saleDetailResponse.getId());
-						CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR, response
-								.getErrorsMessages().get(0).getMessage());
+//						CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR, response
+//								.getErrorsMessages().get(0).getMessage());
 
 						return xSaleSaleDetailResponse;
 					}
 				} else {
-					CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR, saleDetailResponse
-							.getErrorsMessages().get(0).getMessage());
+//					CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR, saleDetailResponse
+//							.getErrorsMessages().get(0).getMessage());
 
 					// Rollback of sale ...
 					StatementResponse response = MySqlAccess.removeSale(saleResponse.getId());
-					CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR, response
-							.getErrorsMessages().get(0).getMessage());
+//					CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR, response
+//							.getErrorsMessages().get(0).getMessage());
 
 					return saleDetailResponse;
 				}
 			} else {
-				CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR, saleResponse
-						.getErrorsMessages().get(0).getMessage());
+//				CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR, saleResponse
+//						.getErrorsMessages().get(0).getMessage());
 
 				return saleResponse;
 			}
@@ -299,12 +297,12 @@ public class SaleService {
 			Response decreaseProductsResult = decreaseStockForProducts();
 
 			if (decreaseProductsResult.wasSuccessful()) {
-				CustomLogger
-						.log(null,
-								CustomLogger.LoggerLevel.INFO,
-								String.format("Sale performed succesfully "
-										+ "[saleid, saleDetailId] " + "[%d, %d] ...",
-										saleResponse.getId(), saleDetailResponse.getId()));
+//				CustomLogger
+//						.log(null,
+//								CustomLogger.LoggerLevel.INFO,
+//								String.format("Sale performed succesfully "
+//										+ "[saleid, saleDetailId] " + "[%d, %d] ...",
+//										saleResponse.getId(), saleDetailResponse.getId()));
 
 				String allProducts = productsCollection.toString();
 				productsCollection = new ProductsCollection();
@@ -316,14 +314,15 @@ public class SaleService {
 				return decreaseProductsResult;
 			}
 		} else {
-			CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR, xSaleSaleDetailProductResponse
-					.getErrorsMessages().get(0).getMessage());
+//			CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR, xSaleSaleDetailProductResponse
+//					.getErrorsMessages().get(0).getMessage());
 
 			// Rollback of x_sale_sale_detail_product
 			StatementResponse response = MySqlAccess.removeSaleSaleDetailProduct(
 					saleResponse.getId(), saleDetailResponse.getId());
-			CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR, response.getErrorsMessages()
-					.get(0).getMessage());
+			// CustomLogger.log(null, CustomLogger.LoggerLevel.ERROR,
+			// response.getErrorsMessages()
+			// .get(0).getMessage());
 
 			return xSaleSaleDetailProductResponse;
 		}

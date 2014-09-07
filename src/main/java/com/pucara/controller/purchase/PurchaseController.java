@@ -15,8 +15,6 @@ import com.pucara.view.render.object.ListSalePotentialProduct;
 import com.pucara.view.render.object.ListSaleProduct;
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
-import com.pucara.common.CustomLogger;
-import com.pucara.common.CustomLogger.LoggerLevel;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.request.SearchProductRequest;
 import com.pucara.core.request.UpdateProductRequest;
@@ -255,8 +253,6 @@ public class PurchaseController {
 								percentage, minStock);
 						purchaseView.updateProductsList();
 						purchaseView.selectProductElementOnList(barcode);
-						CustomLogger.log(null, LoggerLevel.INFO, String.format(
-								"Product [%s] has been modified successfully.", description));
 					} else {
 						JOptionPane.showMessageDialog(null, "No se ha modificado el producto ...",
 								"Advertencia!", JOptionPane.WARNING_MESSAGE);

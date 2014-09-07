@@ -20,8 +20,6 @@ import java.util.Random;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
-import com.pucara.common.CustomLogger;
-import com.pucara.common.CustomLogger.LoggerLevel;
 import com.pucara.core.entities.Category;
 import com.pucara.core.entities.Product;
 import com.pucara.core.entities.report.PurchaseDailyReport;
@@ -283,8 +281,8 @@ public class Utilities {
 
 			return resultValue;
 		} catch (NumberFormatException nfe) {
-			CustomLogger.log(nfe, LoggerLevel.DEGUB,
-					String.format(CommonMessageError.INVALID_DOUBLE_FORMAT, stringValue));
+//			CustomLogger.log(nfe, LoggerLevel.DEGUB,
+//					String.format(CommonMessageError.INVALID_DOUBLE_FORMAT, stringValue));
 
 			return null;
 		}

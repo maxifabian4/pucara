@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
-import com.pucara.common.CustomLogger;
-import com.pucara.common.CustomLogger.LoggerLevel;
 import com.pucara.core.database.MySqlAccess;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.request.SearchProductRequest;
@@ -81,11 +79,11 @@ public class PurchaseService extends AbstractTransactionService {
 						purchaseDetailsResponse.getId());
 
 		if (!purchaseFinal.wasSuccessful()) {
-			CustomLogger
-					.log(LoggerLevel.ERROR,
-							String.format(
-									"Error creating new detail expense: product collection size: %d",
-									productsCollection.getSize()));
+			// CustomLogger
+			// .log(LoggerLevel.ERROR,
+			// String.format(
+			// "Error creating new detail expense: product collection size: %d",
+			// productsCollection.getSize()));
 			return new Response(purchaseFinal.getErrorsMessages());
 		}
 

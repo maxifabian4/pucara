@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pucara.common.CommonMessageError;
-import com.pucara.common.CustomLogger;
-import com.pucara.common.CustomLogger.LoggerLevel;
 import com.pucara.core.database.MySqlAccess;
 import com.pucara.core.entities.report.ChartInfoElement;
 import com.pucara.core.entities.report.PurchaseDailyReport;
@@ -37,7 +35,8 @@ public class ReportService {
 
 			return new SaleDailyReportResponse(gain, quantity);
 		} catch (SQLException e) {
-			CustomLogger.log(e, LoggerLevel.ERROR, CommonMessageError.STATEMENT_SALE_ERROR);
+			// CustomLogger.log(e, LoggerLevel.ERROR,
+			// CommonMessageError.STATEMENT_SALE_ERROR);
 			return new SaleDailyReportResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
 					e.getMessage()));
 		} finally {
@@ -66,7 +65,8 @@ public class ReportService {
 
 			return new PurchaseDailyReportResponse(responses);
 		} catch (SQLException e) {
-			CustomLogger.log(e, LoggerLevel.ERROR, CommonMessageError.STATEMENT_PURCHASE_ERROR);
+			// CustomLogger.log(e, LoggerLevel.ERROR,
+			// CommonMessageError.STATEMENT_PURCHASE_ERROR);
 			return new PurchaseDailyReportResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
 					e.getMessage()));
 		} finally {
@@ -96,7 +96,8 @@ public class ReportService {
 
 			return new ChartInfoResponse(responses);
 		} catch (SQLException e) {
-			CustomLogger.log(e, LoggerLevel.ERROR, CommonMessageError.STATEMENT_CHART_ERROR);
+			// CustomLogger.log(e, LoggerLevel.ERROR,
+			// CommonMessageError.STATEMENT_CHART_ERROR);
 			return new ChartInfoResponse(
 					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
@@ -121,7 +122,8 @@ public class ReportService {
 
 			return new ChartInfoResponse(responses);
 		} catch (SQLException e) {
-			CustomLogger.log(e, LoggerLevel.ERROR, CommonMessageError.STATEMENT_CHART_ERROR);
+			// CustomLogger.log(e, LoggerLevel.ERROR,
+			// CommonMessageError.STATEMENT_CHART_ERROR);
 			return new ChartInfoResponse(
 					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {

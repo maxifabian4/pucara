@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
-import com.pucara.common.CustomLogger;
-import com.pucara.common.CustomLogger.LoggerLevel;
 import com.pucara.core.entities.Category;
 import com.pucara.core.entities.Product;
 import com.pucara.core.entities.ProductsCollection;
@@ -30,7 +28,8 @@ import com.pucara.core.response.StatementResponse;
 import com.pucara.core.services.sale.SaleService;
 
 /**
- * This class manages the main access to the database.
+ * This class manages the main access to the database. All operation results are
+ * retrieved based on a {@link com.pucara.core.response.Response} object.
  * 
  * @author Maximiliano Fabian
  */
@@ -41,16 +40,15 @@ public class MySqlAccess {
 	private static ResultSet resultSet;
 
 	/**
-	 * Searches a category by name in the database.
+	 * Searches a category by an specific condition in the database.
 	 * 
-	 * @param name
-	 * @return CategoryResponse
+	 * @param condition
+	 *            Condition to be considered.
+	 * @return A category object wrapped in a Response.
 	 */
 	public static CategoryResponse findCategoryCondition(String condition) {
-		// Statements allow to issue SQL queries to the database
 		try {
-			// statement = mySqlConnect.createStatement();
-			// Result set get the result of the SQL query
+			// Result set get the result of the SQL query.
 			resultSet = statement.executeQuery(String.format(
 					"SELECT id, name, description FROM pucaratest.category %s", condition));
 			resultSet.next();
@@ -350,7 +348,7 @@ public class MySqlAccess {
 			}
 
 			if (statement != null) {
-//				statement.close();
+				// statement.close();
 			}
 
 		} catch (Exception e) {
@@ -424,37 +422,52 @@ public class MySqlAccess {
 	}
 
 	/**
+	 * Stores a new purchase in the database. The following information is
+	 * stored:
+	 * <ul>
+	 * <li>description
+	 * <li>current date
+	 * <li>expense value
+	 * </ul>
 	 * 
 	 * @param description
+	 *            Description of the purchase.
 	 * @param currentDate
+	 *            Expense value to be stored.
 	 * @param expense
-	 * @return
+	 *            Expense value to be stored.
+	 * @return An implementation of {@link com.pucara.core.response.Response}
+	 *         saving identifier value.
 	 */
 	public static ByIdResponse addNewPurchase(String description, String currentDate, String expense) {
 		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
-			// Result set get the result of the SQL query
-			statement
+			// Result set gets the result of the SQL query.
+			int rowCount = statement
 					.executeUpdate(String
 							.format("INSERT INTO pucaratest.purchase (description, date, expense) VALUES ('%s', '%s', '%s')",
 									description, currentDate, expense));
 
-			// Log
+			if (rowCount == 0) {
+				LOGGER.debug(String.format("Error trying to insert a new purchase: [%s-%s-%s]",
+						description, currentDate, expense));
+				return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
+						CommonMessageError.INSERTION_ERROR));
+			}
+
 			Long longValue = getLastInsert("purchase", "id");
-			CustomLogger.log(LoggerLevel.INFO,
-					String.format("New purchase [%s] has been created", longValue));
+			// TODO Add toString() method, from an update request object.
+			LOGGER.info(String.format("New purchase has been created: %s, [%s-%s-%s]", longValue,
+					description, currentDate, expense));
+
 			return new ByIdResponse(longValue);
 		} catch (SQLException e) {
-			// Log
-			CustomLogger.log(e, LoggerLevel.ERROR, String.format(
-					"An exception has been fired trying to create a new purchase ... [%s,%s]",
-					description, expense));
+			LOGGER.debug(String.format(
+					"An exception has been fired trying to create a new purchase ... [%s,%s] - {}",
+					description, expense), e.getMessage());
 			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
 					CommonMessageError.INSERTION_ERROR));
 		} finally {
-			// Log
-			CustomLogger.log(LoggerLevel.INFO, "Closing result set ...");
+			LOGGER.info("Result set closed");
 			MySqlAccess.closeResultSet();
 		}
 	}
@@ -475,18 +488,19 @@ public class MySqlAccess {
 
 			// Log
 			Long longValue = getLastInsert("purchase_detail", "id");
-			CustomLogger.log(LoggerLevel.INFO,
-					String.format("New purchase detail [%s] has been created", longValue));
+			// CustomLogger.log(LoggerLevel.INFO,
+			// String.format("New purchase detail [%s] has been created",
+			// longValue));
 			return new ByIdResponse(longValue);
 		} catch (SQLException e) {
 			// Log
-			CustomLogger.log(e, LoggerLevel.ERROR,
-					"An exception has been fired trying to create a new purchase detail ...");
+			// CustomLogger.log(e, LoggerLevel.ERROR,
+			// "An exception has been fired trying to create a new purchase detail ...");
 			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
 					CommonMessageError.INSERTION_ERROR));
 		} finally {
 			// Log
-			CustomLogger.log(LoggerLevel.INFO, "Closing result set ...");
+			// CustomLogger.log(LoggerLevel.INFO, "Closing result set ...");
 			MySqlAccess.closeResultSet();
 		}
 	}
@@ -508,21 +522,22 @@ public class MySqlAccess {
 									purchaseId, purchaseDetailId));
 
 			// Log
-			CustomLogger.log(LoggerLevel.INFO, "New NxN purchase has been created");
+			// CustomLogger.log(LoggerLevel.INFO,
+			// "New NxN purchase has been created");
 			return new ByIdResponse(CommonData.DEFAULT_LONG_IDENTIFIER);
 		} catch (SQLException e) {
 			// Log
-			CustomLogger
-					.log(e,
-							LoggerLevel.ERROR,
-							String.format(
-									"An exception has been fired trying to create a new NxN purchase [purchaseId %s - purchaseDetailId %s].",
-									purchaseId, purchaseDetailId));
+			// CustomLogger
+			// .log(e,
+			// LoggerLevel.ERROR,
+			// String.format(
+			// "An exception has been fired trying to create a new NxN purchase [purchaseId %s - purchaseDetailId %s].",
+			// purchaseId, purchaseDetailId));
 			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
 					CommonMessageError.INSERTION_ERROR));
 		} finally {
 			// Log
-			CustomLogger.log(LoggerLevel.INFO, "Closing result set ...");
+			// CustomLogger.log(LoggerLevel.INFO, "Closing result set ...");
 			MySqlAccess.closeResultSet();
 		}
 	}
@@ -663,22 +678,23 @@ public class MySqlAccess {
 			}
 
 			// Log
-			CustomLogger
-					.log(LoggerLevel.INFO, "New PurchasePurchaseDetailProduct has been created");
+			// CustomLogger
+			// .log(LoggerLevel.INFO,
+			// "New PurchasePurchaseDetailProduct has been created");
 			return new ByIdResponse(0L);
 		} catch (SQLException e) {
 			// Log
-			CustomLogger
-					.log(e,
-							LoggerLevel.ERROR,
-							String.format(
-									"An exception has been fired trying to create a new PurchasePurchaseDetailProduct [purchaseId %s - purchaseDetailId %s].",
-									purchaseId, purchaseDetailId));
+			// CustomLogger
+			// .log(e,
+			// LoggerLevel.ERROR,
+			// String.format(
+			// "An exception has been fired trying to create a new PurchasePurchaseDetailProduct [purchaseId %s - purchaseDetailId %s].",
+			// purchaseId, purchaseDetailId));
 			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
 					"[x_purchase_purchase_detail_product] " + e.getMessage()));
 		} finally {
 			// Log
-			CustomLogger.log(LoggerLevel.INFO, "Closing result set ...");
+			// CustomLogger.log(LoggerLevel.INFO, "Closing result set ...");
 			MySqlAccess.closeResultSet();
 		}
 	}
@@ -689,7 +705,7 @@ public class MySqlAccess {
 	public static void stopMySqlServer() {
 		String[] command = { "/bin/sh", "-c", "echo pucara | sudo -S /opt/lampp/lampp stopmysql" };
 		String out = executeCommand(command);
-		CustomLogger.log(null, LoggerLevel.INFO, out);
+		// CustomLogger.log(nCull, LoggerLevel.INFO, out);
 	}
 
 	/**
@@ -894,8 +910,8 @@ public class MySqlAccess {
 	}
 
 	/**
-	 * Execute a Linux command.
-	 * TODO: REMOVE!!
+	 * Execute a Linux command. TODO: REMOVE!!
+	 * 
 	 * @param command
 	 * @return String
 	 */
@@ -927,7 +943,7 @@ public class MySqlAccess {
 	 * @return boolean
 	 */
 	private static boolean connectDatabase() {
-		String dbURL = "jdbc:mysql://192.168.1.69:3306/pucaratest";
+		String dbURL = "jdbc:mysql://localhost:3306/pucaratest";
 		String username = "root";
 		String password = "pucara";
 

@@ -20,13 +20,11 @@ import java.util.Properties;
  * Unit test for simple App.
  */
 public class MysqlConnectionTest extends TestCase {
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(MysqlConnectionTest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MysqlConnectionTest.class);
 
 	public void testConnection() throws IOException {
 		Properties prop = new Properties();
-		InputStream input = new FileInputStream(
-				"src/main/resources/properties/db.properties");
+		InputStream input = new FileInputStream("src/main/resources/properties/db.properties");
 		// Load a properties file.
 		prop.load(input);
 
@@ -38,8 +36,7 @@ public class MysqlConnectionTest extends TestCase {
 
 		try {
 			Class.forName(dbClass);
-			Connection connection = DriverManager.getConnection(dbUrl,
-					username, password);
+			Connection connection = DriverManager.getConnection(dbUrl, username, password);
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
 
@@ -53,9 +50,9 @@ public class MysqlConnectionTest extends TestCase {
 			statement.close();
 			resultSet.close();
 		} catch (ClassNotFoundException cnfe) {
-			LOGGER.debug("Class Not Found: {}", cnfe);
+			LOGGER.debug("Class Not Found: {}", cnfe.getMessage());
 		} catch (SQLException se) {
-			LOGGER.debug("SQL: {}", se);
+			LOGGER.debug("SQL: {}", se.getMessage());
 		}
 	}
 }

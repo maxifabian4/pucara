@@ -9,8 +9,6 @@ import javax.swing.JOptionPane;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
-import com.pucara.common.CustomLogger;
-import com.pucara.common.CustomLogger.LoggerLevel;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.request.SearchProductRequest;
 import com.pucara.core.response.ProductListResponse;
@@ -171,8 +169,7 @@ public class SaleController {
 							if (performedSale.wasSuccessful()) {
 								cleanPartialList();
 							} else {
-								CustomLogger.log(LoggerLevel.ERROR, performedSale
-										.getErrorsMessages().get(0).getMessage());
+								// TODO Show a message with the error !!!!
 							}
 						}
 					}

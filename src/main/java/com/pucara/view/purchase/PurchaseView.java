@@ -35,7 +35,6 @@ import com.pucara.core.services.product.ProductService;
 public class PurchaseView extends ProductView {
 	private static final long serialVersionUID = 1L;
 	private PurchaseController purchaseController;
-	// private JTextField inputBarcode;
 	private SwingListPanel listOfPartialProducts;
 	private SwingListPanel listOfPotentialProducts;
 	private JPanel centerContainer;
