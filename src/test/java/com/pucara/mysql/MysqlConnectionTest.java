@@ -9,12 +9,11 @@ import java.sql.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.pucara.common.PropertyFile;
+
 import junit.framework.TestCase;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 /**
  * Unit test for simple App.
@@ -23,10 +22,7 @@ public class MysqlConnectionTest extends TestCase {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MysqlConnectionTest.class);
 
 	public void testConnection() throws IOException {
-		Properties prop = new Properties();
-		InputStream input = new FileInputStream("src/main/resources/properties/db.properties");
-		// Load a properties file.
-		prop.load(input);
+		PropertyFile prop = new PropertyFile("src/main/resources/properties/db.properties");
 
 		String dbUrl = prop.getProperty("db.url");
 		String dbClass = prop.getProperty("db.class");
