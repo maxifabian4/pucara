@@ -52,7 +52,7 @@ public class BarChart extends Chart {
 
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setBarPainter(new StandardBarPainter());
-		
+
 		CategoryItemRenderer r = plot.getRenderer();
 		r.setSeriesPaint(0, new Color(154, 204, 3));
 		r.setSeriesPaint(1, new Color(234, 206, 28));
@@ -62,15 +62,19 @@ public class BarChart extends Chart {
 		legend.setFrame(new BlockBorder(Color.gray));
 
 		CategoryAxis domainAxis = plot.getDomainAxis();
-		domainAxis.setLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 15));
+		domainAxis.setLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
+				Font.BOLD, 15));
 		domainAxis.setLabelPaint(CommonData.DARK_FONT_COLOR);
-		domainAxis.setTickLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 15));
+		domainAxis.setTickLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
+				Font.PLAIN, 15));
 		domainAxis.setTickMarksVisible(false);
 
 		ValueAxis rangeAxis = plot.getRangeAxis();
-		rangeAxis.setLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 15));
+		rangeAxis.setLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
+				Font.BOLD, 15));
 		rangeAxis.setLabelPaint(CommonData.DARK_FONT_COLOR);
-		rangeAxis.setTickLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 15));
+		rangeAxis.setTickLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
+				Font.PLAIN, 15));
 		rangeAxis.setTickMarksVisible(false);
 	}
 

@@ -34,7 +34,8 @@ import com.pucara.core.services.sale.SaleService;
  * @author Maximiliano Fabian
  */
 public class MySqlAccess {
-	private static final Logger LOGGER = LoggerFactory.getLogger(MySqlAccess.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(MySqlAccess.class);
 	private static Connection mySqlConnect;
 	private static Statement statement;
 	private static ResultSet resultSet;
@@ -50,12 +51,14 @@ public class MySqlAccess {
 		try {
 			// Result set get the result of the SQL query.
 			resultSet = statement.executeQuery(String.format(
-					"SELECT id, name, description FROM pucaratest.category %s", condition));
+					"SELECT id, name, description FROM pucaratest.category %s",
+					condition));
 			resultSet.next();
 
 			return new CategoryResponse(getCategory(resultSet));
 		} catch (SQLException e) {
-			return new CategoryResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
+			return new CategoryResponse(new ErrorMessage(
+					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
 			closeResultSet();
 		}
@@ -67,18 +70,21 @@ public class MySqlAccess {
 	 * @param barcode
 	 * @return {@link ByIdResponse}
 	 */
-	public static ProductListResponse findProductByCondition(String whereCondition) {
+	public static ProductListResponse findProductByCondition(
+			String whereCondition) {
 		// Statements allow to issue SQL queries to the database
 		try {
 			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
-			resultSet = statement.executeQuery(String.format(
-					"SELECT barcode, description, cost, percentage, date, stock, minstock, categoryid "
-							+ "FROM pucaratest.product %s", whereCondition));
+			resultSet = statement
+					.executeQuery(String
+							.format("SELECT barcode, description, cost, percentage, date, stock, minstock, categoryid "
+									+ "FROM pucaratest.product %s",
+									whereCondition));
 			return new ProductListResponse(getProductsList(resultSet));
 		} catch (SQLException e) {
-			return new ProductListResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
-					e.getMessage()));
+			return new ProductListResponse(new ErrorMessage(
+					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
 			closeResultSet();
 		}
@@ -92,25 +98,25 @@ public class MySqlAccess {
 	 * @param newDescription
 	 * @return StatementResponse
 	 */
-	public static StatementResponse updateCategory(String oldName, String newName,
-			String newDescription) {
+	public static StatementResponse updateCategory(String oldName,
+			String newName, String newDescription) {
 		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
-			int affectedRows = statement.executeUpdate("UPDATE pucaratest.category SET name = '"
-					+ newName + "', description = '" + newDescription + "' WHERE name = '"
-					+ oldName + "'");
+			int affectedRows = statement
+					.executeUpdate("UPDATE pucaratest.category SET name = '"
+							+ newName + "', description = '" + newDescription
+							+ "' WHERE name = '" + oldName + "'");
 
 			if (affectedRows == 1) {
 				return new StatementResponse(affectedRows);
 			} else {
-				return new StatementResponse(new ErrorMessage(ErrorType.UPDATE_CATEGORY_ERROR,
+				return new StatementResponse(new ErrorMessage(
+						ErrorType.UPDATE_CATEGORY_ERROR,
 						"No rows have been affected during the update."));
 			}
 		} catch (SQLException e) {
-			return new StatementResponse(
-					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
+			return new StatementResponse(new ErrorMessage(
+					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
 			MySqlAccess.closeResultSet();
 		}
@@ -124,20 +130,20 @@ public class MySqlAccess {
 	 */
 	public static StatementResponse updateProduct(Product productToUpdate) {
 		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
-			int affectedRows = statement.executeUpdate(makeUpdateSentece(productToUpdate));
+			int affectedRows = statement
+					.executeUpdate(makeUpdateSentece(productToUpdate));
 
 			if (affectedRows == 1) {
 				return new StatementResponse(affectedRows);
 			} else {
-				return new StatementResponse(new ErrorMessage(ErrorType.UPDATE_PRODUCT_ERROR,
+				return new StatementResponse(new ErrorMessage(
+						ErrorType.UPDATE_PRODUCT_ERROR,
 						"No rows have been affected during the update."));
 			}
 		} catch (SQLException e) {
-			return new StatementResponse(
-					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
+			return new StatementResponse(new ErrorMessage(
+					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
 			MySqlAccess.closeResultSet();
 		}
@@ -151,16 +157,15 @@ public class MySqlAccess {
 	 */
 	public static StatementResponse removeCategory(String name) {
 		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement
-					.executeUpdate("DELETE FROM pucaratest.category WHERE name = '" + name + "'");
+					.executeUpdate("DELETE FROM pucaratest.category WHERE name = '"
+							+ name + "'");
 
 			return new StatementResponse(affectedRows);
 		} catch (SQLException e) {
-			return new StatementResponse(
-					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
+			return new StatementResponse(new ErrorMessage(
+					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
 			MySqlAccess.closeResultSet();
 		}
@@ -173,18 +178,17 @@ public class MySqlAccess {
 	 */
 	public static StatementResponse removeSale(Long id) {
 		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement.executeUpdate(String.format(
-					"DELETE FROM %s.%s WHERE %s = '%s'", CommonData.DATABASE_NAME,
-					CommonData.SALE_TABLE, CommonData.SALE_ID_COLUMN,
+					"DELETE FROM %s.%s WHERE %s = '%s'",
+					CommonData.DATABASE_NAME, CommonData.SALE_TABLE,
+					CommonData.SALE_ID_COLUMN,
 					CommonData.SALE_DETAIL_ID_COLUMN, id));
 
 			return new StatementResponse(affectedRows);
 		} catch (SQLException e) {
-			return new StatementResponse(
-					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
+			return new StatementResponse(new ErrorMessage(
+					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
 			MySqlAccess.closeResultSet();
 		}
@@ -196,20 +200,21 @@ public class MySqlAccess {
 	 * @param saleDetailId
 	 * @return StatementResponse
 	 */
-	public static StatementResponse removeSaleSaleDetail(Long saleId, Long saleDetailId) {
+	public static StatementResponse removeSaleSaleDetail(Long saleId,
+			Long saleDetailId) {
 		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement.executeUpdate(String.format(
-					"DELETE FROM %s.%s WHERE %s = '%s' AND %s = '%s'", CommonData.DATABASE_NAME,
-					CommonData.X_SALE_SALE_DETAIL_TABLE, CommonData.SALE_ID_COLUMN,
+					"DELETE FROM %s.%s WHERE %s = '%s' AND %s = '%s'",
+					CommonData.DATABASE_NAME,
+					CommonData.X_SALE_SALE_DETAIL_TABLE,
+					CommonData.SALE_ID_COLUMN,
 					CommonData.SALE_DETAIL_ID_COLUMN, saleId, saleDetailId));
 
 			return new StatementResponse(affectedRows);
 		} catch (SQLException e) {
-			return new StatementResponse(
-					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
+			return new StatementResponse(new ErrorMessage(
+					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
 			MySqlAccess.closeResultSet();
 		}
@@ -221,20 +226,21 @@ public class MySqlAccess {
 	 * @param saleDetailId
 	 * @return StatementResponse
 	 */
-	public static StatementResponse removeSaleSaleDetailProduct(Long saleId, Long saleDetailId) {
+	public static StatementResponse removeSaleSaleDetailProduct(Long saleId,
+			Long saleDetailId) {
 		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement.executeUpdate(String.format(
-					"DELETE FROM %s.%s WHERE %s = '%s' AND %s = '%s'", CommonData.DATABASE_NAME,
-					CommonData.X_SALE_SALE_DETAIL_PRODUCT_TABLE, CommonData.SALE_ID_COLUMN,
+					"DELETE FROM %s.%s WHERE %s = '%s' AND %s = '%s'",
+					CommonData.DATABASE_NAME,
+					CommonData.X_SALE_SALE_DETAIL_PRODUCT_TABLE,
+					CommonData.SALE_ID_COLUMN,
 					CommonData.SALE_DETAIL_ID_COLUMN, saleId, saleDetailId));
 
 			return new StatementResponse(affectedRows);
 		} catch (SQLException e) {
-			return new StatementResponse(
-					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
+			return new StatementResponse(new ErrorMessage(
+					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
 			MySqlAccess.closeResultSet();
 		}
@@ -248,17 +254,15 @@ public class MySqlAccess {
 	 */
 	public static StatementResponse removeProduct(String barcode) {
 		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement
-					.executeUpdate("DELETE FROM pucaratest.product WHERE barcode = '" + barcode
-							+ "'");
+					.executeUpdate("DELETE FROM pucaratest.product WHERE barcode = '"
+							+ barcode + "'");
 
 			return new StatementResponse(affectedRows);
 		} catch (SQLException e) {
-			return new StatementResponse(
-					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
+			return new StatementResponse(new ErrorMessage(
+					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
 			MySqlAccess.closeResultSet();
 		}
@@ -272,19 +276,21 @@ public class MySqlAccess {
 	 */
 	public static StatementResponse insertNewProduct(Product product) {
 		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
-			int affectedRows = statement.executeUpdate("INSERT INTO pucaratest.product VALUES('"
-					+ product.getBarcode() + "', '" + product.getDescription() + "', '"
-					+ product.getCost() + "', " + product.getPercentage() + ", '"
-					+ product.getDate() + "', " + product.getStock() + ", " + product.getMinStock()
-					+ ", " + product.getCategoryId() + ")");
+			int affectedRows = statement
+					.executeUpdate("INSERT INTO pucaratest.product VALUES('"
+							+ product.getBarcode() + "', '"
+							+ product.getDescription() + "', '"
+							+ product.getCost() + "', "
+							+ product.getPercentage() + ", '"
+							+ product.getDate() + "', " + product.getStock()
+							+ ", " + product.getMinStock() + ", "
+							+ product.getCategoryId() + ")");
 
 			return new StatementResponse(affectedRows);
 		} catch (SQLException e) {
-			return new StatementResponse(
-					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
+			return new StatementResponse(new ErrorMessage(
+					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
 			MySqlAccess.closeResultSet();
 		}
@@ -298,17 +304,17 @@ public class MySqlAccess {
 	 */
 	public static StatementResponse insertNewCategory(Category category) {
 		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			int affectedRows = statement
 					.executeUpdate("INSERT INTO pucaratest.category (name, description) VALUES('"
-							+ category.getName() + "', '" + category.getDescription() + "')");
+							+ category.getName()
+							+ "', '"
+							+ category.getDescription() + "')");
 
 			return new StatementResponse(affectedRows);
 		} catch (SQLException e) {
-			return new StatementResponse(
-					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
+			return new StatementResponse(new ErrorMessage(
+					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
 			MySqlAccess.closeResultSet();
 		}
@@ -329,8 +335,8 @@ public class MySqlAccess {
 			if (isConnected) {
 				return new DatabaseResponse();
 			} else {
-				return new DatabaseResponse(new ErrorMessage(ErrorType.MYSQL_ERROR,
-						"Error trying to connect ...."));
+				return new DatabaseResponse(new ErrorMessage(
+						ErrorType.MYSQL_ERROR, "Error trying to connect ...."));
 			}
 		} else {
 			return new DatabaseResponse(new ErrorMessage(ErrorType.MYSQL_ERROR,
@@ -439,7 +445,8 @@ public class MySqlAccess {
 	 * @return An implementation of {@link com.pucara.core.response.Response}
 	 *         saving identifier value.
 	 */
-	public static ByIdResponse addNewPurchase(String description, String currentDate, String expense) {
+	public static ByIdResponse addNewPurchase(String description,
+			String currentDate, String expense) {
 		try {
 			// Result set gets the result of the SQL query.
 			int rowCount = statement
@@ -448,22 +455,26 @@ public class MySqlAccess {
 									description, currentDate, expense));
 
 			if (rowCount == 0) {
-				LOGGER.debug(String.format("Error trying to insert a new purchase: [%s-%s-%s]",
+				LOGGER.error(String.format(
+						"Error trying to insert a new purchase: [%s,%s,%s]",
 						description, currentDate, expense));
-				return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
+				return new ByIdResponse(new ErrorMessage(
+						ErrorType.STATEMENT_ERROR,
 						CommonMessageError.INSERTION_ERROR));
 			}
 
 			Long longValue = getLastInsert("purchase", "id");
 			// TODO Add toString() method, from an update request object.
-			LOGGER.info(String.format("New purchase has been created: %s, [%s-%s-%s]", longValue,
-					description, currentDate, expense));
+			LOGGER.info("New purchase has been created: {} - {},{},{}",
+					new String[] { longValue.toString(), description,
+							currentDate, expense });
 
 			return new ByIdResponse(longValue);
 		} catch (SQLException e) {
-			LOGGER.debug(String.format(
-					"An exception has been fired trying to create a new purchase ... [%s,%s] - {}",
-					description, expense), e.getMessage());
+			LOGGER.error(
+					String.format(
+							"An exception has been fired trying to create a new purchase ... [%s,%s] - {}",
+							description, expense), e.getMessage());
 			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
 					CommonMessageError.INSERTION_ERROR));
 		} finally {
@@ -473,71 +484,137 @@ public class MySqlAccess {
 	}
 
 	/**
+	 * Stores the number of products associated to a new purchase.
 	 * 
-	 * @param totalNumberOfProducts
-	 * @return ByIdResponse
+	 * @param number
+	 *            Total number of products.
+	 * @return An implementation of {@link com.pucara.core.response.Response}
+	 *         saving identifier value.
 	 */
-	public static ByIdResponse addNewPurchaseDetail(Integer totalNumberOfProducts) {
+	public static ByIdResponse addNewPurchaseDetail(Integer number) {
 		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
-			// Result set get the result of the SQL query
-			statement.executeUpdate(String.format(
-					"INSERT INTO pucaratest.purchase_detail (number_of_products) VALUES ('%s')",
-					totalNumberOfProducts));
+			// Result set get the result of the SQL query.
+			int rowCount = statement
+					.executeUpdate(String
+							.format("INSERT INTO pucaratest.purchase_detail (number_of_products) VALUES ('%s')",
+									number));
 
-			// Log
+			if (rowCount == 0) {
+				LOGGER.error("Error trying to insert a new purchase detail.");
+				return new ByIdResponse(new ErrorMessage(
+						ErrorType.STATEMENT_ERROR,
+						CommonMessageError.INSERTION_ERROR));
+			}
+
 			Long longValue = getLastInsert("purchase_detail", "id");
-			// CustomLogger.log(LoggerLevel.INFO,
-			// String.format("New purchase detail [%s] has been created",
-			// longValue));
+			LOGGER.info(
+					"Purchase detail {} with {} products has been created.",
+					longValue, number);
+
 			return new ByIdResponse(longValue);
 		} catch (SQLException e) {
-			// Log
-			// CustomLogger.log(e, LoggerLevel.ERROR,
-			// "An exception has been fired trying to create a new purchase detail ...");
+			LOGGER.error(
+					"An exception has been fired trying to create a new purchase detail. {}",
+					e.getMessage());
 			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
 					CommonMessageError.INSERTION_ERROR));
 		} finally {
-			// Log
-			// CustomLogger.log(LoggerLevel.INFO, "Closing result set ...");
+			LOGGER.info("Result set closed");
 			MySqlAccess.closeResultSet();
 		}
 	}
 
 	/**
+	 * Stores the relationship between a purchase an their detail.
 	 * 
 	 * @param purchaseId
+	 *            Purchase identifier value.
 	 * @param purchaseDetailId
-	 * @return ByIdResponse
+	 *            Purchase detail identifier value.
+	 * @return An implementation of {@link com.pucara.core.response.Response}
+	 *         saving identifier value.
 	 */
-	public static ByIdResponse addNxNPurchase(Long purchaseId, Long purchaseDetailId) {
+	public static ByIdResponse addNxNPurchase(Long purchaseId,
+			Long purchaseDetailId) {
 		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
-			// Result set get the result of the SQL query
-			statement
+			// Result set get the result of the SQL query.
+			int rowCount = statement
 					.executeUpdate(String
 							.format("INSERT INTO pucaratest.x_purchase_purchase_detail (purchase_id, purchase_detail_id) VALUES ('%s', '%s')",
 									purchaseId, purchaseDetailId));
 
-			// Log
-			// CustomLogger.log(LoggerLevel.INFO,
-			// "New NxN purchase has been created");
+			if (rowCount == 0) {
+				LOGGER.error(
+						"Error trying to insert a new purchase detail. Purchase Id: {} - Purchase Detail Id: {}",
+						purchaseId, purchaseDetailId);
+				return new ByIdResponse(new ErrorMessage(
+						ErrorType.STATEMENT_ERROR,
+						CommonMessageError.INSERTION_ERROR));
+			}
+
+			LOGGER.info(
+					"Purchase information {}, has been stored with Purchase Detail information {}.",
+					purchaseId, purchaseDetailId);
+
 			return new ByIdResponse(CommonData.DEFAULT_LONG_IDENTIFIER);
 		} catch (SQLException e) {
-			// Log
-			// CustomLogger
-			// .log(e,
-			// LoggerLevel.ERROR,
-			// String.format(
-			// "An exception has been fired trying to create a new NxN purchase [purchaseId %s - purchaseDetailId %s].",
-			// purchaseId, purchaseDetailId));
+			LOGGER.error(
+					"An exception has been fired trying to create a new purchase detail. {}",
+					e.getMessage());
 			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
 					CommonMessageError.INSERTION_ERROR));
 		} finally {
-			// Log
-			// CustomLogger.log(LoggerLevel.INFO, "Closing result set ...");
+			LOGGER.info("Result set closed");
+			MySqlAccess.closeResultSet();
+		}
+	}
+
+	/**
+	 * Stores all the information regarding a new purchase and all products
+	 * associated. If a simple purchase is created (without products), just a
+	 * new purchase is stored.
+	 * 
+	 * @param products
+	 *            Collection of products to be stored.
+	 * @param purchaseId
+	 *            Purchase identifier value.
+	 * @param purchaseDetailId
+	 *            Purchase detail identifier value.
+	 * @return An implementation of {@link com.pucara.core.response.Response}
+	 *         saving identifier value.
+	 */
+	public static ByIdResponse addNewPurchasePurchaseDetailProduct(
+			ProductsCollection products, Long purchaseId, Long purchaseDetailId) {
+		try {
+			int rowCount = 0;
+
+			for (int i = 0; i < products.getSize(); i++) {
+				// Result set get the result of the SQL query.
+				rowCount += statement
+						.executeUpdate(String
+								.format("INSERT INTO pucaratest.x_purchase_purchase_detail_product (purchase_id, purchase_detail_id, barcode, count) "
+										+ "VALUES (%d, %d, '%s', %d)",
+										purchaseId, purchaseDetailId, products
+												.getProductAt(i).getBarcode(),
+										products.getQuantityOfProductAt(i)));
+			}
+
+			if (rowCount < products.getSize()) {
+				LOGGER.error("No all products has been stored.");
+			}
+
+			LOGGER.info(
+					"New PurchasePurchaseDetailProduct has been created. Purchase Id: {} - Purchase Detail Id: {}",
+					purchaseId, purchaseDetailId);
+			return new ByIdResponse(0L);
+		} catch (SQLException e) {
+			LOGGER.error(
+					"An exception has been fired trying to create a new purchase detail. {}",
+					e.getMessage());
+			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
+					CommonMessageError.INSERTION_ERROR));
+		} finally {
+			LOGGER.info("Result set closed");
 			MySqlAccess.closeResultSet();
 		}
 	}
@@ -555,13 +632,13 @@ public class MySqlAccess {
 			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
 			statement.executeUpdate(String.format(
-					"INSERT INTO pucaratest.sale (date, gain) VALUES ('%s', '" + gain + "')",
-					currentDate));
+					"INSERT INTO pucaratest.sale (date, gain) VALUES ('%s', '"
+							+ gain + "')", currentDate));
 
 			return new ByIdResponse(getLastInsert("sale", "id"));
 		} catch (SQLException e) {
-			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR, "[sale] "
-					+ e.getMessage()));
+			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
+					"[sale] " + e.getMessage()));
 		} finally {
 			MySqlAccess.closeResultSet();
 		}
@@ -578,14 +655,15 @@ public class MySqlAccess {
 			// Statements allow to issue SQL queries to the database
 			// statement = mySqlConnect.createStatement();
 			// Result set get the result of the SQL query
-			statement.executeUpdate(String.format(
-					"INSERT INTO pucaratest.sale_detail (number_of_products) VALUES ('%d')",
-					totalNumberOfProducts));
+			statement
+					.executeUpdate(String
+							.format("INSERT INTO pucaratest.sale_detail (number_of_products) VALUES ('%d')",
+									totalNumberOfProducts));
 
 			return new ByIdResponse(getLastInsert("sale_detail", "id"));
 		} catch (SQLException e) {
-			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR, "[sale_detail] "
-					+ e.getMessage()));
+			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
+					"[sale_detail] " + e.getMessage()));
 		} finally {
 			MySqlAccess.closeResultSet();
 		}
@@ -598,7 +676,8 @@ public class MySqlAccess {
 	 * @param saleDetailId
 	 * @return ByIdResponse
 	 */
-	public static ByIdResponse addNewSaleSaleDetail(Long saleId, Long saleDetailId) {
+	public static ByIdResponse addNewSaleSaleDetail(Long saleId,
+			Long saleDetailId) {
 		try {
 			// Statements allow to issue SQL queries to the database
 			// statement = mySqlConnect.createStatement();
@@ -626,8 +705,8 @@ public class MySqlAccess {
 	 * @param saleDetailId
 	 * @return ByIdResponse
 	 */
-	public static ByIdResponse addNewSaleSaleDetailProduct(ProductsCollection products,
-			Long saleId, Long saleDetailId) {
+	public static ByIdResponse addNewSaleSaleDetailProduct(
+			ProductsCollection products, Long saleId, Long saleDetailId) {
 		try {
 			// Statements allow to issue SQL queries to the database
 			// statement = mySqlConnect.createStatement();
@@ -638,10 +717,12 @@ public class MySqlAccess {
 
 				if (!SaleService.isExtraSale(barcode)) {
 					// Result set get the result of the SQL query
-					statement.executeUpdate(String.format(
-							"INSERT INTO pucaratest.x_sale_sale_detail_product (sale_id, sale_detail_id, barcode, count) "
-									+ "VALUES (%d, %d, '%s', %d)", saleId, saleDetailId, barcode,
-							products.getQuantityOfProductAt(i)));
+					statement
+							.executeUpdate(String
+									.format("INSERT INTO pucaratest.x_sale_sale_detail_product (sale_id, sale_detail_id, barcode, count) "
+											+ "VALUES (%d, %d, '%s', %d)",
+											saleId, saleDetailId, barcode,
+											products.getQuantityOfProductAt(i)));
 				}
 			}
 
@@ -655,56 +736,12 @@ public class MySqlAccess {
 	}
 
 	/**
-	 * 
-	 * @param products
-	 * @param purchaseId
-	 * @param purchaseDetailId
-	 * @return
-	 */
-	public static ByIdResponse addNewPurchasePurchaseDetailProduct(ProductsCollection products,
-			Long purchaseId, Long purchaseDetailId) {
-		try {
-			// Statements allow to issue SQL queries to the database
-			// statement = mySqlConnect.createStatement();
-
-			for (int i = 0; i < products.getSize(); i++) {
-				// Result set get the result of the SQL query
-				statement
-						.executeUpdate(String
-								.format("INSERT INTO pucaratest.x_purchase_purchase_detail_product (purchase_id, purchase_detail_id, barcode, count) "
-										+ "VALUES (%d, %d, '%s', %d)", purchaseId,
-										purchaseDetailId, products.getProductAt(i).getBarcode(),
-										products.getQuantityOfProductAt(i)));
-			}
-
-			// Log
-			// CustomLogger
-			// .log(LoggerLevel.INFO,
-			// "New PurchasePurchaseDetailProduct has been created");
-			return new ByIdResponse(0L);
-		} catch (SQLException e) {
-			// Log
-			// CustomLogger
-			// .log(e,
-			// LoggerLevel.ERROR,
-			// String.format(
-			// "An exception has been fired trying to create a new PurchasePurchaseDetailProduct [purchaseId %s - purchaseDetailId %s].",
-			// purchaseId, purchaseDetailId));
-			return new ByIdResponse(new ErrorMessage(ErrorType.STATEMENT_ERROR,
-					"[x_purchase_purchase_detail_product] " + e.getMessage()));
-		} finally {
-			// Log
-			// CustomLogger.log(LoggerLevel.INFO, "Closing result set ...");
-			MySqlAccess.closeResultSet();
-		}
-	}
-
-	/**
-	 * Stops mysql process.
+	 * REMOVE ?!¡ Stops mysql process.
 	 */
 	public static void stopMySqlServer() {
-		String[] command = { "/bin/sh", "-c", "echo pucara | sudo -S /opt/lampp/lampp stopmysql" };
-		String out = executeCommand(command);
+		// String[] command = { "/bin/sh", "-c",
+		// "echo pucara | sudo -S /opt/lampp/lampp stopmysql" };
+		// String out = executeCommand(command);
 		// CustomLogger.log(nCull, LoggerLevel.INFO, out);
 	}
 
@@ -713,8 +750,8 @@ public class MySqlAccess {
 	 * @param products
 	 * @return
 	 */
-	public static StatementResponse modifyProductStocks(ProductsCollection products,
-			boolean increase) {
+	public static StatementResponse modifyProductStocks(
+			ProductsCollection products, boolean increase) {
 		try {
 			int affectedRows = 0;
 			// Statements allow to issue SQL queries to the database
@@ -730,14 +767,16 @@ public class MySqlAccess {
 						affectedRows += statement
 								.executeUpdate(String
 										.format("UPDATE pucaratest.product SET stock = stock + %d WHERE barcode = '%s'",
-												products.getQuantityOfProductAt(i), products
-														.getProductAt(i).getBarcode()));
+												products.getQuantityOfProductAt(i),
+												products.getProductAt(i)
+														.getBarcode()));
 					} else {
 						affectedRows += statement
 								.executeUpdate(String
 										.format("UPDATE pucaratest.product SET stock = stock - %d WHERE barcode = '%s'",
-												products.getQuantityOfProductAt(i), products
-														.getProductAt(i).getBarcode()));
+												products.getQuantityOfProductAt(i),
+												products.getProductAt(i)
+														.getBarcode()));
 					}
 				} else {
 					affectedRows++;
@@ -747,12 +786,13 @@ public class MySqlAccess {
 			if (affectedRows > 0) {
 				return new StatementResponse(affectedRows);
 			} else {
-				return new StatementResponse(new ErrorMessage(ErrorType.UPDATE_PRODUCT_ERROR,
+				return new StatementResponse(new ErrorMessage(
+						ErrorType.UPDATE_PRODUCT_ERROR,
 						"No rows have been affected during the update."));
 			}
 		} catch (SQLException e) {
-			return new StatementResponse(
-					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
+			return new StatementResponse(new ErrorMessage(
+					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
 			MySqlAccess.closeResultSet();
 		}
@@ -792,12 +832,14 @@ public class MySqlAccess {
 		String sentence = null;
 
 		if (productToUpdate.getDescription() != null) {
-			sentence = String.format("UPDATE pucaratest.product SET description = '%s'",
+			sentence = String.format(
+					"UPDATE pucaratest.product SET description = '%s'",
 					productToUpdate.getDescription());
 		}
 
 		if (productToUpdate.getCost() != null) {
-			sentence = String.format(sentence + ", cost = '%s'", productToUpdate.getCost());
+			sentence = String.format(sentence + ", cost = '%s'",
+					productToUpdate.getCost());
 		}
 
 		if (productToUpdate.getPercentage() != null) {
@@ -806,7 +848,8 @@ public class MySqlAccess {
 		}
 
 		if (productToUpdate.getDate() != null) {
-			sentence = String.format(sentence + ", date = '%s'", productToUpdate.getDate());
+			sentence = String.format(sentence + ", date = '%s'",
+					productToUpdate.getDate());
 		}
 
 		// if (productToUpdate.getStock() != null) {
@@ -815,10 +858,12 @@ public class MySqlAccess {
 		// }
 
 		if (productToUpdate.getMinStock() != null) {
-			sentence = String.format(sentence + ", minstock = '%d'", productToUpdate.getMinStock());
+			sentence = String.format(sentence + ", minstock = '%d'",
+					productToUpdate.getMinStock());
 		}
 
-		sentence = String.format(sentence + " WHERE barcode = '%s'", productToUpdate.getBarcode());
+		sentence = String.format(sentence + " WHERE barcode = '%s'",
+				productToUpdate.getBarcode());
 
 		return sentence;
 	}
@@ -853,7 +898,8 @@ public class MySqlAccess {
 	 * @return Product
 	 * @throws SQLException
 	 */
-	private static List<Product> getProductsList(ResultSet resultSet) throws SQLException {
+	private static List<Product> getProductsList(ResultSet resultSet)
+			throws SQLException {
 		List<Product> listOfProducts = new ArrayList<Product>();
 		Product product;
 		String barcode, description, date;
@@ -870,8 +916,8 @@ public class MySqlAccess {
 			minstock = resultSet.getInt("minstock");
 			categoryid = resultSet.getInt("categoryid");
 
-			product = new Product(barcode, description, cost, percentage, date, stock, minstock,
-					categoryid);
+			product = new Product(barcode, description, cost, percentage, date,
+					stock, minstock, categoryid);
 
 			listOfProducts.add(product);
 		}
@@ -885,7 +931,8 @@ public class MySqlAccess {
 	 * @return
 	 * @throws SQLException
 	 */
-	private static Category getCategory(ResultSet resultSet) throws SQLException {
+	private static Category getCategory(ResultSet resultSet)
+			throws SQLException {
 		Integer id = resultSet.getInt("id");
 		String name = resultSet.getString("name");
 		String description = resultSet.getString("description");
@@ -901,9 +948,11 @@ public class MySqlAccess {
 	 * @return Long
 	 * @throws SQLException
 	 */
-	private static Long getLastInsert(String tableName, String columnName) throws SQLException {
+	private static Long getLastInsert(String tableName, String columnName)
+			throws SQLException {
 		ResultSet result = performStatement(String.format(
-				"SELECT %s FROM pucaratest.%s ORDER BY %s DESC", columnName, tableName, columnName));
+				"SELECT %s FROM pucaratest.%s ORDER BY %s DESC", columnName,
+				tableName, columnName));
 		result.next();
 
 		return resultSet.getLong(columnName);
@@ -915,27 +964,28 @@ public class MySqlAccess {
 	 * @param command
 	 * @return String
 	 */
-	private static String executeCommand(String[] command) {
-		StringBuffer output = new StringBuffer();
-
-		Process p;
-		try {
-			p = Runtime.getRuntime().exec(command);
-			p.waitFor();
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-			String line = "";
-			while ((line = reader.readLine()) != null) {
-				output.append(line + "\n");
-			}
-
-			return output.toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+	// private static String executeCommand(String[] command) {
+	// StringBuffer output = new StringBuffer();
+	//
+	// Process p;
+	// try {
+	// p = Runtime.getRuntime().exec(command);
+	// p.waitFor();
+	//
+	// BufferedReader reader = new BufferedReader(new InputStreamReader(
+	// p.getInputStream()));
+	//
+	// String line = "";
+	// while ((line = reader.readLine()) != null) {
+	// output.append(line + "\n");
+	// }
+	//
+	// return output.toString();
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// return null;
+	// }
+	// }
 
 	/**
 	 * Connects to the local database.
@@ -945,7 +995,7 @@ public class MySqlAccess {
 	private static boolean connectDatabase() {
 		String dbURL = "jdbc:mysql://localhost:3306/pucaratest";
 		String username = "root";
-		String password = "pucara";
+		String password = "teodioteodio";
 
 		mySqlConnect = null;
 		statement = null;
@@ -953,7 +1003,8 @@ public class MySqlAccess {
 		try {
 			// getting database connection to MySQL server
 			Class.forName("com.mysql.jdbc.Driver");
-			mySqlConnect = DriverManager.getConnection(dbURL, username, password);
+			mySqlConnect = DriverManager.getConnection(dbURL, username,
+					password);
 			statement = mySqlConnect.createStatement();
 
 			return true;

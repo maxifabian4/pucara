@@ -42,7 +42,7 @@ public class MysqlConnectionTest extends TestCase {
 
 			while (resultSet.next()) {
 				String tableName = resultSet.getString(1);
-				LOGGER.debug("Porduct: {}", tableName);
+				LOGGER.debug("Product: {}", tableName);
 			}
 
 			LOGGER.debug("Clossing connection ...");

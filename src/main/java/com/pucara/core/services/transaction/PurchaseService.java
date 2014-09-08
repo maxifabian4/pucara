@@ -59,42 +59,59 @@ public class PurchaseService extends AbstractTransactionService {
 			return new Response(purchaseResponse.getErrorsMessages());
 		}
 
-		ByIdResponse purchaseDetailsResponse = MySqlAccess
-				.addNewPurchaseDetail(getTotalNumberOfProducts());
+		if (productsCollection.getSize() > 0) {
+			ByIdResponse purchaseDetailsResponse = MySqlAccess
+					.addNewPurchaseDetail(getTotalNumberOfProducts());
 
-		if (!purchaseDetailsResponse.wasSuccessful()) {
-			return new Response(purchaseDetailsResponse.getErrorsMessages());
-		}
+			if (!purchaseDetailsResponse.wasSuccessful()) {
+				LOGGER.error(
+						"Error trying to add Purchase Detail information. Removing purchase: {}",
+						purchaseResponse.getId());
+				// TODO Add method in order to perform roll-back ...
+				return new Response(purchaseDetailsResponse.getErrorsMessages());
+			}
 
-		ByIdResponse purchaseNxNResponse = MySqlAccess.addNxNPurchase(
-				purchaseResponse.getId(), purchaseDetailsResponse.getId());
+			ByIdResponse purchaseNxNResponse = MySqlAccess.addNxNPurchase(
+					purchaseResponse.getId(), purchaseDetailsResponse.getId());
 
-		if (!purchaseNxNResponse.wasSuccessful()) {
-			return new Response(purchaseNxNResponse.getErrorsMessages());
-		}
-
-		ByIdResponse purchaseFinal = MySqlAccess
-				.addNewPurchasePurchaseDetailProduct(productsCollection,
+			if (!purchaseNxNResponse.wasSuccessful()) {
+				LOGGER.error(
+						"Error trying to add Purchase Detail information. Removing purchase: {} and purchase detail: {}",
 						purchaseResponse.getId(),
 						purchaseDetailsResponse.getId());
+				// TODO Add method in order to perform roll-back ...
+				return new Response(purchaseNxNResponse.getErrorsMessages());
+			}
 
-		if (!purchaseFinal.wasSuccessful()) {
-			// CustomLogger
-			// .log(LoggerLevel.ERROR,
-			// String.format(
-			// "Error creating new detail expense: product collection size: %d",
-			// productsCollection.getSize()));
-			return new Response(purchaseFinal.getErrorsMessages());
-		}
+			ByIdResponse purchaseFinal = MySqlAccess
+					.addNewPurchasePurchaseDetailProduct(productsCollection,
+							purchaseResponse.getId(),
+							purchaseDetailsResponse.getId());
 
-		// Increase stock all products.
-		if (productsCollection.getSize() > 0) {
+			if (!purchaseFinal.wasSuccessful()) {
+				LOGGER.error(
+						"Error creating new purchase detail: Product collection size: {}",
+						productsCollection.getSize());
+				// TODO Add method in order to perform roll-back ...
+				LOGGER.error(
+						"Removing purchase: {}, purchase detail: {} and their relationship.",
+						purchaseResponse.getId(),
+						purchaseDetailsResponse.getId());
+				return new Response(purchaseFinal.getErrorsMessages());
+			}
+
+			// Increase all products stock value.
 			Response updateStockResponse = MySqlAccess.modifyProductStocks(
 					productsCollection, true);
 
 			if (!updateStockResponse.wasSuccessful()) {
+				LOGGER.error("Error trying to modify the product's stock information. Removing all purchase information.");
+				// TODO Add method in order to perform roll-back for all, Do we
+				// need to add an roll-back strategy.
 				return new Response(updateStockResponse.getErrorsMessages());
 			}
+		} else {
+			LOGGER.info("No products associated to a new purchase ...");
 		}
 
 		LOGGER.info("Transaction performed successfully ...");
