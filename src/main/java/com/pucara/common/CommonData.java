@@ -14,7 +14,8 @@ public class CommonData {
 	 */
 	public static final Color DARK_FONT_COLOR = Color.DARK_GRAY;
 	public static final Color LIGHT_FONT_COLOR = new Color(237, 237, 237);
-	public static final Color GENERAL_BACKGROUND_COLOR = new Color(250, 250, 250);
+	public static final Color GENERAL_BACKGROUND_COLOR = new Color(250, 250,
+			250);
 	// public static final Color GENERAL_BACKGROUND_COLOR = new Color(228, 228,
 	// 228);
 	public static final Color BACKGROUND_TABLE_COLOR = new Color(241, 241, 241);
@@ -28,28 +29,34 @@ public class CommonData {
 	/**
 	 * General data for table.
 	 */
-	public static final String[] CATEGORY_COLUMNS = new String[] { "categor\u00EDa",
-			"descripci\u00F3n" };
-	public static final String[] PRODUCT_COLUMNS = new String[] { "barcode", "descripci\u00F3n",
-			"stock", "costo" };
-	public static final String[] PARTIAL_PRODUCT_COLUMNS = new String[] { "barcode",
-			"descripci\u00F3n", "subcantidad", "subtotal" };
+	public static final String[] CATEGORY_COLUMNS = new String[] {
+			"categor\u00EDa", "descripci\u00F3n" };
+	public static final String[] PRODUCT_COLUMNS = new String[] { "barcode",
+			"descripci\u00F3n", "stock", "costo" };
+	public static final String[] PARTIAL_PRODUCT_COLUMNS = new String[] {
+			"barcode", "descripci\u00F3n", "subcantidad", "subtotal" };
 
-	public static final String[] PURCHASE_COLUMNS = new String[] { "descripci\u00F3n", "costo" };
-	public static final boolean[] PURCHASE_COLUMNS_EDITABLE = new boolean[] { false, false };
-	public static final Integer[] PURCHASE_COLUMNS_SCALABLE = new Integer[] { null, null };
-
-	public static final boolean[] CATEGORY_COLUMNS_EDITABLE = new boolean[] { false, false };
-	public static final Integer[] CATEGORY_COLUMNS_SCALABLE = new Integer[] { null, null, null };
-
-	public static final boolean[] PRODUCT_COLUMNS_EDITABLE = new boolean[] { false, false, false,
-			false };
-	public static final Integer[] PRODUCT_COLUMNS_SCALABLE = new Integer[] { null, 400, null, null };
-
-	public static final boolean[] PARTIAL_PRODUCT_COLUMNS_EDITABLE = new boolean[] { false, false,
+	public static final String[] PURCHASE_COLUMNS = new String[] {
+			"descripci\u00F3n", "costo" };
+	public static final boolean[] PURCHASE_COLUMNS_EDITABLE = new boolean[] {
 			false, false };
-	public static final Integer[] PARTIAL_PRODUCT_COLUMNS_SCALABLE = new Integer[] { 100, 400,
+	public static final Integer[] PURCHASE_COLUMNS_SCALABLE = new Integer[] {
 			null, null };
+
+	public static final boolean[] CATEGORY_COLUMNS_EDITABLE = new boolean[] {
+			false, false };
+	public static final Integer[] CATEGORY_COLUMNS_SCALABLE = new Integer[] {
+			null, null, null };
+
+	public static final boolean[] PRODUCT_COLUMNS_EDITABLE = new boolean[] {
+			false, false, false, false };
+	public static final Integer[] PRODUCT_COLUMNS_SCALABLE = new Integer[] {
+			null, 400, null, null };
+
+	public static final boolean[] PARTIAL_PRODUCT_COLUMNS_EDITABLE = new boolean[] {
+			false, false, false, false };
+	public static final Integer[] PARTIAL_PRODUCT_COLUMNS_SCALABLE = new Integer[] {
+			100, 400, null, null };
 	public static final int FIRST_ROW = 0;
 
 	public static final int BARCODE_COLUMN = 0;
@@ -90,12 +97,14 @@ public class CommonData {
 	public static final String GAIN_BY_YEAR = "SELECT LOWER(monthname(from_days(to_days(date)))) AS 'month', SUM(gain) AS 'value' "
 			+ "FROM sale "
 			+ "WHERE YEAR(date) = %d "
-			+ "GROUP BY monthname(from_days(to_days(date))) " + "ORDER BY date ASC";
+			+ "GROUP BY monthname(from_days(to_days(date))) "
+			+ "ORDER BY date ASC";
 
 	public static final String EXPENSE_BY_YEAR = "SELECT LOWER(monthname(from_days(to_days(date)))) AS 'month', SUM(expense) AS 'value' "
 			+ "FROM purchase "
 			+ "WHERE YEAR(date) = %d "
-			+ "GROUP BY monthname(from_days(to_days(date))) " + "ORDER BY date ASC";
+			+ "GROUP BY monthname(from_days(to_days(date))) "
+			+ "ORDER BY date ASC";
 
 	/**
 	 * Fonts.
@@ -127,13 +136,9 @@ public class CommonData {
 	public static final String SALE_DETAIL_ID_COLUMN = "sale_detail_id";
 
 	/**
-	 * LOGGER information.
-	 */
-	public static final String LOGGER_PATH = "logs/logout.txt";
-	public static final String DEBUG_PATH = "logs/debugout.txt";
-
-	/**
 	 * Resources path.
 	 */
-	public static final String RESOURCES_PATH = "/images/";
+	public static final String IMAGES_PATH = "/images/";
+	public static final String DB_PROPERTIES_PATH = "src/main/resources/properties/db.properties";
+	public static final String REPORT_PROPERTIES_PATH = "src/main/resources/properties/report.properties";
 }

@@ -23,15 +23,16 @@ import com.pucara.core.generic.Utilities;
  * 
  * @author Maximiliano Fabian
  */
-public class ProductStockCellRenderer extends JPanel implements ListCellRenderer {
+public class ProductStockCellRenderer extends JPanel implements
+		ListCellRenderer<Object> {
 	private static final long serialVersionUID = 1L;
 
 	public ProductStockCellRenderer() {
 		setOpaque(true);
 	}
 
-	public Component getListCellRendererComponent(JList list, Object value, int index,
-			boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(JList<?> list, Object value,
+			int index, boolean isSelected, boolean cellHasFocus) {
 		removeAll();
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -43,10 +44,13 @@ public class ProductStockCellRenderer extends JPanel implements ListCellRenderer
 		JLabel description = new JLabel(entry.getDescription());
 		JLabel barcode = new JLabel(entry.getBarcode());
 		// JLabel price = new JLabel(entry.getPrice());
-		JLabel price = new JLabel(Utilities.truncateDecimal(entry.getCost(), 2).toString());
-		JLabel stock = new JLabel(String.format("%s elemento/s en stock", entry.getStock()));
+		JLabel price = new JLabel(Utilities.truncateDecimal(entry.getCost(), 2)
+				.toString());
+		JLabel stock = new JLabel(String.format("%s elemento/s en stock",
+				entry.getStock()));
 
-		description.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 18));
+		description.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD,
+				18));
 		stock.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.ITALIC, 16));
 		barcode.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 16));
 		price.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 24));
@@ -55,17 +59,21 @@ public class ProductStockCellRenderer extends JPanel implements ListCellRenderer
 		iconContainer.setLayout(new GridBagLayout());
 		iconContainer.setBackground(new Color(0, 0, 255, 0));
 
-		ImageIcon icon = createImageIcon(CommonData.RESOURCES_PATH + "withstock.png");
+		ImageIcon icon = createImageIcon(CommonData.IMAGES_PATH
+				+ "withstock.png");
 		JLabel iconLabel = new JLabel("", icon, JLabel.LEFT);
 		iconLabel.setBackground(new Color(0, 0, 255, 0));
 		iconLabel.setOpaque(true);
 		iconContainer.add(iconLabel);
-		iconContainer.add(CommonUIComponents.createNewHorizontalSeparatorBox(10));
+		iconContainer.add(CommonUIComponents
+				.createNewHorizontalSeparatorBox(10));
 
 		if (Integer.valueOf(entry.getStock()).equals(0)) {
-			iconLabel.setIcon(createImageIcon(CommonData.RESOURCES_PATH + "withoutstock.png"));
+			iconLabel.setIcon(createImageIcon(CommonData.IMAGES_PATH
+					+ "withoutstock.png"));
 		} else if (Integer.valueOf(entry.getStock()) <= entry.getMinStock()) {
-			iconLabel.setIcon(createImageIcon(CommonData.RESOURCES_PATH + "minstock.png"));
+			iconLabel.setIcon(createImageIcon(CommonData.IMAGES_PATH
+					+ "minstock.png"));
 		}
 
 		JPanel container = new JPanel();

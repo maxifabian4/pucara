@@ -5,6 +5,7 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -12,9 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.jfree.chart.JFreeChart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonUIComponents;
+import com.pucara.common.PropertyFile;
 import com.pucara.core.charts.BarChart;
 import com.pucara.core.charts.ChartFactory;
 import com.pucara.core.charts.LineChart;
@@ -33,22 +37,23 @@ import com.pucara.view.report.ReportView;
  * @author Maximiliano Fabian
  */
 public class ReportController {
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ReportController.class);
 	private ReportView reportView;
-	private String[] keys = new String[] { "productos vendidos", "ganancia", "costo del día",
-			"caja inicial", "ganancia total" };
+	private String[] keys = new String[] { "productos vendidos", "ganancia",
+			"costo del día", "caja inicial", "ganancia total" };
 	private String[] values;
 	private Double initialBox;
 
 	public ReportController(ReportView reportView) {
 		this.reportView = reportView;
 		// Debe almacenarse utilizando el servicio de reportes !!!
-		this.initialBox = 300.0;
+		this.initialBox = getInitialBoxFromProperty();
 		this.values = generateReportsForValues();
 	}
 
 	public MouseListener createMouseListenerForInitialBox() {
 		return new MouseListener() {
-
 			@Override
 			public void mouseReleased(MouseEvent e) {
 			}
@@ -75,15 +80,18 @@ public class ReportController {
 				String[] options = { "OK" };
 				JPanel panel = new JPanel();
 				JLabel lbl = new JLabel("caja inicial: ");
-				JTextField txt = new JTextField("000");
+				JTextField txt = new JTextField(initialBox.toString());
 				panel.add(lbl);
 				panel.add(txt);
-				int selectedOption = JOptionPane.showOptionDialog(null, panel, "The Title",
-						JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
-						options[0]);
+				int selectedOption = JOptionPane
+						.showOptionDialog(null, panel, "The Title",
+								JOptionPane.NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options,
+								options[0]);
 
 				if (selectedOption == 0) {
 					initialBox = Utilities.getDoubleValue(txt.getText());
+					saveInitialBoxIntoProperties(initialBox);
 					values = generateReportsForValues();
 					reportView.updateViewInformation(keys, values);
 				}
@@ -92,21 +100,24 @@ public class ReportController {
 	}
 
 	public JFreeChart createLineChartByYear() {
-		LineChart lineChart = (LineChart) ChartFactory.createChart(ChartFactory.LINECHART,
-				"Ganancia/Costo por año", "pesos", "meses");
+		LineChart lineChart = (LineChart) ChartFactory.createChart(
+				ChartFactory.LINECHART, "Ganancia/Costo por año", "pesos",
+				"meses");
 
 		ChartInfoResponse gainResponse = ReportService.getChartByYearInfo(2014,
 				CommonData.GAIN_BY_YEAR);
-		ChartInfoResponse expenseResponse = ReportService.getChartByYearInfo(2014,
-				CommonData.EXPENSE_BY_YEAR);
+		ChartInfoResponse expenseResponse = ReportService.getChartByYearInfo(
+				2014, CommonData.EXPENSE_BY_YEAR);
 		String month;
 
-		for (ChartInfoElement chartInfoElement : gainResponse.getChartInformation()) {
+		for (ChartInfoElement chartInfoElement : gainResponse
+				.getChartInformation()) {
 			month = Utilities.getSpanishMonth(chartInfoElement.getKey());
 			lineChart.addValue(chartInfoElement.getValue(), "ganancia", month);
 		}
 
-		for (ChartInfoElement chartInfoElement : expenseResponse.getChartInformation()) {
+		for (ChartInfoElement chartInfoElement : expenseResponse
+				.getChartInformation()) {
 			month = Utilities.getSpanishMonth(chartInfoElement.getKey());
 			lineChart.addValue(chartInfoElement.getValue(), "costo", month);
 		}
@@ -117,27 +128,29 @@ public class ReportController {
 	}
 
 	public JFreeChart createBarChartByDay() {
-		BarChart barchart = (BarChart) ChartFactory.createChart(ChartFactory.BARCHART,
-				"Ganancia/Costo por día", "días", "pesos");
+		BarChart barchart = (BarChart) ChartFactory.createChart(
+				ChartFactory.BARCHART, "Ganancia/Costo por día", "días",
+				"pesos");
 
-		ChartInfoResponse gainResponse = ReportService
-				.getChartByDayInfo(-6, CommonData.GAIN_BY_DAY);
+		ChartInfoResponse gainResponse = ReportService.getChartByDayInfo(-6,
+				CommonData.GAIN_BY_DAY);
 		ChartInfoResponse expenseResponse = ReportService.getChartByDayInfo(-6,
 				CommonData.EXPENSE_BY_DAY);
 		String subDay;
 
-		for (ChartInfoElement chartInfoElement : gainResponse.getChartInformation()) {
+		for (ChartInfoElement chartInfoElement : gainResponse
+				.getChartInformation()) {
 			subDay = Utilities.getSpanishDay(chartInfoElement.getKey());
 			barchart.addValue(chartInfoElement.getValue(), "ganancia", subDay);
 		}
 
-		for (ChartInfoElement chartInfoElement : expenseResponse.getChartInformation()) {
+		for (ChartInfoElement chartInfoElement : expenseResponse
+				.getChartInformation()) {
 			subDay = Utilities.getSpanishDay(chartInfoElement.getKey());
 			barchart.addValue(chartInfoElement.getValue(), "costo", subDay);
 		}
 
 		barchart.createChart();
-		// barchart.saveChart("soyunbarchart", 500, 500);
 
 		return barchart.getChart();
 	}
@@ -146,17 +159,29 @@ public class ReportController {
 		JLabel titleLabel, valueLabel;
 
 		for (int i = 0; i < keys.length; i++) {
-			titleLabel = CommonUIComponents.createReportLabel(keys[i], Font.PLAIN, 17,
-					CommonData.DARK_FONT_COLOR);
+			titleLabel = CommonUIComponents.createReportLabel(keys[i],
+					Font.PLAIN, 17, CommonData.DARK_FONT_COLOR);
 			titleLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-			valueLabel = CommonUIComponents.createReportLabel(values[i], Font.BOLD, 25,
-					CommonData.DARK_FONT_COLOR);
+			valueLabel = CommonUIComponents.createReportLabel(values[i],
+					Font.BOLD, 25, CommonData.DARK_FONT_COLOR);
 			valueLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 			byDayPanel.addComponent(titleLabel, valueLabel);
 		}
 
+	}
+
+	public void addYearInfoToPanel(DynamicReportPanel byYearPanel) {
+		JLabel titleLabel = CommonUIComponents.createReportLabel("año",
+				Font.PLAIN, 17, CommonData.DARK_FONT_COLOR);
+		titleLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+		JLabel valueLabel = CommonUIComponents.createReportLabel("2014",
+				Font.BOLD, 25, CommonData.DARK_FONT_COLOR);
+		valueLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+		byYearPanel.addComponent(titleLabel, valueLabel);
 	}
 
 	private String[] generateReportsForValues() {
@@ -165,14 +190,16 @@ public class ReportController {
 		Double dailyCost = 0.0;
 		Double totalGain = 0.0;
 
-		SaleDailyReportResponse saleResponse = ReportService.getDailySaleReport();
+		SaleDailyReportResponse saleResponse = ReportService
+				.getDailySaleReport();
 
 		if (saleResponse.wasSuccessful()) {
 			soldProducts = saleResponse.getQuantity();
 			gain = saleResponse.getGain();
 		}
 
-		PurchaseDailyReportResponse purchaseResponse = ReportService.getDailyPurchaseReport();
+		PurchaseDailyReportResponse purchaseResponse = ReportService
+				.getDailyPurchaseReport();
 
 		if (purchaseResponse.wasSuccessful()) {
 			dailyCost = purchaseResponse.getTotalExpense();
@@ -182,20 +209,45 @@ public class ReportController {
 
 		return new String[] { soldProducts.toString(),
 				Utilities.truncateDecimal(gain, 2).toString(),
-				Utilities.truncateDecimal(dailyCost, 2).toString(), initialBox.toString(),
+				Utilities.truncateDecimal(dailyCost, 2).toString(),
+				initialBox.toString(),
 				Utilities.truncateDecimal(totalGain, 2).toString() };
 	}
 
-	public void addYearInfoToPanel(DynamicReportPanel byYearPanel) {
-		JLabel titleLabel = CommonUIComponents.createReportLabel("año", Font.PLAIN, 17,
-				CommonData.DARK_FONT_COLOR);
-		titleLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+	/**
+	 * Returns the initial box value.
+	 * 
+	 * @return Initial box value taken from properties file.
+	 */
+	private Double getInitialBoxFromProperty() {
+		try {
+			PropertyFile property = new PropertyFile(
+					CommonData.REPORT_PROPERTIES_PATH);
+			String value = property.getProperty("initial.box");
 
-		JLabel valueLabel = CommonUIComponents.createReportLabel("2014", Font.BOLD, 25,
-				CommonData.DARK_FONT_COLOR);
-		valueLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-
-		byYearPanel.addComponent(titleLabel, valueLabel);
+			return new Double(value);
+		} catch (IOException e) {
+			LOGGER.error("An IO Exception has been fired. Path: {}, {}",
+					CommonData.REPORT_PROPERTIES_PATH, e.getMessage());
+			return 0.0;
+		}
 	}
 
+	/**
+	 * Store the new initial box value into the properties.
+	 * 
+	 * @param initialBox
+	 *            Initial box value.
+	 */
+	private void saveInitialBoxIntoProperties(Double initialBox) {
+		try {
+			PropertyFile property = new PropertyFile(
+					CommonData.REPORT_PROPERTIES_PATH);
+			property.saveProperty(CommonData.REPORT_PROPERTIES_PATH,
+					"initial.box", initialBox.toString());
+		} catch (IOException e) {
+			LOGGER.error("An IO Exception has been fired. Path: {}, {}",
+					CommonData.REPORT_PROPERTIES_PATH, e.getMessage());
+		}
+	}
 }

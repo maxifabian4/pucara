@@ -131,7 +131,8 @@ public class SaleView extends ProductView {
 		// Create list of products.
 		listOfPotentialProducts = new SwingListPanel(products, this,
 				new ProductSalePotentialCellRenderer());
-		listOfPotentialProducts.addListMouseListener(saleController.createPotentialMouseListener());
+		listOfPotentialProducts.addListMouseListener(saleController
+				.createPotentialMouseListener());
 		listOfPotentialProducts.addListKeyListener(saleController
 				.generateListPotentialKeyListener());
 
@@ -185,11 +186,14 @@ public class SaleView extends ProductView {
 		centerContainer.setLayout(new BorderLayout());
 		centerContainer.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 		Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		centerContainer.setPreferredSize(new Dimension(dim.width / 4 + dim.width / 8, 0));
+		centerContainer.setPreferredSize(new Dimension(dim.width / 4
+				+ dim.width / 8, 0));
 
 		// Create list of products.
-		listOfPartialProducts = new SwingListPanel(products, this, new ProductSaleCellRenderer());
-		listOfPartialProducts.addListKeyListener(saleController.generateListKeyListener());
+		listOfPartialProducts = new SwingListPanel(products, this,
+				new ProductSaleCellRenderer());
+		listOfPartialProducts.addListKeyListener(saleController
+				.generateListKeyListener());
 
 		centerContainer.add(listOfPartialProducts, BorderLayout.CENTER);
 		this.add(centerContainer, BorderLayout.CENTER);
@@ -207,7 +211,8 @@ public class SaleView extends ProductView {
 		panelLeft.setLayout(new BorderLayout());
 		panelLeft.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 		Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		panelLeft.setPreferredSize(new Dimension(dim.width / 4 + dim.width / 8, 0));
+		panelLeft.setPreferredSize(new Dimension(dim.width / 4 + dim.width / 8,
+				0));
 
 		// Add text field for input with custom listeners.
 		inputBarcode = CommonUIComponents.createInputTextField(null,
@@ -228,11 +233,10 @@ public class SaleView extends ProductView {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				inputBarcode = SystemForm.applyUnselectedProperties(inputBarcode);
+				inputBarcode = SystemForm
+						.applyUnselectedProperties(inputBarcode);
 			}
 		});
-
-		// TODO Create a list of potentials products that match with a search.
 
 		panelLeft.add(inputBarcode, BorderLayout.PAGE_START);
 
