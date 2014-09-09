@@ -24,14 +24,14 @@ import com.pucara.core.generic.Utilities;
  * @author Maximiliano Fabian
  */
 public class ProductSaleCellRenderer extends JPanel implements
-		ListCellRenderer<Object> {
+		ListCellRenderer {
 	private static final long serialVersionUID = 1L;
 
 	public ProductSaleCellRenderer() {
 		setOpaque(true);
 	}
 
-	public Component getListCellRendererComponent(JList<?> list, Object value,
+	public Component getListCellRendererComponent(JList list, Object value,
 			int index, boolean isSelected, boolean cellHasFocus) {
 		removeAll();
 		setLayout(new BorderLayout());
