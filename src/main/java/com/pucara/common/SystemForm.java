@@ -114,7 +114,7 @@ public class SystemForm extends JPanel {
 		for (int i = 0; i < textFieldKeys.length; i++) {
 			textField = (JTextField) components.get(textFieldKeys[i]);
 
-			if (except != null && !textFieldKeys[i].equals(except))
+			if (except == null && !textFieldKeys[i].equals(except))
 				textField.addActionListener(listener);
 		}
 	}
