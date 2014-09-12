@@ -50,6 +50,7 @@ public class SaleView extends ProductView {
 		} else if (products.length > 0) {
 			listOfPartialProducts.populateDataInTheList(products);
 			summaryPanel.updateContent(products);
+			cleanInputTextField();
 		}
 	}
 

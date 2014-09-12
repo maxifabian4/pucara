@@ -3,7 +3,7 @@
 	<timestamp key="byDate" datePattern="dd-MM-yyyy" />
 
 	<appender name="fileAppender" class="ch.qos.logback.core.FileAppender">
-		<file>out/logs/log-${byDate}.out</file>
+		<file>/home/pucara/Programas/pucara/out/logs/log-${byDate}.out</file>
 		<append>true</append>
 		<filter class="ch.qos.logback.classic.filter.LevelFilter">
 			<level>DEBUG</level>

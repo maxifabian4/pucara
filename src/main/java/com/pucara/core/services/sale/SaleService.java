@@ -28,8 +28,7 @@ import com.pucara.core.services.product.ProductService;
  * @author Maximiliano
  */
 public class SaleService {
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(SaleService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SaleService.class);
 	private static ProductsCollection productsCollection;
 
 	/**
@@ -41,8 +40,8 @@ public class SaleService {
 	 * @return Response
 	 */
 	public static Response addProductToList(String input) {
-		ProductListResponse response = ProductService
-				.existsProduct(new SearchProductRequest(input, null));
+		ProductListResponse response = ProductService.existsProduct(new SearchProductRequest(input,
+				null));
 
 		if (response.wasSuccessful()) {
 			// Initialize product collection if it doesn't exists.
@@ -54,12 +53,11 @@ public class SaleService {
 				productsCollection.addProduct(response.getProducts().get(0));
 				return new Response();
 			} else {
-				LOGGER.error("Insufficient stock for the product {}.", response
-						.getProducts().get(0).getBarcode());
-				return new Response(new ErrorMessage(
-						ErrorType.INSUFFICIENT_STOCK, String.format(
-								CommonMessageError.INSUFFICIENT_STOCK, response
-										.getProducts().get(0).getBarcode())));
+				LOGGER.error("Insufficient stock for the product {}.", response.getProducts()
+						.get(0).getBarcode());
+				return new Response(new ErrorMessage(ErrorType.INSUFFICIENT_STOCK, String.format(
+						CommonMessageError.INSUFFICIENT_STOCK, response.getProducts().get(0)
+								.getBarcode())));
 			}
 		} else {
 			// This implementation has been added to consider an extra sale
@@ -69,19 +67,16 @@ public class SaleService {
 
 				if (extraProduct == null) {
 					LOGGER.error("Invalid information as extra sale: {}", input);
-					return new Response(new ErrorMessage(
-							ErrorType.INVALID_DATA_FORMAT, String.format(
-									CommonMessageError.INVALID_DOUBLE_FORMAT,
-									input)));
+					return new Response(new ErrorMessage(ErrorType.INVALID_DATA_FORMAT,
+							String.format(CommonMessageError.INVALID_DOUBLE_FORMAT, input)));
 				} else {
 					productsCollection.addProduct(extraProduct);
 					return new Response();
 				}
 			} else {
 				LOGGER.error("Invalid information as input: {}", input);
-				return new Response(new ErrorMessage(
-						ErrorType.ELEMENT_NOT_FOUND, String.format(
-								CommonMessageError.BARCODE_NOT_FOUND, input)));
+				return new Response(new ErrorMessage(ErrorType.ELEMENT_NOT_FOUND, String.format(
+						CommonMessageError.BARCODE_NOT_FOUND, input)));
 			}
 		}
 	}
@@ -105,10 +100,8 @@ public class SaleService {
 		if (productsCollection.removeProduct(barcode)) {
 			return new Response();
 		} else {
-			return new Response(
-					new ErrorMessage(ErrorType.ELEMENT_NOT_FOUND,
-							String.format(CommonMessageError.BARCODE_NOT_FOUND,
-									barcode)));
+			return new Response(new ErrorMessage(ErrorType.ELEMENT_NOT_FOUND, String.format(
+					CommonMessageError.BARCODE_NOT_FOUND, barcode)));
 		}
 	}
 
@@ -123,18 +116,15 @@ public class SaleService {
 		double gain = getTotalGain();
 
 		if (gain != 0) {
-			ByIdResponse saleResponse = MySqlAccess.addNewSale(
-					Utilities.getCurrentDate(), gain);
+			ByIdResponse saleResponse = MySqlAccess.addNewSale(Utilities.getCurrentDate(), gain);
 
 			if (saleResponse.wasSuccessful()) {
-				ByIdResponse saleDetailResponse = MySqlAccess
-						.addNewSaleDetail(SaleService
-								.getTotalNumberOfProducts());
+				ByIdResponse saleDetailResponse = MySqlAccess.addNewSaleDetail(SaleService
+						.getTotalNumberOfProducts());
 
 				if (saleDetailResponse.wasSuccessful()) {
-					ByIdResponse xSaleSaleDetailResponse = MySqlAccess
-							.addNewSaleSaleDetail(saleResponse.getId(),
-									saleDetailResponse.getId());
+					ByIdResponse xSaleSaleDetailResponse = MySqlAccess.addNewSaleSaleDetail(
+							saleResponse.getId(), saleDetailResponse.getId());
 
 					if (xSaleSaleDetailResponse.wasSuccessful()) {
 						return finalSaleStep(saleResponse, saleDetailResponse);
@@ -211,8 +201,8 @@ public class SaleService {
 	}
 
 	// ups
-	public static void updatePartialElement(String barcode, String description,
-			String cost, String percentage, String minStock) {
+	public static void updatePartialElement(String barcode, String description, String cost,
+			String percentage, String minStock) {
 		Product product = productsCollection.getProductBy(barcode);
 
 		product.setDescription(description);
@@ -262,8 +252,7 @@ public class SaleService {
 
 		for (int i = 0; i < productsCollection.getSize(); i++) {
 			if (!isExtraSale(productsCollection.getProductAt(i).getBarcode())) {
-				gain += Utilities.getProductGain(
-						productsCollection.getProductAt(i),
+				gain += Utilities.getProductGain(productsCollection.getProductAt(i),
 						productsCollection.getQuantityOfProductAt(i));
 			} else {
 				gain += productsCollection.getProductAt(i).getCost();
@@ -280,11 +269,9 @@ public class SaleService {
 	 * @param xSaleSaleDetailResponse
 	 * @return Response
 	 */
-	private static Response finalSaleStep(ByIdResponse saleResponse,
-			ByIdResponse saleDetailResponse) {
-		ByIdResponse xSaleSaleDetailProductResponse = MySqlAccess
-				.addNewSaleSaleDetailProduct(productsCollection,
-						saleResponse.getId(), saleDetailResponse.getId());
+	private static Response finalSaleStep(ByIdResponse saleResponse, ByIdResponse saleDetailResponse) {
+		ByIdResponse xSaleSaleDetailProductResponse = MySqlAccess.addNewSaleSaleDetailProduct(
+				productsCollection, saleResponse.getId(), saleDetailResponse.getId());
 
 		if (xSaleSaleDetailProductResponse.wasSuccessful()) {
 			Response decreaseProductsResult = decreaseStockForProducts();
@@ -301,8 +288,8 @@ public class SaleService {
 				productsCollection = new ProductsCollection();
 				;
 
-				return new SaleResultResponse(saleResponse.getId(),
-						saleDetailResponse.getId(), allProducts);
+				return new SaleResultResponse(saleResponse.getId(), saleDetailResponse.getId(),
+						allProducts);
 			} else {
 				return decreaseProductsResult;
 			}
@@ -319,13 +306,11 @@ public class SaleService {
 	 * @return Response
 	 */
 	private static Response decreaseStockForProducts() {
-		Response response = MySqlAccess.modifyProductStocks(productsCollection,
-				false);
+		Response response = MySqlAccess.modifyProductStocks(productsCollection, false);
 
 		if (!response.wasSuccessful()) {
 			// Perform roll-back manually ...
-			return new Response(new ErrorMessage(
-					ErrorType.UPDATE_PRODUCT_ERROR,
+			return new Response(new ErrorMessage(ErrorType.UPDATE_PRODUCT_ERROR,
 					CommonMessageError.UPDATE_PRODUCTS_ERROR));
 		}
 
@@ -338,8 +323,7 @@ public class SaleService {
 	 * @return boolean
 	 */
 	private static boolean hasSufficientStock(Product product) {
-		PartialElement requestedProduct = productsCollection
-				.alreadyExists(product.getBarcode());
+		PartialElement requestedProduct = productsCollection.alreadyExists(product.getBarcode());
 
 		if (requestedProduct != null) {
 			// Do we have the sufficient stock, considering the required
@@ -359,13 +343,18 @@ public class SaleService {
 	private static Product createFalseProduct(String input) {
 		String barcode = "@" + Utilities.generateRandomData(10);
 		String[] both = input.substring(1).split("@");
-		String description = both[0];
-		Double gain = Utilities.getDoubleValue(both[1]);
 
-		if (gain == null) {
+		if (both.length > 1) {
+			String description = both[0];
+			Double gain = Utilities.getDoubleValue(both[1]);
+
+			if (gain == null) {
+				return null;
+			}
+
+			return new Product(barcode, description, gain, 0, null, 0, 0, 0);
+		} else {
 			return null;
 		}
-
-		return new Product(barcode, description, gain, 0, null, 0, 0, 0);
 	}
 }

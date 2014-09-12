@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.pucara.common.CommonData;
@@ -42,12 +43,11 @@ public class SaleController {
 
 			if (response.wasSuccessful()) {
 				saleView.addPartialListToPanel(SaleService.getPartialList().toArray());
+				saleView.cleanInputTextField();
 			} else {
 				JOptionPane.showMessageDialog(null, response.getErrorsMessages().get(0)
 						.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
-
-			saleView.cleanInputTextField();
 		}
 	}
 
@@ -153,8 +153,11 @@ public class SaleController {
 						}
 					} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
 						String barcode = saleView.getSelectedProduct();
-						addProductToPartialList(barcode);
-						saleView.selectPartialElementByBarcode(barcode);
+
+						if (!barcode.contains("@")) {
+							addProductToPartialList(barcode);
+							saleView.selectPartialElementByBarcode(barcode);
+						}
 					} else if (e.getKeyCode() == KeyEvent.VK_F5
 							&& SaleService.getTotalNumberOfProducts() > 0) {
 						Object[] options = { "Si", "No" };

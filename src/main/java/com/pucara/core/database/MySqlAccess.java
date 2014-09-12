@@ -941,7 +941,7 @@ public class MySqlAccess {
 	 */
 	private static Long getLastInsert(String tableName, String columnName) throws SQLException {
 		ResultSet result = performStatement(String.format("SELECT %s FROM %s.%s ORDER BY %s DESC",
-				getPropertyFromFile("db.database"), columnName, tableName, columnName));
+				columnName, getPropertyFromFile("db.database"), tableName, columnName));
 		result.next();
 
 		return resultSet.getLong(columnName);
@@ -955,7 +955,7 @@ public class MySqlAccess {
 	 */
 	private static boolean connectDatabase() throws IOException {
 		String dbUrl = getPropertyFromFile("db.url");
-//		String dbClass = getPropertyFromFile("db.class");
+		// String dbClass = getPropertyFromFile("db.class");
 		String username = getPropertyFromFile("db.username");
 		String password = getPropertyFromFile("db.password");
 
@@ -963,16 +963,16 @@ public class MySqlAccess {
 		statement = null;
 
 		try {
-//			Class.forName(dbClass);
+			// Class.forName(dbClass);
 			mySqlConnect = DriverManager.getConnection(dbUrl, username, password);
 			statement = mySqlConnect.createStatement();
 
 			return true;
-		} 
+		}
 		// catch (ClassNotFoundException e) {
 		// e.printStackTrace();
 		// return false;
-		// } 
+		// }
 		catch (SQLException ex) {
 			ex.printStackTrace();
 			return false;

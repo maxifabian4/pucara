@@ -191,7 +191,8 @@ public class ProductService {
 
 			if (!request.getDescription().trim().equals(CommonData.EMPTY_STRING)
 					&& !Utilities.isTooLong(request.getDescription(),
-							CommonData.MAX_LONG_VALUE_PRODUCT_DESCRIPTION)) {
+							CommonData.MAX_LONG_VALUE_PRODUCT_DESCRIPTION)
+					&& !request.getDescription().contains("@")) {
 				// Verify the description has not special characters.
 				newProduct.setDescription(request.getDescription());
 
