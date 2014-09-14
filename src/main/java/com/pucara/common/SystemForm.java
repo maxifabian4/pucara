@@ -104,7 +104,7 @@ public class SystemForm extends JPanel {
 	}
 
 	public void setActionListenerToComponent(String[] textFieldKeys, ActionListener listener) {
-		setActionListenerToComponent(textFieldKeys, listener, null);
+		setActionListenerToComponent(textFieldKeys, listener, CommonData.EMPTY_STRING);
 	}
 
 	public void setActionListenerToComponent(String[] textFieldKeys, ActionListener listener,
@@ -114,8 +114,9 @@ public class SystemForm extends JPanel {
 		for (int i = 0; i < textFieldKeys.length; i++) {
 			textField = (JTextField) components.get(textFieldKeys[i]);
 
-			if (except == null && !textFieldKeys[i].equals(except))
+			if (!textFieldKeys[i].equals(except)) {
 				textField.addActionListener(listener);
+			}
 		}
 	}
 

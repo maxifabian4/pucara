@@ -139,10 +139,6 @@ public class StockController {
 						stockView.closeUpdatePopup();
 						stockView.updateProductsList();
 						stockView.selectProductElementOnList(barcode);
-						// CustomLogger.log(null, LoggerLevel.INFO,
-						// String.format(
-						// "Product [%s] has been modified successfully.",
-						// description));
 					} else {
 						JOptionPane.showMessageDialog(null, "No se ha modificado el producto ...",
 								"Advertencia!", JOptionPane.WARNING_MESSAGE);

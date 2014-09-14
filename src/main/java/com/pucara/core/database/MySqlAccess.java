@@ -128,15 +128,27 @@ public class MySqlAccess {
 			int affectedRows = statement.executeUpdate(makeUpdateSentece(productToUpdate));
 
 			if (affectedRows == 1) {
+				LOGGER.info(
+						"Existing product has been succesfully updated. Barcode {} Description '{}'",
+						productToUpdate.getBarcode(), productToUpdate.getDescription());
 				return new StatementResponse(affectedRows);
 			} else {
-				return new StatementResponse(new ErrorMessage(ErrorType.UPDATE_PRODUCT_ERROR,
-						"No rows have been affected during the update."));
+				LOGGER.error("No rows have been affected during the update.",
+						productToUpdate.getBarcode(), productToUpdate.getDescription());
+				return new StatementResponse(
+						new ErrorMessage(
+								ErrorType.UPDATE_PRODUCT_ERROR,
+								String.format(
+										"Error trantando de actualizar el producto [%s] con descripcion [%s].",
+										productToUpdate.getBarcode(),
+										productToUpdate.getDescription())));
 			}
 		} catch (SQLException e) {
+			LOGGER.error("SQL exception. {}", e.getMessage());
 			return new StatementResponse(
 					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
+			LOGGER.info("Result set closed");
 			MySqlAccess.closeResultSet();
 		}
 	}
@@ -263,18 +275,22 @@ public class MySqlAccess {
 	public static StatementResponse insertNewProduct(Product product) {
 		try {
 			// Result set get the result of the SQL query
-			int affectedRows = statement.executeUpdate("INSERT INTO "
+			int rowCount = statement.executeUpdate("INSERT INTO "
 					+ getPropertyFromFile("db.database") + ".product VALUES('"
 					+ product.getBarcode() + "', '" + product.getDescription() + "', '"
 					+ product.getCost() + "', " + product.getPercentage() + ", '"
 					+ product.getDate() + "', " + product.getStock() + ", " + product.getMinStock()
 					+ ", " + product.getCategoryId() + ")");
 
-			return new StatementResponse(affectedRows);
+			LOGGER.info("A new product has been added. Barcode {} Description '{}'",
+					product.getBarcode(), product.getDescription());
+			return new StatementResponse(rowCount);
 		} catch (SQLException e) {
+			LOGGER.error("SQL exception. {}", e.getMessage());
 			return new StatementResponse(
 					new ErrorMessage(ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {
+			LOGGER.info("Result set closed");
 			MySqlAccess.closeResultSet();
 		}
 	}

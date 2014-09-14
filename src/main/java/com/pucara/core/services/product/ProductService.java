@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
 import com.pucara.core.database.MySqlAccess;
@@ -28,6 +31,7 @@ import com.pucara.core.response.StatementResponse;
  * @author Maximiliano
  */
 public class ProductService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
 	/**
 	 * 
@@ -42,11 +46,15 @@ public class ProductService {
 			StatementResponse response = MySqlAccess.insertNewProduct(newProductRequest
 					.getProduct());
 
-			if (response.wasSuccessful())
+			if (response.wasSuccessful()) {
 				return new ProductResponse(newProductRequest.getProduct());
-			else
+			} else {
 				return new ProductResponse(response.getErrorsMessages());
+			}
 		} else {
+			LOGGER.error("Existing product in the database. Barcode: {} Description: {}",
+					newProductRequest.getProduct().getBarcode(), newProductRequest.getProduct()
+							.getDescription());
 			return new ProductResponse(new ErrorMessage(ErrorType.DATABASE_DUPLICATED_KEY,
 					String.format(CommonMessageError.DUPLICATED_PRODUCT, newProductRequest
 							.getProduct().getBarcode(), newProductRequest.getProduct()
