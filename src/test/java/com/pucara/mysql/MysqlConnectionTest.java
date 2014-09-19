@@ -14,15 +14,18 @@ import com.pucara.common.PropertyFile;
 import junit.framework.TestCase;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * Unit test for simple App.
  */
 public class MysqlConnectionTest extends TestCase {
-	private static final Logger LOGGER = LoggerFactory.getLogger(MysqlConnectionTest.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(MysqlConnectionTest.class);
 
 	public void testConnection() throws IOException {
-		PropertyFile prop = new PropertyFile("src/main/resources/properties/db.properties");
+		PropertyFile prop = new PropertyFile(
+				"src/main/resources/properties/db.properties");
 
 		String dbUrl = prop.getProperty("db.url");
 		String dbClass = prop.getProperty("db.class");
@@ -32,7 +35,8 @@ public class MysqlConnectionTest extends TestCase {
 
 		try {
 			Class.forName(dbClass);
-			Connection connection = DriverManager.getConnection(dbUrl, username, password);
+			Connection connection = DriverManager.getConnection(dbUrl,
+					username, password);
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
 
@@ -51,4 +55,24 @@ public class MysqlConnectionTest extends TestCase {
 			LOGGER.debug("SQL: {}", se.getMessage());
 		}
 	}
+
+	public void extraTest() {
+		double[] xx = { 0, 0.25, 0.5, 0.75, 1 };
+
+		// Truncate in two decimals
+		double x = 2.68433475346;
+		int i = (int) x;
+		x = x - i;
+
+		BigDecimal truncated = new BigDecimal(String.valueOf(x)).setScale(2,
+				BigDecimal.ROUND_UP);
+
+		int cont = 0;
+		while (cont < xx.length && truncated.doubleValue() > xx[cont]) {
+			cont++;
+		}
+
+		System.out.println(i + xx[cont]);
+	}
+
 }

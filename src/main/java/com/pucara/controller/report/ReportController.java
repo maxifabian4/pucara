@@ -196,6 +196,7 @@ public class ReportController {
 		if (saleResponse.wasSuccessful()) {
 			soldProducts = saleResponse.getQuantity();
 			gain = saleResponse.getGain();
+			gain = Utilities.adjustDecimals(gain);
 		}
 
 		PurchaseDailyReportResponse purchaseResponse = ReportService
@@ -203,15 +204,20 @@ public class ReportController {
 
 		if (purchaseResponse.wasSuccessful()) {
 			dailyCost = purchaseResponse.getTotalExpense();
+			dailyCost = Utilities.adjustDecimals(dailyCost);
 		}
 
 		totalGain = gain - initialBox - dailyCost;
 
-		return new String[] { soldProducts.toString(),
-				Utilities.truncateDecimal(gain, 2).toString(),
-				Utilities.truncateDecimal(dailyCost, 2).toString(),
-				initialBox.toString(),
-				Utilities.truncateDecimal(totalGain, 2).toString() };
+		// return new String[] { soldProducts.toString(),
+		// Utilities.truncateDecimal(gain, 2).toString(),
+		// Utilities.truncateDecimal(dailyCost, 2).toString(),
+		// initialBox.toString(),
+		// Utilities.truncateDecimal(totalGain, 2).toString() };
+
+		return new String[] { soldProducts.toString(), gain.toString(),
+				dailyCost.toString(), initialBox.toString(),
+				totalGain.toString() };
 	}
 
 	/**

@@ -135,7 +135,7 @@ public class PurchaseService extends AbstractTransactionService {
 					* productsCollection.getQuantityOfProductAt(i);
 		}
 
-		return price;
+		return Utilities.truncateDecimal(price, 2);
 	}
 
 }

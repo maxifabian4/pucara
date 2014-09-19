@@ -120,19 +120,35 @@ public class Utilities {
 	// }
 
 	/**
-	 * REMOVE or make it obsolete!!!
-	 * 
 	 * @param x
 	 * @param numberofDecimals
 	 * @return
 	 */
-	public static BigDecimal truncateDecimal(double x, int numberofDecimals) {
+	public static Double adjustDecimals(double x) {
+		double[] potentialDecimals = { 0, 0.25, 0.5, 0.75, 1 };
+		// Truncate in two decimals
+		int i = (int) x;
+		x = x - i;
+
+		BigDecimal truncated = new BigDecimal(String.valueOf(x)).setScale(2,
+				BigDecimal.ROUND_UP);
+
+		int cont = 0;
+		while (cont < potentialDecimals.length
+				&& truncated.doubleValue() > potentialDecimals[cont]) {
+			cont++;
+		}
+
+		return i + potentialDecimals[cont];
+	}
+
+	public static double truncateDecimal(double x, int numberofDecimals) {
 		if (x > 0) {
 			return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals,
-					BigDecimal.ROUND_FLOOR);
+					BigDecimal.ROUND_FLOOR).doubleValue();
 		} else {
 			return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals,
-					BigDecimal.ROUND_CEILING);
+					BigDecimal.ROUND_CEILING).doubleValue();
 		}
 	}
 

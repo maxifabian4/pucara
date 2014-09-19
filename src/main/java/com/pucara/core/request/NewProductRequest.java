@@ -1,6 +1,7 @@
 package com.pucara.core.request;
 
 import com.pucara.core.entities.Product;
+import com.pucara.core.generic.Utilities;
 
 /**
  * This class allows to create a new request in order to create a new Product.
@@ -16,7 +17,7 @@ public class NewProductRequest {
 					* (product.getPercentage() / 100)
 					+ product.getInitialCost();
 			// We need to truncate finalCost.
-			product.setFinalCost(finalCost);
+			product.setFinalCost(Utilities.adjustDecimals(finalCost));
 		} else {
 			Double percentage = (product.getFinalCost() - product
 					.getInitialCost()) / product.getInitialCost();
