@@ -131,9 +131,8 @@ public class PurchaseService extends AbstractTransactionService {
 		double price = 0;
 
 		for (int i = 0; i < productsCollection.getSize(); i++) {
-			price += productsCollection.getProductAt(i).getCost()
+			price += productsCollection.getProductAt(i).getInitialCost()
 					* productsCollection.getQuantityOfProductAt(i);
-			price = Utilities.truncateDecimal(price, 2).doubleValue();
 		}
 
 		return price;

@@ -15,6 +15,7 @@ import com.pucara.view.render.object.ListSalePotentialProduct;
 import com.pucara.view.render.object.ListSaleProduct;
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
+import com.pucara.core.entities.Product;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.request.SearchProductRequest;
 import com.pucara.core.request.UpdateProductRequest;
@@ -57,19 +58,23 @@ public class PurchaseController {
 					if (expense == 0) {
 						purchaseService.setPurchaseExpense(formValues.get(1));
 					} else {
-						purchaseService.setPurchaseExpense(String.valueOf(expense));
+						purchaseService.setPurchaseExpense(String
+								.valueOf(expense));
 					}
 
-					Response performedPurchase = purchaseService.performTransaction();
+					Response performedPurchase = purchaseService
+							.performTransaction();
 
 					if (performedPurchase.wasSuccessful()) {
 						cleanPartialList();
 						purchaseView.cleanPurchaseTextFields();
-						JOptionPane.showMessageDialog(null, "Gasto ingresado con éxito.",
-								"Información", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null,
+								"Gasto ingresado con éxito.", "Información",
+								JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						JOptionPane.showMessageDialog(null, performedPurchase.getErrorsMessages()
-								.get(0).getMessage(), "Atención", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, performedPurchase
+								.getErrorsMessages().get(0).getMessage(),
+								"Atención", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			}
@@ -131,7 +136,8 @@ public class PurchaseController {
 				int caracter = e.getKeyChar();
 				String text = purchaseView.getBarcodeFromTextField();
 
-				if ((caracter <= 'z' && caracter >= 'a') && (caracter != '' && caracter != '')
+				if ((caracter <= 'z' && caracter >= 'a')
+						&& (caracter != '' && caracter != '')
 						|| caracter == ' ') {
 					text += e.getKeyChar();
 				}
@@ -141,20 +147,23 @@ public class PurchaseController {
 							.existsProduct(new SearchProductRequest(null, text));
 
 					if (descResponse.wasSuccessful()) {
-						purchaseView.addPotentialProductsOnList(descResponse.getProducts()
-								.toArray());
+						purchaseView.addPotentialProductsOnList(descResponse
+								.getProducts().toArray());
 					} else {
-						purchaseView.addPotentialProductsOnList(new ListSalePotentialProduct[] {});
+						purchaseView
+								.addPotentialProductsOnList(new ListSalePotentialProduct[] {});
 					}
 				} else if (text.isEmpty()) {
-					purchaseView.addPotentialProductsOnList(new ListSalePotentialProduct[] {});
+					purchaseView
+							.addPotentialProductsOnList(new ListSalePotentialProduct[] {});
 				}
 			}
 
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					addProductToPartialList(purchaseView.getBarcodeFromTextField());
+					addProductToPartialList(purchaseView
+							.getBarcodeFromTextField());
 				} else if (e.getKeyCode() == KeyEvent.VK_DOWN
 						&& purchaseView.isPotentialListPresent()) {
 					purchaseView.selectPotentialElement(0);
@@ -190,7 +199,8 @@ public class PurchaseController {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					addProductToPartialList(purchaseView.getPotentialItem());
-					purchaseView.addPotentialProductsOnList(new ListSalePotentialProduct[] {});
+					purchaseView
+							.addPotentialProductsOnList(new ListSalePotentialProduct[] {});
 				}
 			}
 		};
@@ -207,7 +217,8 @@ public class PurchaseController {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					addProductToPartialList(purchaseView.getPotentialItem());
-					purchaseView.addPotentialProductsOnList(new ListSalePotentialProduct[] {});
+					purchaseView
+							.addPotentialProductsOnList(new ListSalePotentialProduct[] {});
 				}
 			}
 
@@ -225,42 +236,42 @@ public class PurchaseController {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// Retrieve information from the stock view.
-				List<String> popupValues = purchaseView.getPopupValues();
-
-				String description = popupValues.get(0);
-				String cost = popupValues.get(1);
-				String percentage = popupValues.get(2);
-				String minStock = popupValues.get(3);
-				String barcode = purchaseView.getSelectedPurchaseBarcode();
-
-				VerifyProductValuesRequest productValuesRequest = new VerifyProductValuesRequest(
-						barcode, description, cost, percentage, "0", minStock, null);
+				VerifyProductValuesRequest productValuesRequest = createRequestForUpdate();
 
 				ProductResponse validatedProductResponse = ProductService
 						.getValidatedProduct(productValuesRequest);
 
 				if (validatedProductResponse.wasSuccessful()) {
 					// Call the service.
+					Product product = validatedProductResponse.getProduct();
+					product.setByPercentage(purchaseView.isByPercentage());
 					ProductResponse response = ProductService
-							.updateProduct(new UpdateProductRequest(validatedProductResponse
-									.getProduct()));
+							.updateProduct(new UpdateProductRequest(product));
 
 					if (response.wasSuccessful()) {
 						purchaseView.closeUpdatePopup();
 						// Update partial list.
-						purchaseService.updatePartialElement(barcode, description, cost,
-								percentage, minStock);
+						purchaseService.updatePartialElement(
+								productValuesRequest.getBarcode(),
+								productValuesRequest.getDescription(),
+								productValuesRequest.getFinalCost(),
+								productValuesRequest.getInitialCost(),
+								productValuesRequest.getPercentage(),
+								productValuesRequest.getMinStock());
 						purchaseView.updateProductsList();
-						purchaseView.selectProductElementOnList(barcode);
+						purchaseView
+								.selectProductElementOnList(productValuesRequest
+										.getBarcode());
 					} else {
-						JOptionPane.showMessageDialog(null, "No se ha modificado el producto ...",
+						JOptionPane.showMessageDialog(null,
+								"No se ha modificado el producto ...",
 								"Advertencia!", JOptionPane.WARNING_MESSAGE);
 					}
 				} else {
 					purchaseView.closeUpdatePopup();
-					JOptionPane.showMessageDialog(null, validatedProductResponse
-							.getErrorsMessages().get(0).getMessage(), "Error",
+					JOptionPane.showMessageDialog(null,
+							validatedProductResponse.getErrorsMessages().get(0)
+									.getMessage(), "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -284,21 +295,26 @@ public class PurchaseController {
 					if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 						if (!purchaseView.isFocusOnTextField()) {
 							String barcode = purchaseView.getSelectedProduct();
-							int numberBeforeChange = purchaseService.getNumberOfDistinctProducts();
+							int numberBeforeChange = purchaseService
+									.getNumberOfDistinctProducts();
 
 							purchaseService.decreaseRequiredProduct(barcode);
 
-							int numberAfterChange = purchaseService.getNumberOfDistinctProducts();
-							purchaseView.updatePartialElements(purchaseService.getPartialList()
-									.toArray());
-							purchaseView.updateCostField(purchaseService.getTotalValue());
+							int numberAfterChange = purchaseService
+									.getNumberOfDistinctProducts();
+							purchaseView.updatePartialElements(purchaseService
+									.getPartialList().toArray());
+							purchaseView.updateCostField(purchaseService
+									.getTotalValue());
 
 							if (numberAfterChange == numberBeforeChange) {
-								purchaseView.selectPartialElementByBarcode(barcode);
+								purchaseView
+										.selectPartialElementByBarcode(barcode);
 							} else if (numberAfterChange < numberBeforeChange
 									&& numberAfterChange != 0) {
 								purchaseView.cleanListSelection();
-								purchaseView.selectPartialElement(CommonData.FIRST_ROW);
+								purchaseView
+										.selectPartialElement(CommonData.FIRST_ROW);
 							} else if (numberAfterChange == 0) {
 								purchaseService.cleanPartialList();
 							}
@@ -315,17 +331,21 @@ public class PurchaseController {
 
 	public void addProductToPartialList(String inputBarcodeText) {
 		if (inputBarcodeText.equals(CommonData.EMPTY_STRING)) {
-			JOptionPane.showConfirmDialog(null, CommonMessageError.BARCODE_DESCRIPTION_NO_DETECTED,
+			JOptionPane.showConfirmDialog(null,
+					CommonMessageError.BARCODE_DESCRIPTION_NO_DETECTED,
 					"Advertencia", JOptionPane.WARNING_MESSAGE);
 		} else {
-			Response response = purchaseService.addProductToList(inputBarcodeText);
+			Response response = purchaseService
+					.addProductToList(inputBarcodeText);
 
 			if (response.wasSuccessful()) {
-				purchaseView.addPartialListToPanel(purchaseService.getPartialList().toArray());
+				purchaseView.addPartialListToPanel(purchaseService
+						.getPartialList().toArray());
 				purchaseView.updateCostField(purchaseService.getTotalValue());
 			} else {
-				JOptionPane.showMessageDialog(null, response.getErrorsMessages().get(0)
-						.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, response
+						.getErrorsMessages().get(0).getMessage(), "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
 
 			purchaseView.cleanInputTextField();
@@ -398,6 +418,32 @@ public class PurchaseController {
 				&& !expense.trim().equals(CommonData.EMPTY_STRING)
 				&& Utilities.getDoubleValue(expense) != null
 				&& Utilities.getDoubleValue(expense) > 0;
+	}
+
+	private VerifyProductValuesRequest createRequestForUpdate() {
+		// Retrieve information from the stock view.
+		List<String> popupComponents = purchaseView.getPopupValues();
+		String description, initialCost, finalCost, percentage, minStock, barcode;
+
+		if (purchaseView.isByPercentage()) {
+			description = popupComponents.get(0);
+			initialCost = popupComponents.get(1);
+			percentage = popupComponents.get(2);
+			minStock = popupComponents.get(3);
+			barcode = purchaseView.getSelectedPurchaseBarcode();
+
+			return new VerifyProductValuesRequest(barcode, description,
+					initialCost, "0.0", percentage, "0", minStock, null);
+		} else {
+			description = popupComponents.get(0);
+			initialCost = popupComponents.get(1);
+			finalCost = popupComponents.get(2);
+			minStock = popupComponents.get(3);
+			barcode = purchaseView.getSelectedPurchaseBarcode();
+
+			return new VerifyProductValuesRequest(barcode, description,
+					initialCost, finalCost, "0.0", "0", minStock, null);
+		}
 	}
 
 }

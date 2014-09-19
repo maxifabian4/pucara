@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -32,11 +33,13 @@ public class CommonUIComponents {
 	public static final int VERTICAL_STRUT_VALUE = 20;
 	public static final String BARCODE = "c\u00F3digo";
 	public static final String DESCRIPTION = "descripci\u00F3n";
-	public static final String COST = "precio";
+	public static final String INITIAL_COST = "costo inicial";
+	public static final String FINAL_COST = "costo final";
 	public static final String PERCENTAGE = "porcentaje";
 	public static final String STOCK = "stock";
 	public static final String MIN_STOCK = "stock m\u00EDnimo";
 	public static final String CATEGORY = "categor\u00EDa";
+	public static final String BY_PERCENTAGE = "por porcentaje";
 	public static final String PURCHASE_COST = "costo";
 	public static final String PURCHASE_DESCRIPTION = "descripci\u00F3n";
 
@@ -51,7 +54,8 @@ public class CommonUIComponents {
 
 		Border empty = new EmptyBorder(10, 15, 10, 15);
 		defaultButton.setBorder(empty);
-		defaultButton.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 17));
+		defaultButton.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
+				Font.PLAIN, 17));
 		defaultButton.setForeground(CommonData.LIGHT_FONT_COLOR);
 		defaultButton.setBackground(CommonData.DEFAULT_BUTTON_COLOR);
 
@@ -84,34 +88,15 @@ public class CommonUIComponents {
 		return separatorBox;
 	}
 
-	// /**
-	// * Creates a simple text field, with the system style.
-	// *
-	// * @param text
-	// * @return JTextField
-	// */
-	// public static JTextField createNewTextField(String text) {
-	// return createNewTextField(text, true);
-	// }
-
 	public static JTextField createNewTextField() {
 		JTextField textFieldComponent = new JTextField();
 
 		textFieldComponent.setBorder(new EmptyBorder(5, 5, 5, 5));
 		textFieldComponent.setBackground(Color.red);
 		textFieldComponent.setForeground(CommonData.DARK_FONT_COLOR);
-		textFieldComponent.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN,
-				CommonData.GENERAL_FONT_SIZE));
+		textFieldComponent.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
+				Font.PLAIN, CommonData.GENERAL_FONT_SIZE));
 		textFieldComponent.setColumns(10);
-
-		// Add new mouse event ...
-		// if (applyMouseListener) {
-		// textFieldComponent.addMouseListener(CommonUIComponents.createMouseTextfieldListener(
-		// textFieldComponent, text));
-		// }
-
-		// Add a customizable listener when the component lost the focus ...
-		// textFieldComponent.addFocusListener(new TextBoxFocusListener());
 
 		return textFieldComponent;
 	}
@@ -126,8 +111,8 @@ public class CommonUIComponents {
 		JLabel lblAgregarNuevaCategoria = new JLabel(text);
 
 		lblAgregarNuevaCategoria.setForeground(CommonData.DARK_FONT_COLOR);
-		lblAgregarNuevaCategoria.setFont(new Font(CommonData.GENERAL_FONT, Font.PLAIN,
-				CommonData.GENERAL_FONT_SIZE_TITLE_FORM));
+		lblAgregarNuevaCategoria.setFont(new Font(CommonData.GENERAL_FONT,
+				Font.PLAIN, CommonData.GENERAL_FONT_SIZE_TITLE_FORM));
 		lblAgregarNuevaCategoria.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		return lblAgregarNuevaCategoria;
@@ -178,8 +163,8 @@ public class CommonUIComponents {
 	 * 
 	 * @return MouseListener
 	 */
-	public static MouseListener createMouseTextfieldListener(final JTextField textFieldSearch,
-			final String searchFieldMessage) {
+	public static MouseListener createMouseTextfieldListener(
+			final JTextField textFieldSearch, final String searchFieldMessage) {
 		return new MouseListener() {
 
 			@Override
@@ -208,7 +193,8 @@ public class CommonUIComponents {
 		};
 	}
 
-	public static MouseListener createMouseDisabledTextfieldListener(final JTextField textField) {
+	public static MouseListener createMouseDisabledTextfieldListener(
+			final JTextField textField) {
 		return new MouseListener() {
 
 			@Override
@@ -241,19 +227,21 @@ public class CommonUIComponents {
 	 * @param keyListener
 	 * @return
 	 */
-	public static JTextField createInputTextField(ActionListener actionListener,
-			KeyListener keyListener) {
+	public static JTextField createInputTextField(
+			ActionListener actionListener, KeyListener keyListener) {
 		JTextField textFieldComponent = new JTextField(CommonData.EMPTY_STRING);
 
 		Border empty = new EmptyBorder(0, 0, 7, 0);
-		MatteBorder matteBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY);
+		MatteBorder matteBorder = BorderFactory.createMatteBorder(0, 0, 1, 0,
+				Color.LIGHT_GRAY);
 
-		textFieldComponent.setBorder(BorderFactory.createCompoundBorder(empty, matteBorder));
+		textFieldComponent.setBorder(BorderFactory.createCompoundBorder(empty,
+				matteBorder));
 		textFieldComponent.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 		textFieldComponent.setForeground(CommonData.DARK_FONT_COLOR);
 		textFieldComponent.setSelectedTextColor(CommonData.LIGHT_FONT_COLOR);
-		textFieldComponent.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN,
-				CommonData.GENERAL_FONT_SIZE_LABEL));
+		textFieldComponent.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
+				Font.PLAIN, CommonData.GENERAL_FONT_SIZE_LABEL));
 
 		if (actionListener != null) {
 			textFieldComponent.addActionListener(actionListener);
@@ -272,7 +260,8 @@ public class CommonUIComponents {
 	 * @param style
 	 * @return
 	 */
-	public static JLabel createReportLabel(String text, int style, int size, Color fontColor) {
+	public static JLabel createReportLabel(String text, int style, int size,
+			Color fontColor) {
 		JLabel label = new JLabel(text);
 
 		label.setForeground(fontColor);
@@ -286,7 +275,8 @@ public class CommonUIComponents {
 	 */
 	public static void applyScrollLookAndFeelProperties() {
 		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager
+					.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 
 			UIManager.getLookAndFeelDefaults().put(
 					"ScrollBar:ScrollBarThumb[Enabled].backgroundPainter",
@@ -298,9 +288,12 @@ public class CommonUIComponents {
 					"ScrollBar:ScrollBarTrack[Enabled].backgroundPainter",
 					new FillPainter(Color.DARK_GRAY));
 
-			UIManager.getLookAndFeelDefaults().put("ScrollBar:\"ScrollBar.button\".size", 0);
-			UIManager.getLookAndFeelDefaults().put("ScrollBar.decrementButtonGap", 0);
-			UIManager.getLookAndFeelDefaults().put("ScrollBar.incrementButtonGap", 0);
+			UIManager.getLookAndFeelDefaults().put(
+					"ScrollBar:\"ScrollBar.button\".size", 0);
+			UIManager.getLookAndFeelDefaults().put(
+					"ScrollBar.decrementButtonGap", 0);
+			UIManager.getLookAndFeelDefaults().put(
+					"ScrollBar.incrementButtonGap", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -313,6 +306,19 @@ public class CommonUIComponents {
 		label.setForeground(CommonData.DARK_FONT_COLOR);
 
 		return label;
+	}
+
+	public static Component createNewCheckBox(String label,
+			boolean byPercentage, ActionListener actionListener) {
+		JCheckBox checkBox = new JCheckBox(label);
+
+		checkBox.setSelected(byPercentage);
+		checkBox.setForeground(CommonData.DARK_FONT_COLOR);
+		checkBox.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+		checkBox.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 17));
+		checkBox.addActionListener(actionListener);
+
+		return checkBox;
 	}
 
 }

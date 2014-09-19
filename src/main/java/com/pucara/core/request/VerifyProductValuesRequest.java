@@ -9,17 +9,20 @@ import com.pucara.core.entities.Category;
 public class VerifyProductValuesRequest {
 	private String barcode;
 	private String description;
-	private String cost;
+	private String initialCost;
+	private String finalCost;
 	private String percentage;
 	private String minStock;
 	private String stock;
 	private Category category;
 
-	public VerifyProductValuesRequest(String barcode, String description, String cost,
-			String percentage, String stock, String minStock, Category category) {
+	public VerifyProductValuesRequest(String barcode, String description,
+			String initialCost, String finalCost, String percentage,
+			String stock, String minStock, Category category) {
 		this.barcode = barcode;
 		this.description = description;
-		this.cost = cost;
+		this.initialCost = initialCost;
+		this.finalCost = finalCost;
 		this.percentage = percentage;
 		this.minStock = minStock;
 		this.stock = stock;
@@ -34,8 +37,12 @@ public class VerifyProductValuesRequest {
 		return description;
 	}
 
-	public String getCost() {
-		return cost;
+	public String getInitialCost() {
+		return initialCost;
+	}
+
+	public String getFinalCost() {
+		return finalCost;
 	}
 
 	public String getPercentage() {

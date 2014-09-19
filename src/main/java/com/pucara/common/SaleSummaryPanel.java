@@ -36,7 +36,7 @@ public class SaleSummaryPanel extends JPanel {
 		for (int i = 0; i < products.length; i++) {
 			partialProduct = (PartialElement) products[i];
 			number += Integer.valueOf(partialProduct.getQuantity());
-			totalCost += Utilities.getProductSalePrice(partialProduct)
+			totalCost += partialProduct.getFinalCost()
 					* Integer.valueOf(partialProduct.getQuantity());
 		}
 
@@ -46,7 +46,7 @@ public class SaleSummaryPanel extends JPanel {
 			numberOfProducts = String.format("%d productos", number);
 		}
 
-		total = String.format("%s", Utilities.truncateDecimal(totalCost, 2));
+		total = String.valueOf(totalCost);
 	}
 
 	private void createContent() {
@@ -57,11 +57,13 @@ public class SaleSummaryPanel extends JPanel {
 
 		// Create labels and apply format.
 		numberOfProdLabel = new JLabel(numberOfProducts);
-		numberOfProdLabel.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 20));
+		numberOfProdLabel.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
+				Font.BOLD, 20));
 		numberOfProdLabel.setForeground(Color.LIGHT_GRAY);
 
 		totalLabel = new JLabel(total);
-		totalLabel.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 60));
+		totalLabel
+				.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 60));
 		totalLabel.setForeground(CommonData.DARK_FONT_COLOR);
 
 		// Add labels to the container.

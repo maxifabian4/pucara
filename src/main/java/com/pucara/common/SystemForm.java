@@ -47,20 +47,25 @@ public class SystemForm extends JPanel {
 		return components.get(key);
 	}
 
-	public static JTextField applyUnselectedProperties(final JTextField inputBarcode) {
+	public static JTextField applyUnselectedProperties(
+			final JTextField inputBarcode) {
 		Border empty = new EmptyBorder(0, 0, 7, 0);
-		MatteBorder matteBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY);
-		inputBarcode.setBorder(BorderFactory.createCompoundBorder(empty, matteBorder));
+		MatteBorder matteBorder = BorderFactory.createMatteBorder(0, 0, 1, 0,
+				Color.LIGHT_GRAY);
+		inputBarcode.setBorder(BorderFactory.createCompoundBorder(empty,
+				matteBorder));
 		// inputBarcode.setForeground(Color.LIGHT_GRAY);
 
 		return inputBarcode;
 	}
 
-	public static JTextField applySelectedProperties(final JTextField inputBarcode) {
+	public static JTextField applySelectedProperties(
+			final JTextField inputBarcode) {
 		Border empty = new EmptyBorder(0, 0, 7, 0);
 		MatteBorder matteBorder = BorderFactory.createMatteBorder(0, 0, 2, 0,
 				CommonData.DEFAULT_SELECTION_COLOR);
-		inputBarcode.setBorder(BorderFactory.createCompoundBorder(empty, matteBorder));
+		inputBarcode.setBorder(BorderFactory.createCompoundBorder(empty,
+				matteBorder));
 		// inputBarcode.setForeground(CommonData.DARK_FONT_COLOR);
 
 		return inputBarcode;
@@ -103,12 +108,14 @@ public class SystemForm extends JPanel {
 		return values;
 	}
 
-	public void setActionListenerToComponent(String[] textFieldKeys, ActionListener listener) {
-		setActionListenerToComponent(textFieldKeys, listener, CommonData.EMPTY_STRING);
+	public void setActionListenerToComponent(String[] textFieldKeys,
+			ActionListener listener) {
+		setActionListenerToComponent(textFieldKeys, listener,
+				CommonData.EMPTY_STRING);
 	}
 
-	public void setActionListenerToComponent(String[] textFieldKeys, ActionListener listener,
-			String except) {
+	public void setActionListenerToComponent(String[] textFieldKeys,
+			ActionListener listener, String except) {
 		JTextField textField;
 
 		for (int i = 0; i < textFieldKeys.length; i++) {
@@ -120,9 +127,22 @@ public class SystemForm extends JPanel {
 		}
 	}
 
+	public void addCheckBox(String label, boolean byPercentage,
+			ActionListener actionListener) {
+		Component component = CommonUIComponents.createNewCheckBox(label,
+				byPercentage, actionListener);
+
+		components.put(label, component);
+
+		this.add(CommonUIComponents.createNewVerticalSeparatorBox(10));
+		this.add(component, Component.LEFT_ALIGNMENT);
+		this.add(CommonUIComponents.createNewVerticalSeparatorBox(10));
+	}
+
 	private void createComponentsForForm(String[] keys, String[] texts) {
 		for (int i = 0; i < keys.length; i++) {
-			this.add(createTextField(keys[i], texts[i]), Component.LEFT_ALIGNMENT);
+			this.add(createTextField(keys[i], texts[i]),
+					Component.LEFT_ALIGNMENT);
 		}
 	}
 
@@ -165,7 +185,8 @@ public class SystemForm extends JPanel {
 		JLabel label = CommonUIComponents.createLabelForm(labelText);
 		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		final JTextField textField = CommonUIComponents.createInputTextField(null, null);
+		final JTextField textField = CommonUIComponents.createInputTextField(
+				null, null);
 		textField.setText(textFieldText);
 		textField.setAlignmentX(Component.LEFT_ALIGNMENT);
 		textField.addFocusListener(new FocusListener() {
@@ -190,7 +211,8 @@ public class SystemForm extends JPanel {
 		return container;
 	}
 
-	private Component createButtonElementForm(String text, ActionListener actionPerformed) {
+	private Component createButtonElementForm(String text,
+			ActionListener actionPerformed) {
 		JPanel container = new JPanel();
 
 		container.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);

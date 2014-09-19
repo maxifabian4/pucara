@@ -38,14 +38,11 @@ public class ProductStockCellRenderer extends JPanel implements
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 
-		// ListStockProduct entry = (ListStockProduct) value;
 		Product entry = (Product) value;
 
 		JLabel description = new JLabel(entry.getDescription());
 		JLabel barcode = new JLabel(entry.getBarcode());
-		// JLabel price = new JLabel(entry.getPrice());
-		JLabel price = new JLabel(Utilities.truncateDecimal(entry.getCost(), 2)
-				.toString());
+		JLabel price = new JLabel(entry.getInitialCost().toString());
 		JLabel stock = new JLabel(String.format("%s elemento/s en stock",
 				entry.getStock()));
 

@@ -42,8 +42,8 @@ public class PurchaseView extends ProductView {
 	private SystemForm expenseForm;
 	private SystemPopup popup;
 	private String[] textFieldKeys = { "descripci\u00F3n", "costo" };
-	private String[] textFieldKeysUpdate = { "descripci\u00F3n", "precio", "porcentaje",
-			"stock m\u00EDnimo" };
+	private String[] textFieldKeysUpdate;
+	private boolean byPercentage;
 
 	public PurchaseView() {
 		purchaseController = new PurchaseController(this);
@@ -191,23 +191,46 @@ public class PurchaseView extends ProductView {
 	 * 
 	 */
 	public void displayPopup() {
-		String barcode = listOfPartialProducts.getSelectedBarcode(getSelectedIndex());
+		String barcode = listOfPartialProducts
+				.getSelectedBarcode(getSelectedIndex());
 		SearchProductRequest request = new SearchProductRequest(barcode, null);
-		Product selectedProduct = ProductService.existsProduct(request).getProducts().get(0);
+		Product selectedProduct = ProductService.existsProduct(request)
+				.getProducts().get(0);
+		String[] values;
 
-		String[] values = { selectedProduct.getDescription(), selectedProduct.getCost().toString(),
-				selectedProduct.getPercentage().toString(),
-				selectedProduct.getMinStock().toString() };
+		if (selectedProduct.getByPercentage()) {
+			values = new String[] { selectedProduct.getDescription(),
+					selectedProduct.getInitialCost().toString(),
+					selectedProduct.getPercentage().toString(),
+					selectedProduct.getMinStock().toString() };
+			textFieldKeysUpdate = new String[] { "descripci\u00F3n",
+					"costo inicial", "porcentaje", "stock m\u00EDnimo" };
+		} else {
+			values = new String[] { selectedProduct.getDescription(),
+					selectedProduct.getInitialCost().toString(),
+					selectedProduct.getFinalCost().toString(),
+					selectedProduct.getMinStock().toString() };
+			textFieldKeysUpdate = new String[] { "descripci\u00F3n",
+					"costo inicial", "costo final", "stock m\u00EDnimo" };
+		}
+		byPercentage = selectedProduct.getByPercentage();
+
 		popup = new SystemPopup(textFieldKeysUpdate, values);
 		popup.addKeyListener(purchaseController.createKeyListener());
-		popup.addKeyListenerAllFields(textFieldKeysUpdate, purchaseController.createKeyListener());
-		popup.addConfirmButton("Actualizar", purchaseController.createUpdateProductListener());
+		popup.addKeyListenerAllFields(textFieldKeysUpdate,
+				purchaseController.createKeyListener());
+		popup.addConfirmButton("Actualizar",
+				purchaseController.createUpdateProductListener());
 		popup.setActionListenerToComponent(textFieldKeysUpdate,
 				purchaseController.createUpdateProductListener());
 	}
 
 	public String getSelectedPurchaseBarcode() {
 		return listOfPartialProducts.getSelectedSaleBarcode(getSelectedIndex());
+	}
+
+	public boolean isByPercentage() {
+		return byPercentage;
 	}
 
 	/**
@@ -231,8 +254,8 @@ public class PurchaseView extends ProductView {
 	 *
 	 */
 	public void updateProductsList() {
-		listOfPartialProducts
-				.populateDataInTheList(purchaseController.generatePartialProductRows());
+		listOfPartialProducts.populateDataInTheList(purchaseController
+				.generatePartialProductRows());
 	}
 
 	/**
@@ -277,7 +300,8 @@ public class PurchaseView extends ProductView {
 		panelLeft.setLayout(new BorderLayout());
 		panelLeft.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 		Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		panelLeft.setPreferredSize(new Dimension(dim.width / 4 + dim.width / 8, 0));
+		panelLeft.setPreferredSize(new Dimension(dim.width / 4 + dim.width / 8,
+				0));
 
 		// Add page start panel containing input text field, form and potential
 		// list.
@@ -292,7 +316,8 @@ public class PurchaseView extends ProductView {
 		// Add a new-product form.
 		String[] values = { "", "" };
 		expenseForm = new SystemForm(textFieldKeys, values);
-		expenseForm.addConfirmButton("Agregar", purchaseController.createNewPurchaseListener());
+		expenseForm.addConfirmButton("Agregar",
+				purchaseController.createNewPurchaseListener());
 		expenseForm.setActionListenerToComponent(textFieldKeys,
 				purchaseController.createNewPurchaseListener());
 
@@ -302,7 +327,8 @@ public class PurchaseView extends ProductView {
 	private JPanel createPageStartPanel() {
 		JPanel pageStartPanel = new JPanel();
 		pageStartPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
-		pageStartPanel.setLayout(new BoxLayout(pageStartPanel, BoxLayout.Y_AXIS));
+		pageStartPanel
+				.setLayout(new BoxLayout(pageStartPanel, BoxLayout.Y_AXIS));
 
 		// Add text field for input with custom listeners.
 		inputBarcode = CommonUIComponents.createInputTextField(null,
@@ -322,14 +348,16 @@ public class PurchaseView extends ProductView {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				inputBarcode = SystemForm.applyUnselectedProperties(inputBarcode);
+				inputBarcode = SystemForm
+						.applyUnselectedProperties(inputBarcode);
 			}
 		});
 
 		pageStartPanel.add(inputBarcode, Component.LEFT_ALIGNMENT);
-		pageStartPanel.add(CommonUIComponents
-				.createNewVerticalSeparatorBox(CommonUIComponents.VERTICAL_STRUT_VALUE * 2),
-				Component.LEFT_ALIGNMENT);
+		pageStartPanel
+				.add(CommonUIComponents
+						.createNewVerticalSeparatorBox(CommonUIComponents.VERTICAL_STRUT_VALUE * 2),
+						Component.LEFT_ALIGNMENT);
 
 		return pageStartPanel;
 	}
@@ -346,13 +374,16 @@ public class PurchaseView extends ProductView {
 		centerContainer.setLayout(new BorderLayout());
 		centerContainer.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 		Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		centerContainer.setPreferredSize(new Dimension(dim.width / 4 + dim.width / 8, 0));
+		centerContainer.setPreferredSize(new Dimension(dim.width / 4
+				+ dim.width / 8, 0));
 
 		// Create list of products.
 		listOfPartialProducts = new SwingListPanel(products, this,
 				new ProductPurchaseCellRenderer());
-		listOfPartialProducts.addListKeyListener(purchaseController.generateListKeyListener());
-		listOfPartialProducts.addListMouseListener(purchaseController.generateListMouseListener());
+		listOfPartialProducts.addListKeyListener(purchaseController
+				.generateListKeyListener());
+		listOfPartialProducts.addListMouseListener(purchaseController
+				.generateListMouseListener());
 
 		centerContainer.add(listOfPartialProducts, BorderLayout.CENTER);
 		this.add(centerContainer, BorderLayout.CENTER);

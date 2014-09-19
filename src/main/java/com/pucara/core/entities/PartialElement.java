@@ -8,23 +8,17 @@ public class PartialElement extends Product {
 	private Integer quantity;
 
 	public PartialElement(Product product, Integer quantity) {
-		super(product.getBarcode(), product.getDescription(), product.getCost(), product
-				.getPercentage(), product.getDate(), product.getStock(), product.getMinStock(),
-				product.getCategoryId());
+		super(product.getBarcode(), product.getDescription(), product
+				.getInitialCost(), product.getFinalCost(), product
+				.getPercentage(), product.getDate(), product.getStock(),
+				product.getMinStock(), product.getCategoryId(), product
+						.getByPercentage());
 		this.quantity = quantity;
 	}
-
-	// public Product getProduct() {
-	// return super;
-	// }
 
 	public Integer getQuantity() {
 		return quantity;
 	}
-
-	// public String getBarcode() {
-	// return product.getBarcode();
-	// }
 
 	public void increaseProduct() {
 		quantity++;
@@ -36,6 +30,7 @@ public class PartialElement extends Product {
 
 	@Override
 	public String toString() {
-		return String.format("PRODUCT: %s QUANTITY: %d", super.toString(), quantity);
+		return String.format("PRODUCT: %s QUANTITY: %d", super.toString(),
+				quantity);
 	}
 }

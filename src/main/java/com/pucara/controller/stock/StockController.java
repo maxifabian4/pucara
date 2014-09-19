@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import com.pucara.common.CommonData;
+import com.pucara.core.entities.Product;
 import com.pucara.core.request.NewProductRequest;
 import com.pucara.core.request.SearchProductRequest;
 import com.pucara.core.request.UpdateProductRequest;
@@ -41,33 +43,32 @@ public class StockController {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				VerifyProductValuesRequest productValuesRequest = new VerifyProductValuesRequest(
-						stockView.getProductBarcode().toLowerCase(), stockView
-								.getProductDescription().toLowerCase(), stockView.getProductCost(),
-						stockView.getProductPercentage(), "0", stockView.getProductStockMin(),
-						stockView.getProductCategory());
+				VerifyProductValuesRequest productValuesRequest = createNewRequest();
 
 				ProductResponse validatedProductResponse = ProductService
 						.getValidatedProduct(productValuesRequest);
 
 				if (validatedProductResponse.wasSuccessful()) {
+					Product product = validatedProductResponse.getProduct();
+					product.setByPercentage(stockView.getNewByPercentage());
 					ProductResponse newProductResponse = ProductService
-							.addProduct(new NewProductRequest(validatedProductResponse.getProduct()));
+							.addProduct(new NewProductRequest(product));
 
 					if (!newProductResponse.wasSuccessful()) {
-						JOptionPane.showMessageDialog(null, newProductResponse.getErrorsMessages()
-								.get(0).getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, newProductResponse
+								.getErrorsMessages().get(0).getMessage(),
+								"Error", JOptionPane.ERROR_MESSAGE);
 					} else {
 						// It takes more than 2 seconds trying to update the
 						// partial list, when more than 100 products are stored.
 						stockView.updateProductsList();
-						// stockView.selectProductElementOnList(productValuesRequest.getBarcode());
 						stockView.cleanAllForm();
 						stockView.setFocusOnInput();
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, validatedProductResponse
-							.getErrorsMessages().get(0).getMessage(), "Error",
+					JOptionPane.showMessageDialog(null,
+							validatedProductResponse.getErrorsMessages().get(0)
+									.getMessage(), "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -83,23 +84,28 @@ public class StockController {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String productFromView = stockView.getProductToFind().toLowerCase();
+				String productFromView = stockView.getProductToFind()
+						.toLowerCase();
 
 				ProductListResponse barcodeResponse = ProductService
-						.existsProduct(new SearchProductRequest(productFromView, null));
+						.existsProduct(new SearchProductRequest(
+								productFromView, null));
 
 				if (barcodeResponse.wasSuccessful()) {
 					stockView.selectProductElementOnList(productFromView);
 					stockView.cleanSearchField();
 				} else {
 					ProductListResponse descResponse = ProductService
-							.existsProduct(new SearchProductRequest(null, productFromView));
+							.existsProduct(new SearchProductRequest(null,
+									productFromView));
 
 					if (descResponse.wasSuccessful()) {
-						stockView.selectProductElementsOnList(descResponse.getProducts());
+						stockView.selectProductElementsOnList(descResponse
+								.getProducts());
 					} else {
-						JOptionPane.showMessageDialog(null, descResponse.getErrorsMessages().get(0)
-								.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, descResponse
+								.getErrorsMessages().get(0).getMessage(),
+								"Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -114,39 +120,35 @@ public class StockController {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// Retrieve information from the stock view.
-				List<String> popupComponents = stockView.getPopupComponents();
-
-				String description = popupComponents.get(0);
-				String cost = popupComponents.get(1);
-				String percentage = popupComponents.get(2);
-				String minStock = popupComponents.get(3);
-				String barcode = stockView.getSelectedBarcode();
-
-				VerifyProductValuesRequest productValuesRequest = new VerifyProductValuesRequest(
-						barcode, description, cost, percentage, "0", minStock, null);
+				VerifyProductValuesRequest productValuesRequest = createRequestForUpdate();
 
 				ProductResponse validatedProductResponse = ProductService
 						.getValidatedProduct(productValuesRequest);
 
 				if (validatedProductResponse.wasSuccessful()) {
+					Product product = validatedProductResponse.getProduct();
+					product.setByPercentage(stockView.isByPercentage());
 					// Call the service.
 					ProductResponse response = ProductService
-							.updateProduct(new UpdateProductRequest(validatedProductResponse
-									.getProduct()));
+							.updateProduct(new UpdateProductRequest(
+									validatedProductResponse.getProduct()));
 
 					if (response.wasSuccessful()) {
 						stockView.closeUpdatePopup();
 						stockView.updateProductsList();
-						stockView.selectProductElementOnList(barcode);
+						stockView
+								.selectProductElementOnList(productValuesRequest
+										.getBarcode());
 					} else {
-						JOptionPane.showMessageDialog(null, "No se ha modificado el producto ...",
+						JOptionPane.showMessageDialog(null,
+								"No se ha modificado el producto ...",
 								"Advertencia!", JOptionPane.WARNING_MESSAGE);
 					}
 				} else {
 					stockView.closeUpdatePopup();
-					JOptionPane.showMessageDialog(null, validatedProductResponse
-							.getErrorsMessages().get(0).getMessage(), "Error",
+					JOptionPane.showMessageDialog(null,
+							validatedProductResponse.getErrorsMessages().get(0)
+									.getMessage(), "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -205,6 +207,61 @@ public class StockController {
 			public void mouseExited(MouseEvent e) {
 			}
 		};
+	}
+
+	public ActionListener createCostListener() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				stockView.changeTextFields();
+			}
+		};
+	}
+
+	private VerifyProductValuesRequest createNewRequest() {
+		if (stockView.isByPercentage()) {
+			return new VerifyProductValuesRequest(stockView.getProductBarcode()
+					.toLowerCase(), stockView.getProductDescription()
+					.toLowerCase(), stockView.getInitialCost(), "0.0",
+					stockView.getProductPercentage(), "0",
+					stockView.getProductStockMin(),
+					stockView.getProductCategory());
+		} else {
+			String initialCost = stockView.getInitialCost();
+			String finalCost = stockView.getFinalCost();
+
+			return new VerifyProductValuesRequest(stockView.getProductBarcode()
+					.toLowerCase(), stockView.getProductDescription()
+					.toLowerCase(), initialCost, finalCost, "0.0", "0",
+					stockView.getProductStockMin(),
+					stockView.getProductCategory());
+		}
+	}
+
+	private VerifyProductValuesRequest createRequestForUpdate() {
+		// Retrieve information from the stock view.
+		List<String> popupComponents = stockView.getPopupComponents();
+		String description, initialCost, finalCost, percentage, minStock, barcode;
+
+		if (stockView.isByPercentage()) {
+			description = popupComponents.get(0);
+			initialCost = popupComponents.get(1);
+			percentage = popupComponents.get(2);
+			minStock = popupComponents.get(3);
+			barcode = stockView.getSelectedBarcode();
+
+			return new VerifyProductValuesRequest(barcode, description,
+					initialCost, "0.0", percentage, "0", minStock, null);
+		} else {
+			description = popupComponents.get(0);
+			initialCost = popupComponents.get(1);
+			finalCost = popupComponents.get(2);
+			minStock = popupComponents.get(3);
+			barcode = stockView.getSelectedBarcode();
+
+			return new VerifyProductValuesRequest(barcode, description,
+					initialCost, finalCost, "0.0", "0", minStock, null);
+		}
 	}
 
 }

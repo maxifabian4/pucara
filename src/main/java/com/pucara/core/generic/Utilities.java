@@ -39,8 +39,8 @@ public class Utilities {
 		String final_string = "";
 
 		for (int x = 0; x < size; x++) {
-			final_string = final_string.concat(Character.toString(alphanumeric.charAt(rng
-					.nextInt(alphanumeric.length()))));
+			final_string = final_string.concat(Character.toString(alphanumeric
+					.charAt(rng.nextInt(alphanumeric.length()))));
 		}
 
 		return final_string;
@@ -59,8 +59,8 @@ public class Utilities {
 		String final_string = "";
 
 		for (int x = 0; x < size; x++) {
-			final_string = final_string.concat(Character.toString(alphanumeric.charAt(rng
-					.nextInt(alphanumeric.length()))));
+			final_string = final_string.concat(Character.toString(alphanumeric
+					.charAt(rng.nextInt(alphanumeric.length()))));
 		}
 
 		return final_string;
@@ -83,13 +83,13 @@ public class Utilities {
 	 * @param product
 	 * @return double
 	 */
-	public static double getTotalProductPrice(Product product) {
-		double cost = product.getCost();
-		// int percentage = product.getPercentage();
-		// double division = (double) percentage / 100;
-
-		return cost;
-	}
+	// public static double getTotalProductPrice(Product product) {
+	// double cost = product.getCost();
+	// // int percentage = product.getPercentage();
+	// // double division = (double) percentage / 100;
+	//
+	// return cost;
+	// }
 
 	/**
 	 * 
@@ -98,8 +98,8 @@ public class Utilities {
 	 * @return
 	 */
 	public static double getProductGain(Product product, Integer count) {
-		double cost = product.getCost();
-		int percentage = product.getPercentage();
+		double cost = product.getInitialCost();
+		double percentage = product.getPercentage();
 		double division = (double) percentage / 100;
 
 		return cost * division * count;
@@ -110,15 +110,22 @@ public class Utilities {
 	 * @param product
 	 * @return
 	 */
-	public static Double getProductSalePrice(Product product) {
-		double cost = product.getCost();
-		int percentage = product.getPercentage();
-		double division = (double) percentage / 100;
-		Double value = cost * division + cost;
+	// public static Double getProductSalePrice(Product product) {
+	// double cost = product.getCost();
+	// int percentage = product.getPercentage();
+	// double division = (double) percentage / 100;
+	// Double value = cost * division + cost;
+	//
+	// return truncateDecimal(value, 2).doubleValue();
+	// }
 
-		return truncateDecimal(value, 2).doubleValue();
-	}
-
+	/**
+	 * REMOVE or make it obsolete!!!
+	 * 
+	 * @param x
+	 * @param numberofDecimals
+	 * @return
+	 */
 	public static BigDecimal truncateDecimal(double x, int numberofDecimals) {
 		if (x > 0) {
 			return new BigDecimal(String.valueOf(x)).setScale(numberofDecimals,
@@ -135,7 +142,8 @@ public class Utilities {
 	 * @param allCategories
 	 * @return List<String[]>
 	 */
-	public static List<String[]> generateArrayRowsCategory(List<Category> allCategories) {
+	public static List<String[]> generateArrayRowsCategory(
+			List<Category> allCategories) {
 		List<String[]> rows = new ArrayList<String[]>();
 
 		for (Category category : allCategories) {
@@ -152,24 +160,27 @@ public class Utilities {
 	 * @param allProducts
 	 * @return List<String[]>
 	 */
-	public static List<String[]> generateArrayRowsProduct(List<Product> allProducts) {
-		List<String[]> rows = new ArrayList<String[]>();
-
-		for (Product product : allProducts) {
-			rows.add(new String[] { product.getBarcode().toString(),
-					product.getDescription().toString(), product.getStock().toString(),
-					truncateDecimal(product.getCost(), 2).toString() });
-		}
-
-		return rows;
-	}
+	// public static List<String[]> generateArrayRowsProduct(
+	// List<Product> allProducts) {
+	// List<String[]> rows = new ArrayList<String[]>();
+	//
+	// for (Product product : allProducts) {
+	// rows.add(new String[] { product.getBarcode().toString(),
+	// product.getDescription().toString(),
+	// product.getStock().toString(),
+	// truncateDecimal(product.getCost(), 2).toString() });
+	// }
+	//
+	// return rows;
+	// }
 
 	/**
 	 * 
 	 * @param allPurchases
 	 * @return
 	 */
-	public static List<String[]> generateArrayRowsPurchase(List<PurchaseDailyReport> allPurchases) {
+	public static List<String[]> generateArrayRowsPurchase(
+			List<PurchaseDailyReport> allPurchases) {
 		List<String[]> rows = new ArrayList<String[]>();
 
 		for (PurchaseDailyReport element : allPurchases) {
@@ -186,7 +197,8 @@ public class Utilities {
 	 * @param allCategories
 	 * @return Category[]
 	 */
-	public static Category[] generateArrayCategories(List<Category> allCategories) {
+	public static Category[] generateArrayCategories(
+			List<Category> allCategories) {
 		Category[] array = new Category[allCategories.size()];
 
 		for (int i = 0; i < allCategories.size(); i++) {
@@ -225,7 +237,8 @@ public class Utilities {
 	 */
 	public static int getStringWidth(String value) {
 		AffineTransform affinetransform = new AffineTransform();
-		FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
+		FontRenderContext frc = new FontRenderContext(affinetransform, true,
+				true);
 		Font font = new Font(CommonData.GENERAL_FONT, Font.PLAIN,
 				CommonData.GENERAL_FONT_SIZE_TABLE);
 
@@ -245,7 +258,8 @@ public class Utilities {
 			p = Runtime.getRuntime().exec(command);
 			p.waitFor();
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					p.getInputStream()));
 
 			String line = "";
 			while ((line = reader.readLine()) != null) {
@@ -281,8 +295,9 @@ public class Utilities {
 
 			return resultValue;
 		} catch (NumberFormatException nfe) {
-//			CustomLogger.log(nfe, LoggerLevel.DEGUB,
-//					String.format(CommonMessageError.INVALID_DOUBLE_FORMAT, stringValue));
+			// CustomLogger.log(nfe, LoggerLevel.DEGUB,
+			// String.format(CommonMessageError.INVALID_DOUBLE_FORMAT,
+			// stringValue));
 
 			return null;
 		}

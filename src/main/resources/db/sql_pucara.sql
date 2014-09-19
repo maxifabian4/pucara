@@ -24,15 +24,21 @@ ALTER TABLE category AUTO_INCREMENT = 100;
 
 DROP TABLE IF EXISTS product;
 
+/*
+	a. Add a new column final cost and rename 'cost' by 'initial cost'.
+	b. Change percentage as double.
+*/
 CREATE TABLE product (
 	`barcode` VARCHAR(15) NOT NULL,
 	`description` VARCHAR(50) NOT NULL UNIQUE,
-	`cost` DOUBLE NOT NULL,
-	`percentage` SMALLINT NOT NULL,
+	`initialcost` DOUBLE NOT NULL,
+	`finalcost` DOUBLE NOT NULL,
+	`percentage` DOUBLE NOT NULL,
 	`date` DATETIME NOT NULL,
 	`stock` SMALLINT DEFAULT '0' NOT NULL,
 	`minstock` SMALLINT DEFAULT '0' NOT NULL,
 	`categoryid` SMALLINT NOT NULL,
+	`bypercentage` TINYINT(1) NOT NULL,
 
 	PRIMARY KEY (`barcode`)
 );
@@ -220,11 +226,11 @@ INSERT INTO category (`name`, `description`) VALUES ('juguetería', 'descripció
 INSERT INTO category (`name`, `description`) VALUES ('librería', 'descripción de categoría');
 
 /* Populate 'product' table. */
-INSERT INTO product (`barcode`, `description`, `cost`, `percentage`, `date`, `stock`, `minstock`, `categoryid`) VALUES ('7790040994904', 'chocolate blanco arcor 30gr', '9.25', 30, NOW(), 1000, 5, 101);
-INSERT INTO product (`barcode`, `description`, `cost`, `percentage`, `date`, `stock`, `minstock`, `categoryid`) VALUES ('7792216994357', 'sal dos anclas 200gr', '7.50', 20, '2014-01-22 12:15:11', 1000, 5, 100);
-INSERT INTO product (`barcode`, `description`, `cost`, `percentage`, `date`, `stock`, `minstock`, `categoryid`) VALUES ('7792218734238', 'alcohol en gel moscu 50ml', '4.00', 35, '2014-01-12 10:10:08', 1000, 5, 100);
-INSERT INTO product (`barcode`, `description`, `cost`, `percentage`, `date`, `stock`, `minstock`, `categoryid`) VALUES ('7798152010109', 'block a5 80 hojas 210x148', '3.00', 35, '2014-01-12 10:10:08', 1000, 5, 103);
-INSERT INTO product (`barcode`, `description`, `cost`, `percentage`, `date`, `stock`, `minstock`, `categoryid`) VALUES ('7798010921646', 'cuaderno maraton 42 hojas rayadas', '5.5', 35, '2014-01-12 10:10:08', 1000, 5, 103);
+INSERT INTO product (`barcode`, `description`, `initialcost`, `finalcost`, `percentage`, `date`, `stock`, `minstock`, `categoryid`, `bypercentage`) VALUES ('7790040994904', 'chocolate blanco arcor 30gr', '9.25', '12.025', 30, NOW(), 1000, 5, 101, 1);
+INSERT INTO product (`barcode`, `description`, `initialcost`, `finalcost`, `percentage`, `date`, `stock`, `minstock`, `categoryid`, `bypercentage`) VALUES ('7792216994357', 'sal dos anclas 200gr', '7.50', '9.0', 20, '2014-01-22 12:15:11', 1000, 5, 100, 1);
+INSERT INTO product (`barcode`, `description`, `initialcost`, `finalcost`, `percentage`, `date`, `stock`, `minstock`, `categoryid`, `bypercentage`) VALUES ('7792218734238', 'alcohol en gel moscu 50ml', '4.00', '5.40', 35, '2014-01-12 10:10:08', 1000, 5, 100, 1);
+INSERT INTO product (`barcode`, `description`, `initialcost`, `finalcost`, `percentage`, `date`, `stock`, `minstock`, `categoryid`, `bypercentage`) VALUES ('7798152010109', 'block a5 80 hojas 210x148', '3.00', '4.05', 35, '2014-01-12 10:10:08', 1000, 5, 103, 1);
+INSERT INTO product (`barcode`, `description`, `initialcost`, `finalcost`, `percentage`, `date`, `stock`, `minstock`, `categoryid`, `bypercentage`) VALUES ('7798010921646', 'cuaderno maraton 42 hojas rayadas', '5.5', '7.425', 35, '2014-01-12 10:10:08', 1000, 5, 103, 1);
 
 /* Populate 'supplier' table. */
 INSERT INTO supplier (`description`, `address`, `phone`) VALUES ('distribuidora los gordos', 'puan 2342', '2281422343');
@@ -287,7 +293,7 @@ INSERT INTO purchase (`description`, `date`, `expense`) VALUES ('boleta de luz m
 
 /* Create views */
 CREATE VIEW product_view AS
-SELECT barcode, description, stock, minstock, (cost + cost * percentage/100) AS final_cost FROM product;
+SELECT barcode, description, stock, minstock, finalcost FROM product;
 
 CREATE VIEW daily_report_view AS
 select SUM(s.gain) AS gain, SUM(sd.number_of_products) AS count from x_sale_sale_detail xssd inner join sale s on (xssd.sale_id = s.id) inner join sale_detail sd on (sd.id = xssd.sale_detail_id) where DATE(s.date) = DATE(NOW());

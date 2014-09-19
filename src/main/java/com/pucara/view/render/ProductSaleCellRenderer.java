@@ -23,8 +23,7 @@ import com.pucara.core.generic.Utilities;
  * 
  * @author Maximiliano Fabian
  */
-public class ProductSaleCellRenderer extends JPanel implements
-		ListCellRenderer {
+public class ProductSaleCellRenderer extends JPanel implements ListCellRenderer {
 	private static final long serialVersionUID = 1L;
 
 	public ProductSaleCellRenderer() {
@@ -42,8 +41,7 @@ public class ProductSaleCellRenderer extends JPanel implements
 
 		JLabel description = new JLabel(entry.getDescription());
 		JLabel barcode = new JLabel(entry.getBarcode());
-		JLabel price = new JLabel(Utilities.getProductSalePrice(entry)
-				.toString());
+		JLabel price = new JLabel(entry.getFinalCost().toString());
 		JLabel stock = new JLabel(String.format("%s elemento/s en stock",
 				entry.getStock()));
 

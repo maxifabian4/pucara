@@ -11,6 +11,18 @@ public class NewProductRequest {
 	private Product product;
 
 	public NewProductRequest(Product product) {
+		if (product.getByPercentage()) {
+			Double finalCost = product.getInitialCost()
+					* (product.getPercentage() / 100)
+					+ product.getInitialCost();
+			// We need to truncate finalCost.
+			product.setFinalCost(finalCost);
+		} else {
+			Double percentage = (product.getFinalCost() - product
+					.getInitialCost()) / product.getInitialCost();
+			product.setPercentage(percentage * 100);
+		}
+
 		this.product = product;
 	}
 

@@ -130,10 +130,9 @@ public class CommonData {
 	 * Resources path.
 	 */
 	public static final String IMAGES_PATH = "/images/";
-	// public static final String DB_PROPERTIES_PATH =
-	// "src/main/resources/properties/db.properties";
+	public static final String DB_PROPERTIES_PATH = "src/main/resources/properties/db.properties";
 	// public static final String REPORT_PROPERTIES_PATH =
 	// "src/main/resources/properties/report.properties";
-	public static final String DB_PROPERTIES_PATH = "/home/pucara/Programas/pucara/properties/db.properties";
+//	public static final String DB_PROPERTIES_PATH = "/home/pucara/Programas/pucara/properties/db.properties";
 	public static final String REPORT_PROPERTIES_PATH = "/home/pucara/Programas/pucara/properties/report.properties";
 }

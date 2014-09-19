@@ -63,8 +63,10 @@ public abstract class AbstractTransactionService {
 		if (productsCollection.removeProduct(barcode)) {
 			return new Response();
 		} else {
-			return new Response(new ErrorMessage(ErrorType.ELEMENT_NOT_FOUND, String.format(
-					CommonMessageError.BARCODE_NOT_FOUND, barcode)));
+			return new Response(
+					new ErrorMessage(ErrorType.ELEMENT_NOT_FOUND,
+							String.format(CommonMessageError.BARCODE_NOT_FOUND,
+									barcode)));
 		}
 	}
 
@@ -124,13 +126,15 @@ public abstract class AbstractTransactionService {
 	 * @param minStock
 	 *            Product minimal stock
 	 */
-	public void updatePartialElement(String barcode, String description, String cost,
-			String percentage, String minStock) {
+	public void updatePartialElement(String barcode, String description,
+			String initialCost, String finalCost, String percentage,
+			String minStock) {
 		Product product = productsCollection.getProductBy(barcode);
 
 		product.setDescription(description);
-		product.setCost(Double.valueOf(cost));
-		product.setPercentage(Integer.valueOf(percentage));
+		product.setInitialCost(Double.valueOf(initialCost));
+		product.setFinalCost(Double.valueOf(finalCost));
+		product.setPercentage(Double.valueOf(percentage));
 		product.setMinStock(Integer.valueOf(minStock));
 	}
 

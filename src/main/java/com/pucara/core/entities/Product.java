@@ -8,12 +8,14 @@ package com.pucara.core.entities;
 public class Product {
 	private String barcode;
 	private String description;
-	private Double cost;
-	private Integer percentage;
+	private Double initialCost;
+	private Double finalCost;
+	private Double percentage;
 	private String date;
 	private Integer stock;
 	private Integer minStock;
 	private Integer categoryId;
+	private boolean byPercentage;
 
 	/**
 	 * Class constructor. Allows to create an instance based of their arguments.
@@ -27,17 +29,19 @@ public class Product {
 	 * @param minStock
 	 * @param categoryId
 	 */
-	public Product(String barcode, String description, Double cost,
-			Integer percentage, String date, Integer stock, Integer minStock,
-			Integer categoryId) {
+	public Product(String barcode, String description, Double initialCost,
+			Double finalCost, Double percentage, String date, Integer stock,
+			Integer minStock, Integer categoryId, boolean byPercentage) {
 		this.barcode = barcode;
 		this.description = description;
-		this.cost = cost;
+		this.initialCost = initialCost;
+		this.finalCost = finalCost;
 		this.percentage = percentage;
 		this.date = date;
 		this.stock = stock;
 		this.minStock = minStock;
 		this.categoryId = categoryId;
+		this.byPercentage = byPercentage;
 	}
 
 	/**
@@ -66,12 +70,21 @@ public class Product {
 	}
 
 	/**
-	 * Allows to add a cost to a product.
+	 * Allows to add an initial cost to a product.
 	 * 
 	 * @param cost
 	 */
-	public void setCost(Double cost) {
-		this.cost = cost;
+	public void setInitialCost(Double initialCost) {
+		this.initialCost = initialCost;
+	}
+
+	/**
+	 * Allows to add a final cost to a product.
+	 * 
+	 * @param cost
+	 */
+	public void setFinalCost(Double finalCost) {
+		this.finalCost = finalCost;
 	}
 
 	/**
@@ -79,7 +92,7 @@ public class Product {
 	 * 
 	 * @param percentage
 	 */
-	public void setPercentage(Integer percentage) {
+	public void setPercentage(Double percentage) {
 		this.percentage = percentage;
 	}
 
@@ -120,6 +133,14 @@ public class Product {
 	}
 
 	/**
+	 * 
+	 * @param byPercentage
+	 */
+	public void setByPercentage(boolean byPercentage) {
+		this.byPercentage = byPercentage;
+	}
+
+	/**
 	 * Returns the barcode value associated to a product.
 	 * 
 	 * @return String
@@ -138,20 +159,29 @@ public class Product {
 	}
 
 	/**
-	 * Returns the cost associated to a product.
+	 * Returns the initial cost associated to a product.
 	 * 
 	 * @return Double
 	 */
-	public Double getCost() {
-		return this.cost;
+	public Double getInitialCost() {
+		return this.initialCost;
+	}
+
+	/**
+	 * Returns the final cost associated to a product.
+	 * 
+	 * @return Double
+	 */
+	public Double getFinalCost() {
+		return this.finalCost;
 	}
 
 	/**
 	 * Returns the percentage associated to a product.
 	 * 
-	 * @return Integer
+	 * @return Double
 	 */
-	public Integer getPercentage() {
+	public Double getPercentage() {
 		return this.percentage;
 	}
 
@@ -192,6 +222,14 @@ public class Product {
 	}
 
 	/**
+	 * 
+	 * @return boolean
+	 */
+	public boolean getByPercentage() {
+		return this.byPercentage;
+	}
+
+	/**
 	 * Allows to get the main attributes of the product.
 	 * 
 	 * @return String
@@ -199,7 +237,7 @@ public class Product {
 	@Override
 	public String toString() {
 		return "[" + this.barcode + "] - " + "[" + this.description + " - "
-				+ this.cost + "]";
+				+ this.finalCost + "]";
 	}
 
 }
