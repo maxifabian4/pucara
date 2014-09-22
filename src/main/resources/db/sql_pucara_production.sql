@@ -27,12 +27,14 @@ DROP TABLE IF EXISTS product;
 CREATE TABLE product (
 	`barcode` VARCHAR(15) NOT NULL,
 	`description` VARCHAR(50) NOT NULL UNIQUE,
-	`cost` DOUBLE NOT NULL,
-	`percentage` SMALLINT NOT NULL,
+	`initialcost` DOUBLE NOT NULL,
+	`finalcost` DOUBLE NOT NULL,
+	`percentage` DOUBLE NOT NULL,
 	`date` DATETIME NOT NULL,
 	`stock` SMALLINT DEFAULT '0' NOT NULL,
 	`minstock` SMALLINT DEFAULT '0' NOT NULL,
 	`categoryid` SMALLINT NOT NULL,
+	`bypercentage` TINYINT(1) NOT NULL,
 
 	PRIMARY KEY (`barcode`)
 );
@@ -222,7 +224,7 @@ INSERT INTO category (`name`, `description`) VALUES ('librería', 'descripción 
 
 /* Create views */
 CREATE VIEW product_view AS
-SELECT barcode, description, stock, minstock, (cost + cost * percentage/100) AS final_cost FROM product;
+SELECT barcode, description, stock, minstock, finalcost FROM product;
 
 CREATE VIEW daily_report_view AS
 select SUM(s.gain) AS gain, SUM(sd.number_of_products) AS count from x_sale_sale_detail xssd inner join sale s on (xssd.sale_id = s.id) inner join sale_detail sd on (sd.id = xssd.sale_detail_id) where DATE(s.date) = DATE(NOW());
