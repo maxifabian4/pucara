@@ -23,7 +23,8 @@ public class SwingListPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JList productList;
 
-	public SwingListPanel(Object[] items, ProductView view, ListCellRenderer render) {
+	public SwingListPanel(Object[] items, ProductView view,
+			ListCellRenderer render) {
 		/**
 		 * Allows apply look and feel properties on scrolls.
 		 */
@@ -151,7 +152,8 @@ public class SwingListPanel extends JPanel {
 	 */
 	private void applyLookAndFeelProperties() {
 		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager
+					.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 
 			UIManager.getLookAndFeelDefaults().put(
 					"ScrollBar:ScrollBarThumb[Enabled].backgroundPainter",
@@ -163,9 +165,12 @@ public class SwingListPanel extends JPanel {
 					"ScrollBar:ScrollBarTrack[Enabled].backgroundPainter",
 					new FillPainter(CommonData.GENERAL_BACKGROUND_COLOR));
 
-			UIManager.getLookAndFeelDefaults().put("ScrollBar:\"ScrollBar.button\".size", 0);
-			UIManager.getLookAndFeelDefaults().put("ScrollBar.decrementButtonGap", 0);
-			UIManager.getLookAndFeelDefaults().put("ScrollBar.incrementButtonGap", 0);
+			UIManager.getLookAndFeelDefaults().put(
+					"ScrollBar:\"ScrollBar.button\".size", 0);
+			UIManager.getLookAndFeelDefaults().put(
+					"ScrollBar.decrementButtonGap", 0);
+			UIManager.getLookAndFeelDefaults().put(
+					"ScrollBar.incrementButtonGap", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
