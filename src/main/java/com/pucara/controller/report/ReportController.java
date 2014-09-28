@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,6 +24,7 @@ import com.pucara.core.charts.BarChart;
 import com.pucara.core.charts.ChartFactory;
 import com.pucara.core.charts.LineChart;
 import com.pucara.core.entities.report.ChartInfoElement;
+import com.pucara.core.entities.report.PurchaseDailyReport;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.response.ChartInfoResponse;
 import com.pucara.core.response.PurchaseDailyReportResponse;
@@ -41,7 +43,7 @@ public class ReportController {
 			.getLogger(ReportController.class);
 	private ReportView reportView;
 	private String[] keys = new String[] { "productos vendidos", "ganancia",
-			"costo del día", "caja inicial", "ganancia total" };
+			"costo del d\u00EDa", "caja inicial", "ganancia total" };
 	private String[] values;
 	private Double initialBox;
 
@@ -84,7 +86,7 @@ public class ReportController {
 				panel.add(lbl);
 				panel.add(txt);
 				int selectedOption = JOptionPane
-						.showOptionDialog(null, panel, "The Title",
+						.showOptionDialog(null, panel, "Ingresar caja inicial",
 								JOptionPane.NO_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null, options,
 								options[0]);
@@ -99,9 +101,55 @@ public class ReportController {
 		};
 	}
 
+	public MouseListener createMouseListenerForDailyExpenses() {
+		return new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				JLabel label = (JLabel) e.getSource();
+				label.setForeground(CommonData.DARK_FONT_COLOR);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				JLabel label = (JLabel) e.getSource();
+				label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				label.setForeground(CommonData.DEFAULT_SELECTION_COLOR);
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				PurchaseDailyReportResponse response = ReportService
+						.getDailyPurchaseReport();
+
+				if (!response.wasSuccessful()) {
+					JOptionPane.showMessageDialog(null,
+							"Error tratando de obtener los gastos de sistema.");
+				} else {
+					List<PurchaseDailyReport> list = response
+							.getPurchasesList();
+
+					if (list.isEmpty()) {
+						JOptionPane.showMessageDialog(null,
+								"No hay gastos en el d�a actual.");
+					} else {
+						reportView.displayExpenseInformationList(list);
+					}
+				}
+			}
+		};
+	}
+
 	public JFreeChart createLineChartByYear() {
 		LineChart lineChart = (LineChart) ChartFactory.createChart(
-				ChartFactory.LINECHART, "Ganancia/Costo por año", "pesos",
+				ChartFactory.LINECHART, "Ganancia/Costo por a\u00F1o", "pesos",
 				"meses");
 
 		ChartInfoResponse gainResponse = ReportService.getChartByYearInfo(2014,
@@ -129,8 +177,8 @@ public class ReportController {
 
 	public JFreeChart createBarChartByDay() {
 		BarChart barchart = (BarChart) ChartFactory.createChart(
-				ChartFactory.BARCHART, "Ganancia/Costo por día", "días",
-				"pesos");
+				ChartFactory.BARCHART, "Ganancia/Costo por d\u00EDa",
+				"d\u00EDas", "pesos");
 
 		ChartInfoResponse gainResponse = ReportService.getChartByDayInfo(-6,
 				CommonData.GAIN_BY_DAY);
@@ -173,7 +221,7 @@ public class ReportController {
 	}
 
 	public void addYearInfoToPanel(DynamicReportPanel byYearPanel) {
-		JLabel titleLabel = CommonUIComponents.createReportLabel("año",
+		JLabel titleLabel = CommonUIComponents.createReportLabel("a\u00F1o",
 				Font.PLAIN, 17, CommonData.DARK_FONT_COLOR);
 		titleLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 

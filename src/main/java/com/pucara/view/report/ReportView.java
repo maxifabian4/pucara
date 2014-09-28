@@ -1,12 +1,19 @@
 package com.pucara.view.report;
 
+import java.awt.Dimension;
+import java.util.List;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import org.jfree.chart.JFreeChart;
 
 import com.pucara.common.CommonData;
+import com.pucara.common.SwingListPanel;
+import com.pucara.common.SystemPopup;
 import com.pucara.controller.report.ReportController;
+import com.pucara.core.entities.report.PurchaseDailyReport;
+import com.pucara.view.render.ExpensesCellRenderer;
 
 /**
  * 
@@ -42,6 +49,8 @@ public class ReportView extends JPanel {
 		reportController.addDailyInfoToPanel(byDayPanel);
 		byDayPanel.addMouseListenerToComponent("caja inicial",
 				reportController.createMouseListenerForInitialBox());
+		byDayPanel.addMouseListenerToComponent("costo del d\u00EDa",
+				reportController.createMouseListenerForDailyExpenses());
 
 		JFreeChart chartByYear = reportController.createLineChartByYear();
 		byYearPanel = new DynamicReportPanel(chartByYear, true);
@@ -57,6 +66,12 @@ public class ReportView extends JPanel {
 	public void updateViewInformation(String[] keys, String[] values) {
 		byDayPanel.updateLabelValues(keys, values);
 		this.revalidate();
+	}
+
+	public void displayExpenseInformationList(List<PurchaseDailyReport> list) {
+		SwingListPanel panel = new SwingListPanel(list.toArray(), null,
+				new ExpensesCellRenderer());
+		SystemPopup popup = new SystemPopup(panel);
 	}
 
 }

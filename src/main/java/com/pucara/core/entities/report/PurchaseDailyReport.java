@@ -1,5 +1,6 @@
 package com.pucara.core.entities.report;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -9,13 +10,15 @@ import java.util.List;
 public class PurchaseDailyReport {
 	private double expense;
 	private String purchaseDescription;
+	private Timestamp date;
 	private List<SimplePurchaseElement> products;
 
 	public PurchaseDailyReport(double expense, String purchaseDescription,
-			List<SimplePurchaseElement> products) {
+			Timestamp date, List<SimplePurchaseElement> products) {
 		super();
 		this.expense = expense;
 		this.purchaseDescription = purchaseDescription;
+		this.date = date;
 		this.products = products;
 	}
 
@@ -25,6 +28,10 @@ public class PurchaseDailyReport {
 
 	public String getPurchaseDescription() {
 		return purchaseDescription;
+	}
+
+	public Timestamp getDate() {
+		return date;
 	}
 
 	public List<SimplePurchaseElement> getProducts() {

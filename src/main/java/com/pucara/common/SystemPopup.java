@@ -1,6 +1,8 @@
 package com.pucara.common;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
@@ -9,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * 
@@ -19,6 +22,12 @@ public class SystemPopup extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private SystemForm form;
 
+	/**
+	 * Should be removed ...
+	 * 
+	 * @param keys
+	 * @param values
+	 */
 	public SystemPopup(String[] keys, String[] values) {
 		/**
 		 * Apply properties to the frame.
@@ -36,11 +45,29 @@ public class SystemPopup extends JFrame {
 		addComponentsToFrame(keys, values);
 	}
 
+	/**
+	 * Use it as a generic mode.
+	 */
+	public SystemPopup(Component component) {
+		/**
+		 * Apply properties to the frame.
+		 */
+		applyFrameProperties();
+
+		/**
+		 * Configure a flow layout to the frame.
+		 */
+		configureFrameLayout();
+
+		this.getContentPane().add(component);
+	}
+
 	public void addConfirmButton(String key, ActionListener actionListener) {
 		form.addConfirmButton(key, actionListener);
 	}
 
-	public void addKeyListenerAllFields(String[] keys, KeyListener createKeyListener) {
+	public void addKeyListenerAllFields(String[] keys,
+			KeyListener createKeyListener) {
 		form.addKeyListenerAllFields(keys, createKeyListener);
 	}
 
@@ -48,7 +75,8 @@ public class SystemPopup extends JFrame {
 		return form.getAllTextFieldValues(keys);
 	}
 
-	public void setActionListenerToComponent(String[] textFieldKeys, ActionListener listener) {
+	public void setActionListenerToComponent(String[] textFieldKeys,
+			ActionListener listener) {
 		form.setActionListenerToComponent(textFieldKeys, listener);
 	}
 

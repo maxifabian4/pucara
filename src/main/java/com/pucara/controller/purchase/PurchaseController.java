@@ -254,8 +254,8 @@ public class PurchaseController {
 						purchaseService.updatePartialElement(
 								productValuesRequest.getBarcode(),
 								productValuesRequest.getDescription(),
-								productValuesRequest.getFinalCost(),
 								productValuesRequest.getInitialCost(),
+								productValuesRequest.getFinalCost(),
 								productValuesRequest.getPercentage(),
 								productValuesRequest.getMinStock());
 						purchaseView.updateProductsList();
