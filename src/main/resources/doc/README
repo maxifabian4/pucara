@@ -141,7 +141,7 @@ SERVICIOS A IMPLEMENTAR
 		  FROM sale 
 		  WHERE YEAR(date) = 2014 
 		  GROUP BY monthname(from_days(to_days(date))) 
-		  ORDER BY date DESC 
+		  ORDER BY date DESC
 
 [Servicio de Compras/Gastos/Salidas]
 

@@ -42,7 +42,8 @@ public class ProductStockCellRenderer extends JPanel implements
 
 		JLabel description = new JLabel(entry.getDescription());
 		JLabel barcode = new JLabel(entry.getBarcode());
-		JLabel price = new JLabel(entry.getInitialCost().toString());
+		JLabel price = new JLabel(String.format("%s [%s]", entry
+				.getInitialCost().toString(), entry.getFinalCost().toString()));
 		JLabel stock = new JLabel(String.format("%s elemento/s en stock",
 				entry.getStock()));
 

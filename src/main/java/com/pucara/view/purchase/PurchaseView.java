@@ -390,4 +390,9 @@ public class PurchaseView extends ProductView {
 		this.validate();
 	}
 
+	@Override
+	public void cleanSummaryLabel() {
+		
+	}
+
 }

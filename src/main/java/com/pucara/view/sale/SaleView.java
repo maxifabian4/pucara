@@ -243,4 +243,9 @@ public class SaleView extends ProductView {
 
 		this.add(panelLeft, BorderLayout.LINE_START);
 	}
+
+	@Override
+	public void cleanSummaryLabel() {
+
+	}
 }

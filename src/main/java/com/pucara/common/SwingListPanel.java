@@ -2,12 +2,16 @@ package com.pucara.common;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.SystemColor;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
@@ -15,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 import com.pucara.core.entities.Product;
 import com.pucara.core.generic.FillPainter;
@@ -22,6 +27,7 @@ import com.pucara.core.generic.FillPainter;
 public class SwingListPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JList productList;
+	private JLabel summaryLabel;
 
 	public SwingListPanel(Object[] items, ProductView view,
 			ListCellRenderer render) {
@@ -52,6 +58,7 @@ public class SwingListPanel extends JPanel {
 		sbH.setPreferredSize(new Dimension(7, 0));
 
 		add(pane, BorderLayout.CENTER);
+		add(createSelectedItemsLabel(), BorderLayout.PAGE_END);
 	}
 
 	public void selectBarcodeOnList(String barcode) {
@@ -75,10 +82,16 @@ public class SwingListPanel extends JPanel {
 
 		productList.setSelectedIndices(indices);
 		productList.ensureIndexIsVisible(indices[indices.length - 1]);
+
+		// Enable label summary.
+		summaryLabel.setVisible(true);
+		summaryLabel.setText(String.format("productos seleccionados: %d",
+				products.size()));
 	}
 
 	public void cleanSelection() {
 		productList.clearSelection();
+		summaryLabel.setVisible(false);
 	}
 
 	public void populateDataInTheList(Object[] listObjectProducts) {
@@ -123,6 +136,10 @@ public class SwingListPanel extends JPanel {
 
 	public void requestFocusOnList() {
 		productList.requestFocus();
+	}
+
+	public void cleanSummaryLabel() {
+		summaryLabel.setVisible(false);
 	}
 
 	private int getIndex(String barcode) {
@@ -174,6 +191,26 @@ public class SwingListPanel extends JPanel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	private Component createSelectedItemsLabel() {
+		// Create panel.
+		JPanel container = new JPanel();
+		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+		container.setBorder(new EmptyBorder(10, 0, 0, 0));
+		container.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+
+		summaryLabel = CommonUIComponents
+				.createLabelForm(CommonData.EMPTY_STRING);
+		summaryLabel.setVisible(false);
+
+		container.add(summaryLabel);
+
+		return container;
 	}
 
 }

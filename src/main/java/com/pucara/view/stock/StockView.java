@@ -48,10 +48,10 @@ public class StockView extends ProductView {
 	private boolean byPercentage;
 
 	public StockView() {
-		byPercentage = true;
+		byPercentage = false;
 		stockController = new StockController(this);
 		// applyPanelProperties();
-		generateContent(textFieldKeys);
+		generateContent(textFieldPlusKeys);
 	}
 
 	/**
@@ -339,6 +339,11 @@ public class StockView extends ProductView {
 
 		container.add(listOfProducts, BorderLayout.CENTER);
 		this.add(container, BorderLayout.CENTER);
+	}
+
+	@Override
+	public void cleanSummaryLabel() {
+		listOfProducts.cleanSummaryLabel();
 	}
 
 }

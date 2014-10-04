@@ -5,7 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class ProductView extends JPanel {
+public abstract class ProductView extends JPanel {
 	private static final long serialVersionUID = 1L;
 	protected JTextField inputBarcode;
 	private int selectedBarcodeIndex;
@@ -27,4 +27,6 @@ public class ProductView extends JPanel {
 	public void setFocusOnInput() {
 		inputBarcode.requestFocusInWindow();
 	}
+	
+	public abstract void cleanSummaryLabel();
 }
