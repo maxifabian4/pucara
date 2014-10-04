@@ -16,9 +16,8 @@ class SharedListSelectionHandler implements ListSelectionListener {
 
 		if (view != null) {
 			view.saveSelectedIndex(lsm.getMinSelectionIndex());
+			view.cleanSummaryLabel();
 		}
-
-		view.cleanSummaryLabel();
 	}
 
 }
