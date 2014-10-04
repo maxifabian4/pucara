@@ -433,7 +433,9 @@ public class MySqlAccess {
 	 */
 	public static ResultSet getAllProducts() {
 		return performStatement("SELECT barcode, description, initialcost, finalcost, percentage, date, stock, minstock, categoryid, bypercentage FROM "
-				+ getPropertyFromFile("db.database") + ".product");
+				+ getPropertyFromFile("db.database")
+				+ ".product "
+				+ "ORDER BY  `product`.`description` ASC");
 	}
 
 	/**

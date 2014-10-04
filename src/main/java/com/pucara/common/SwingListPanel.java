@@ -95,12 +95,7 @@ public class SwingListPanel extends JPanel {
 	}
 
 	public void populateDataInTheList(Object[] listObjectProducts) {
-		DefaultListModel listModel = new DefaultListModel();
-		productList.setModel(listModel);
-
-		for (Object product : listObjectProducts) {
-			listModel.addElement(product);
-		}
+		productList.setListData(listObjectProducts);
 	}
 
 	public void addListMouseListener(MouseListener listener) {
@@ -201,7 +196,7 @@ public class SwingListPanel extends JPanel {
 		// Create panel.
 		JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-		container.setBorder(new EmptyBorder(10, 0, 0, 0));
+		container.setBorder(new EmptyBorder(20, 0, 0, 0));
 		container.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 
 		summaryLabel = CommonUIComponents

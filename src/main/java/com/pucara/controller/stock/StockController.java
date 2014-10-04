@@ -61,7 +61,7 @@ public class StockController {
 					} else {
 						// It takes more than 2 seconds trying to update the
 						// partial list, when more than 100 products are stored.
-						// stockView.updateProductsList();
+						stockView.updateProductsList();
 						stockView.cleanAllForm();
 						stockView.setFocusOnInput();
 					}
@@ -135,7 +135,7 @@ public class StockController {
 
 					if (response.wasSuccessful()) {
 						stockView.closeUpdatePopup();
-						// stockView.updateProductsList();
+						stockView.updateProductsList();
 						stockView
 								.selectProductElementOnList(productValuesRequest
 										.getBarcode());
