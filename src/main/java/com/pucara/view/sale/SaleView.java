@@ -248,4 +248,5 @@ public class SaleView extends ProductView {
 	public void cleanSummaryLabel() {
 
 	}
+
 }

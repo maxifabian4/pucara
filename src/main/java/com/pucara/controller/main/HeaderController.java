@@ -20,8 +20,6 @@ import com.pucara.view.stock.StockView;
 public class HeaderController {
 	private HeaderView headerView;
 	private MainView mainView;
-	private PurchaseView purchaseView;
-	private SaleView saleView;
 
 	public HeaderController(HeaderView headerView, MainView mainView) {
 		this.headerView = headerView;
@@ -93,14 +91,9 @@ public class HeaderController {
 			public void mouseClicked(MouseEvent arg0) {
 				mainView.removeCentralPanel();
 
-				if (saleView == null) {
-					saleView = new SaleView();
-				}
-
+				SaleView saleView = new SaleView();
 				mainView.addNewCentralPanel(saleView);
 				headerView.changeToBold(headerView.getSaleLabel());
-				saleView.repaint();
-				saleView.revalidate();
 				saleView.setFocusOnInput();
 			}
 
@@ -179,14 +172,9 @@ public class HeaderController {
 			public void mouseClicked(MouseEvent arg0) {
 				mainView.removeCentralPanel();
 
-				if (purchaseView == null) {
-					purchaseView = new PurchaseView();
-				}
-
+				PurchaseView purchaseView = new PurchaseView();
 				mainView.addNewCentralPanel(purchaseView);
 				headerView.changeToBold(headerView.getPurchaseLabel());
-				purchaseView.repaint();
-				purchaseView.revalidate();
 				purchaseView.setFocusOnInput();
 			}
 

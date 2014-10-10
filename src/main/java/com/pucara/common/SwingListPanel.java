@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -42,7 +43,6 @@ public class SwingListPanel extends JPanel {
 		productList = new JList(items);
 		productList.setCellRenderer(render);
 		productList.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
-
 		productList.getSelectionModel().addListSelectionListener(
 				new SharedListSelectionHandler(view));
 

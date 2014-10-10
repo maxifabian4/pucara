@@ -5,9 +5,13 @@ import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
 
 import com.pucara.common.CommonData;
+import com.pucara.view.purchase.PurchaseView;
+import com.pucara.view.report.ReportView;
 import com.pucara.view.sale.SaleView;
+import com.pucara.view.stock.StockView;
 import com.pucara.core.database.MySqlAccess;
 
 /**
@@ -24,7 +28,8 @@ public class MainView extends JFrame {
 	 */
 	public void removeCentralPanel() {
 		BorderLayout bl = (BorderLayout) this.getContentPane().getLayout();
-		this.getContentPane().remove(bl.getLayoutComponent(BorderLayout.CENTER));
+		this.getContentPane()
+				.remove(bl.getLayoutComponent(BorderLayout.CENTER));
 	}
 
 	/**
@@ -79,7 +84,7 @@ public class MainView extends JFrame {
 	 * 
 	 */
 	public void closeApplication() {
-//		MySqlAccess.stopMySqlServer();
+		// MySqlAccess.stopMySqlServer();
 		System.exit(0);
 	}
 
@@ -100,7 +105,8 @@ public class MainView extends JFrame {
 	 * Initializes the frame's content.
 	 */
 	private void initialize() {
-		this.getContentPane().setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+		this.getContentPane()
+				.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 
 		// Initialize a new connection to the database ...
 		MySqlAccess.establishConection();
