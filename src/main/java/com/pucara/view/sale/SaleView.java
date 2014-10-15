@@ -17,6 +17,7 @@ import com.pucara.common.ProductView;
 import com.pucara.common.SaleSummaryPanel;
 import com.pucara.common.SwingListPanel;
 import com.pucara.common.SystemForm;
+import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.controller.sale.SaleController;
 
 /**
@@ -34,8 +35,9 @@ public class SaleView extends ProductView {
 	private JPanel panelLeft;
 	private SaleSummaryPanel summaryPanel;
 
-	public SaleView() {
+	public SaleView(UpdatesSource subject) {
 		saleController = new SaleController(this);
+		subject.addObserver(saleController);
 		generateContent();
 	}
 

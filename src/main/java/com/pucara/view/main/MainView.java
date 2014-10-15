@@ -5,13 +5,10 @@ import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
 
 import com.pucara.common.CommonData;
-import com.pucara.view.purchase.PurchaseView;
-import com.pucara.view.report.ReportView;
+import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.view.sale.SaleView;
-import com.pucara.view.stock.StockView;
 import com.pucara.core.database.MySqlAccess;
 
 /**
@@ -119,7 +116,7 @@ public class MainView extends JFrame {
 		this.getContentPane().add(headerView, HeaderView.ORIENTATION);
 
 		// Add the main panel by default ...
-		SaleView defaultPanel = new SaleView();
+		SaleView defaultPanel = new SaleView(new UpdatesSource());
 		this.getContentPane().add(defaultPanel, BorderLayout.CENTER);
 
 		// Create listeners for the frame ...

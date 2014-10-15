@@ -4,12 +4,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Observable;
+import java.util.Observer;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
+import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.request.SearchProductRequest;
 import com.pucara.core.response.ProductListResponse;
@@ -23,7 +25,7 @@ import com.pucara.view.sale.SaleView;
  * 
  * @author Maximiliano Fabian
  */
-public class SaleController {
+public class SaleController implements Observer {
 	private SaleView saleView;
 
 	public SaleController(SaleView saleView) {
@@ -36,17 +38,20 @@ public class SaleController {
 	 */
 	public void addProductToPartialList(String inputBarcodeText) {
 		if (inputBarcodeText.equals(CommonData.EMPTY_STRING)) {
-			JOptionPane.showConfirmDialog(null, CommonMessageError.BARCODE_DESCRIPTION_NO_DETECTED,
+			JOptionPane.showConfirmDialog(null,
+					CommonMessageError.BARCODE_DESCRIPTION_NO_DETECTED,
 					"Advertencia", JOptionPane.WARNING_MESSAGE);
 		} else {
 			Response response = SaleService.addProductToList(inputBarcodeText);
 
 			if (response.wasSuccessful()) {
-				saleView.addPartialListToPanel(SaleService.getPartialList().toArray());
+				saleView.addPartialListToPanel(SaleService.getPartialList()
+						.toArray());
 				saleView.cleanInputTextField();
 			} else {
-				JOptionPane.showMessageDialog(null, response.getErrorsMessages().get(0)
-						.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, response
+						.getErrorsMessages().get(0).getMessage(), "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -63,7 +68,8 @@ public class SaleController {
 				int caracter = e.getKeyChar();
 				String text = saleView.getBarcodeFromTextField();
 
-				if ((caracter <= 'z' && caracter >= 'a') && (caracter != '' && caracter != '')
+				if ((caracter <= 'z' && caracter >= 'a')
+						&& (caracter != '' && caracter != '')
 						|| caracter == ' ') {
 					text += e.getKeyChar();
 				}
@@ -73,7 +79,8 @@ public class SaleController {
 							.existsProduct(new SearchProductRequest(null, text));
 
 					if (descResponse.wasSuccessful()) {
-						saleView.addPotentialProductsOnList(descResponse.getProducts().toArray());
+						saleView.addPotentialProductsOnList(descResponse
+								.getProducts().toArray());
 					} else {
 						saleView.addPotentialProductsOnList(new Object[] {});
 					}
@@ -89,9 +96,11 @@ public class SaleController {
 				} else if (e.getKeyCode() == KeyEvent.VK_F5
 						&& SaleService.getTotalNumberOfProducts() > 0) {
 					Object[] options = { "Si", "No" };
-					int response = JOptionPane.showOptionDialog(null, "Desea completar la venta?",
-							"Confirmar venta ...", JOptionPane.YES_NO_OPTION,
-							JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+					int response = JOptionPane.showOptionDialog(null,
+							"Desea completar la venta?", "Confirmar venta ...",
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.WARNING_MESSAGE, null, options,
+							options[0]);
 
 					if (response == JOptionPane.YES_OPTION) {
 						Response performedSale = SaleService.makeASale();
@@ -100,7 +109,8 @@ public class SaleController {
 							cleanPartialList();
 						}
 					}
-				} else if (e.getKeyCode() == KeyEvent.VK_DOWN && saleView.isPotentialListPresent()) {
+				} else if (e.getKeyCode() == KeyEvent.VK_DOWN
+						&& saleView.isPotentialListPresent()) {
 					saleView.selectPotentialElement(0);
 				}
 			}
@@ -136,12 +146,15 @@ public class SaleController {
 					if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 						if (!saleView.isFocusOnTextField()) {
 							String barcode = saleView.getSelectedProduct();
-							int numberBeforeChange = SaleService.getNumberOfDistinctProducts();
+							int numberBeforeChange = SaleService
+									.getNumberOfDistinctProducts();
 
 							SaleService.decreaseRequiredProduct(barcode);
 
-							int numberAfterChange = SaleService.getNumberOfDistinctProducts();
-							saleView.updatePartialElements(SaleService.getPartialList().toArray());
+							int numberAfterChange = SaleService
+									.getNumberOfDistinctProducts();
+							saleView.updatePartialElements(SaleService
+									.getPartialList().toArray());
 
 							if (numberAfterChange == numberBeforeChange) {
 								saleView.selectPartialElementByBarcode(barcode);
@@ -162,9 +175,11 @@ public class SaleController {
 							&& SaleService.getTotalNumberOfProducts() > 0) {
 						Object[] options = { "Si", "No" };
 						int response = JOptionPane.showOptionDialog(null,
-								"Desea completar la venta?", "Confirmar venta ...",
-								JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null,
-								options, options[0]);
+								"Desea completar la venta?",
+								"Confirmar venta ...",
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.WARNING_MESSAGE, null, options,
+								options[0]);
 
 						if (response == JOptionPane.YES_OPTION) {
 							Response performedSale = SaleService.makeASale();
@@ -231,6 +246,11 @@ public class SaleController {
 				}
 			}
 		};
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		System.out.println("Sale: " + (String) arg);
 	}
 
 }

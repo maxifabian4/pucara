@@ -7,10 +7,12 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JOptionPane;
 
-import com.pucara.common.CommonData;
+import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.core.entities.Product;
 import com.pucara.core.request.NewProductRequest;
 import com.pucara.core.request.SearchProductRequest;
@@ -26,12 +28,13 @@ import com.pucara.view.stock.StockView;
  * 
  * @author Maximiliano
  */
-public class StockController {
-
+public class StockController implements Observer {
 	private StockView stockView;
+	private UpdatesSource subject;
 
-	public StockController(StockView stockView) {
+	public StockController(StockView stockView, UpdatesSource subject) {
 		this.stockView = stockView;
+		this.subject = subject;
 	}
 
 	/**
@@ -139,6 +142,7 @@ public class StockController {
 						stockView
 								.selectProductElementOnList(productValuesRequest
 										.getBarcode());
+						subject.catchUpdate(productValuesRequest.getBarcode());
 					} else {
 						JOptionPane.showMessageDialog(null,
 								"No se ha modificado el producto ...",
@@ -216,6 +220,11 @@ public class StockController {
 				stockView.changeTextFields();
 			}
 		};
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		System.out.println("Stock: " + (String) arg);
 	}
 
 	private VerifyProductValuesRequest createNewRequest() {

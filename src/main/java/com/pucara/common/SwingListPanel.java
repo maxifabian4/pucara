@@ -35,7 +35,7 @@ public class SwingListPanel extends JPanel {
 		/**
 		 * Allows apply look and feel properties on scrolls.
 		 */
-		applyLookAndFeelProperties();
+//		applyLookAndFeelProperties();
 
 		setLayout(new BorderLayout());
 		this.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);

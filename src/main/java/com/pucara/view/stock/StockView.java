@@ -21,6 +21,7 @@ import com.pucara.common.ProductView;
 import com.pucara.common.SwingListPanel;
 import com.pucara.common.SystemForm;
 import com.pucara.common.SystemPopup;
+import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.controller.stock.StockController;
 import com.pucara.core.entities.Category;
 import com.pucara.core.entities.Product;
@@ -47,9 +48,10 @@ public class StockView extends ProductView {
 			"costo inicial", "porcentaje", "stock m\u00EDnimo" };
 	private boolean byPercentage;
 
-	public StockView() {
+	public StockView(UpdatesSource subject) {
 		byPercentage = false;
-		stockController = new StockController(this);
+		stockController = new StockController(this, subject);
+		subject.addObserver(stockController);
 		// applyPanelProperties();
 		generateContent(textFieldPlusKeys);
 	}

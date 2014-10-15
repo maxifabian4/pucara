@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -21,6 +23,7 @@ import com.pucara.common.ProductView;
 import com.pucara.common.SwingListPanel;
 import com.pucara.common.SystemForm;
 import com.pucara.common.SystemPopup;
+import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.controller.purchase.PurchaseController;
 import com.pucara.core.entities.Product;
 import com.pucara.core.request.SearchProductRequest;
@@ -45,8 +48,9 @@ public class PurchaseView extends ProductView {
 	private String[] textFieldKeysUpdate;
 	private boolean byPercentage;
 
-	public PurchaseView() {
-		purchaseController = new PurchaseController(this);
+	public PurchaseView(UpdatesSource subject) {
+		this.purchaseController = new PurchaseController(this, subject);
+		subject.addObserver(this.purchaseController);
 		generateContent();
 	}
 
@@ -392,7 +396,8 @@ public class PurchaseView extends ProductView {
 
 	@Override
 	public void cleanSummaryLabel() {
-		
+		Observer a;
+		Observable b;
 	}
 
 }

@@ -7,6 +7,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JOptionPane;
 
@@ -15,6 +17,7 @@ import com.pucara.view.render.object.ListSalePotentialProduct;
 import com.pucara.view.render.object.ListSaleProduct;
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
+import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.core.entities.Product;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.request.SearchProductRequest;
@@ -30,13 +33,15 @@ import com.pucara.core.services.transaction.PurchaseService;
  * 
  * @author pucara
  */
-public class PurchaseController {
+public class PurchaseController implements Observer {
 	private PurchaseService purchaseService;
 	private PurchaseView purchaseView;
+	private UpdatesSource subject;
 
-	public PurchaseController(PurchaseView purchaseView) {
+	public PurchaseController(PurchaseView purchaseView, UpdatesSource subject) {
 		purchaseService = new PurchaseService();
 		this.purchaseView = purchaseView;
+		this.subject = subject;
 	}
 
 	public ActionListener createNewPurchaseListener() {
@@ -262,6 +267,7 @@ public class PurchaseController {
 						purchaseView
 								.selectProductElementOnList(productValuesRequest
 										.getBarcode());
+						subject.catchUpdate(productValuesRequest.getBarcode());
 					} else {
 						JOptionPane.showMessageDialog(null,
 								"No se ha modificado el producto ...",
@@ -444,6 +450,11 @@ public class PurchaseController {
 			return new VerifyProductValuesRequest(barcode, description,
 					initialCost, finalCost, "0.0", "0", minStock, null);
 		}
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		System.out.println("Purchase: " + (String) arg1);
 	}
 
 }
