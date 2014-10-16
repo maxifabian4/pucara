@@ -55,6 +55,10 @@ public abstract class AbstractTransactionService {
 	public Response decreaseRequiredProduct(String barcode) {
 		return productsCollection.decreaseQuantityProduct(barcode);
 	}
+	
+	public Response increaseRequiredProduct(String barcode, int n) {
+		return productsCollection.increaseQuantityProduct(barcode, n);
+	}
 
 	/**
 	 * Removes a product from the partial list.

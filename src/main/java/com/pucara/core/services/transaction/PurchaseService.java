@@ -138,5 +138,5 @@ public class PurchaseService extends AbstractTransactionService {
 
 		return Utilities.truncateDecimal(price, 2);
 	}
-	
+
 }

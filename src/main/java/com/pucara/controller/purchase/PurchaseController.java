@@ -10,7 +10,10 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import com.pucara.view.purchase.PurchaseView;
 import com.pucara.view.render.object.ListSalePotentialProduct;
@@ -27,7 +30,6 @@ import com.pucara.core.response.ProductListResponse;
 import com.pucara.core.response.ProductResponse;
 import com.pucara.core.response.Response;
 import com.pucara.core.services.product.ProductService;
-import com.pucara.core.services.sale.SaleService;
 import com.pucara.core.services.transaction.PurchaseService;
 
 /**
@@ -299,9 +301,10 @@ public class PurchaseController implements Observer {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getID() == KeyEvent.KEY_PRESSED) {
+					String barcode = purchaseView.getSelectedProduct();
+
 					if (e.getKeyCode() == KeyEvent.VK_MINUS) {
 						if (!purchaseView.isFocusOnTextField()) {
-							String barcode = purchaseView.getSelectedProduct();
 							int numberBeforeChange = purchaseService
 									.getNumberOfDistinctProducts();
 
@@ -334,9 +337,35 @@ public class PurchaseController implements Observer {
 						purchaseView.updateCostField(purchaseService
 								.getTotalValue());
 					} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
-						String barcode = purchaseView.getSelectedProduct();
 						addProductToPartialList(barcode);
 						purchaseView.selectPartialElementByBarcode(barcode);
+					} else if (e.getKeyCode() == KeyEvent.VK_F6) {
+						String[] options = { "OK" };
+						JPanel panel = new JPanel();
+						JLabel lbl = new JLabel("cantidad de productos: ");
+						JTextField txt = new JTextField("100");
+						panel.add(lbl);
+						panel.add(txt);
+						int selectedOption = JOptionPane.showOptionDialog(null,
+								panel, "Ingresar catidad de productos",
+								JOptionPane.NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options,
+								options[0]);
+
+						if (selectedOption == 0) {
+							Integer n = Utilities
+									.getIntegerValue(txt.getText());
+
+							if (n != null) {
+								purchaseService.increaseRequiredProduct(
+										barcode, n);
+								purchaseView
+										.updatePartialElements(purchaseService
+												.getPartialList().toArray());
+								purchaseView.updateCostField(purchaseService
+										.getTotalValue());
+							}
+						}
 					}
 				}
 			}
@@ -374,8 +403,6 @@ public class PurchaseController implements Observer {
 		return new KeyListener() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				// if enter button is pressed in keyboard, then show
-				// "Enter Button pressed" message
 			}
 
 			@Override
@@ -387,8 +414,6 @@ public class PurchaseController implements Observer {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				// To change body of implemented methods use File | Settings |
-				// File Templates.
 			}
 		};
 	}

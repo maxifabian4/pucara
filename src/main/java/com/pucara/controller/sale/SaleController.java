@@ -7,7 +7,10 @@ import java.awt.event.MouseListener;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
@@ -143,9 +146,9 @@ public class SaleController implements Observer {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getID() == KeyEvent.KEY_PRESSED) {
+					String barcode = saleView.getSelectedProduct();
 					if (e.getKeyCode() == KeyEvent.VK_MINUS) {
 						if (!saleView.isFocusOnTextField()) {
-							String barcode = saleView.getSelectedProduct();
 							int numberBeforeChange = SaleService
 									.getNumberOfDistinctProducts();
 
@@ -165,13 +168,10 @@ public class SaleController implements Observer {
 							}
 						}
 					} else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-						SaleService.removeProductFromList(saleView
-								.getSelectedProduct());
+						SaleService.removeProductFromList(barcode);
 						saleView.updatePartialElements(SaleService
 								.getPartialList().toArray());
 					} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
-						String barcode = saleView.getSelectedProduct();
-
 						if (!barcode.contains("@")) {
 							addProductToPartialList(barcode);
 							saleView.selectPartialElementByBarcode(barcode);
@@ -193,6 +193,29 @@ public class SaleController implements Observer {
 								cleanPartialList();
 							} else {
 								// TODO Show a message with the error !!!!
+							}
+						}
+					} else if (e.getKeyCode() == KeyEvent.VK_F6) {
+						String[] options = { "OK" };
+						JPanel panel = new JPanel();
+						JLabel lbl = new JLabel("cantidad de productos: ");
+						JTextField txt = new JTextField("100");
+						panel.add(lbl);
+						panel.add(txt);
+						int selectedOption = JOptionPane.showOptionDialog(null,
+								panel, "Ingresar catidad de productos",
+								JOptionPane.NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options,
+								options[0]);
+
+						if (selectedOption == 0) {
+							Integer n = Utilities
+									.getIntegerValue(txt.getText());
+
+							if (n != null) {
+								SaleService.increaseRequiredProduct(barcode, n);
+								saleView.updatePartialElements(SaleService
+										.getPartialList().toArray());
 							}
 						}
 					}

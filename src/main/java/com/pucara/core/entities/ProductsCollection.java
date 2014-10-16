@@ -147,11 +147,23 @@ public class ProductsCollection {
 		String productsResult = "";
 
 		for (PartialElement element : products) {
-			productsResult += String
-					.format("[%s, %d]", element.getBarcode(), element.getQuantity());
+			productsResult += String.format("[%s, %d]", element.getBarcode(),
+					element.getQuantity());
 		}
 
 		return productsResult;
+	}
+
+	public Response increaseQuantityProduct(String barcode, int n) {
+		PartialElement existingProduct = alreadyExists(barcode);
+
+		if (existingProduct != null) {
+			existingProduct.increaseProduct(n);
+			return new Response();
+		} else {
+			return new Response(new ErrorMessage(ErrorType.ELEMENT_NOT_FOUND,
+					CommonMessageError.ELEMENT_NOT_FOUND + " - " + barcode));
+		}
 	}
 
 }

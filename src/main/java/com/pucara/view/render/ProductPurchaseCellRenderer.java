@@ -17,7 +17,6 @@ import javax.swing.border.EmptyBorder;
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonUIComponents;
 import com.pucara.core.entities.PartialElement;
-import com.pucara.core.generic.Utilities;
 
 /**
  * 

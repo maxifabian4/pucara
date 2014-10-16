@@ -6,20 +6,14 @@ import java.awt.geom.AffineTransform;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
 
 import com.pucara.common.CommonData;
-import com.pucara.common.CommonMessageError;
 import com.pucara.core.entities.Category;
 import com.pucara.core.entities.Product;
 import com.pucara.core.entities.report.PurchaseDailyReport;
@@ -311,10 +305,16 @@ public class Utilities {
 
 			return resultValue;
 		} catch (NumberFormatException nfe) {
-			// CustomLogger.log(nfe, LoggerLevel.DEGUB,
-			// String.format(CommonMessageError.INVALID_DOUBLE_FORMAT,
-			// stringValue));
+			return null;
+		}
+	}
 
+	public static Integer getIntegerValue(String stringValue) {
+		try {
+			Integer resultValue = Integer.valueOf(stringValue.trim());
+
+			return resultValue;
+		} catch (NumberFormatException nfe) {
 			return null;
 		}
 	}

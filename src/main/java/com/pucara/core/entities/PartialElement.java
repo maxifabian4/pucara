@@ -20,6 +20,10 @@ public class PartialElement extends Product {
 		return quantity;
 	}
 
+	public void increaseProduct(int n) {
+		quantity = n;
+	}
+
 	public void increaseProduct() {
 		quantity++;
 	}
@@ -33,4 +37,5 @@ public class PartialElement extends Product {
 		return String.format("PRODUCT: %s QUANTITY: %d", super.toString(),
 				quantity);
 	}
+
 }

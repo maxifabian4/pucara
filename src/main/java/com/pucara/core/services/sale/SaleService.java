@@ -397,4 +397,8 @@ public class SaleService {
 		}
 	}
 
+	public static void increaseRequiredProduct(String barcode, Integer n) {
+		productsCollection.increaseQuantityProduct(barcode, n);
+	}
+
 }

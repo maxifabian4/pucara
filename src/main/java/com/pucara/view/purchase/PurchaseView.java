@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -396,8 +394,6 @@ public class PurchaseView extends ProductView {
 
 	@Override
 	public void cleanSummaryLabel() {
-		Observer a;
-		Observable b;
 	}
 
 }
