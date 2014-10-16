@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
 import com.pucara.core.database.MySqlAccess;
 import com.pucara.core.entities.PartialElement;
@@ -253,6 +254,26 @@ public class SaleService {
 		return matcher.lookingAt();
 	}
 
+	public static void updateProductFromList(String barcode) {
+		if (productsCollection.alreadyExists(barcode) != null) {
+			Product partialProduct = productsCollection.getProductBy(barcode);
+
+			ProductListResponse responseFromDB = MySqlAccess
+					.findProductByCondition(String.format(
+							CommonData.PRODUCT_WHERE_BARCODE, barcode));
+
+			if (responseFromDB.wasSuccessful()) {
+				Product productFromDB = responseFromDB.getProducts().get(0);
+				partialProduct.setDescription(productFromDB.getDescription());
+				partialProduct.setInitialCost(productFromDB.getInitialCost());
+				partialProduct.setFinalCost(productFromDB.getFinalCost());
+				partialProduct.setPercentage(productFromDB.getPercentage());
+				partialProduct.setStock(productFromDB.getStock());
+				partialProduct.setMinStock(productFromDB.getMinStock());
+			}
+		}
+	}
+
 	/**
 	 * Returns the gain of a sale. SHOULD BE ABSTRACT !!!
 	 * 
@@ -375,4 +396,5 @@ public class SaleService {
 			return null;
 		}
 	}
+
 }

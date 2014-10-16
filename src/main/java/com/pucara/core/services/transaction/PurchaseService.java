@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
 import com.pucara.core.database.MySqlAccess;
+import com.pucara.core.entities.Product;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.request.SearchProductRequest;
 import com.pucara.core.response.ByIdResponse;
@@ -137,5 +138,5 @@ public class PurchaseService extends AbstractTransactionService {
 
 		return Utilities.truncateDecimal(price, 2);
 	}
-
+	
 }

@@ -250,7 +250,8 @@ public class SaleController implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("Sale: " + (String) arg);
+		SaleService.updateProductFromList((String) arg);
+		saleView.updatePartialElements(SaleService.getPartialList().toArray());
 	}
 
 }

@@ -412,6 +412,12 @@ public class PurchaseController implements Observer {
 		};
 	}
 
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		purchaseService.updateProductFromList((String) arg1);
+		purchaseView.updateProductsList();
+	}
+
 	/**
 	 * 
 	 * @param description
@@ -450,11 +456,6 @@ public class PurchaseController implements Observer {
 			return new VerifyProductValuesRequest(barcode, description,
 					initialCost, finalCost, "0.0", "0", minStock, null);
 		}
-	}
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		System.out.println("Purchase: " + (String) arg1);
 	}
 
 }

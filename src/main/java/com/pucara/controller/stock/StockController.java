@@ -224,7 +224,7 @@ public class StockController implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("Stock: " + (String) arg);
+		stockView.updateProductsList();
 	}
 
 	private VerifyProductValuesRequest createNewRequest() {

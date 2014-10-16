@@ -2,12 +2,15 @@ package com.pucara.core.services.transaction;
 
 import java.util.List;
 
+import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
+import com.pucara.core.database.MySqlAccess;
 import com.pucara.core.entities.PartialElement;
 import com.pucara.core.entities.Product;
 import com.pucara.core.entities.ProductsCollection;
 import com.pucara.core.response.ErrorMessage;
 import com.pucara.core.response.ErrorType;
+import com.pucara.core.response.ProductListResponse;
 import com.pucara.core.response.Response;
 
 /**
@@ -145,6 +148,32 @@ public abstract class AbstractTransactionService {
 	 */
 	public Integer getNumberOfDistinctProducts() {
 		return productsCollection.getSize();
+	}
+
+	/**
+	 * Updates a partial product from the database searching by the barcode.
+	 * 
+	 * @param barcode
+	 *            Product barcode.
+	 */
+	public void updateProductFromList(String barcode) {
+		if (productsCollection.alreadyExists(barcode) != null) {
+			Product partialProduct = productsCollection.getProductBy(barcode);
+
+			ProductListResponse responseFromDB = MySqlAccess
+					.findProductByCondition(String.format(
+							CommonData.PRODUCT_WHERE_BARCODE, barcode));
+
+			if (responseFromDB.wasSuccessful()) {
+				Product productFromDB = responseFromDB.getProducts().get(0);
+				partialProduct.setDescription(productFromDB.getDescription());
+				partialProduct.setInitialCost(productFromDB.getInitialCost());
+				partialProduct.setFinalCost(productFromDB.getFinalCost());
+				partialProduct.setPercentage(productFromDB.getPercentage());
+				partialProduct.setStock(productFromDB.getStock());
+				partialProduct.setMinStock(productFromDB.getMinStock());
+			}
+		}
 	}
 
 }
