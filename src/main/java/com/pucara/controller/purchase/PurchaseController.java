@@ -27,6 +27,7 @@ import com.pucara.core.response.ProductListResponse;
 import com.pucara.core.response.ProductResponse;
 import com.pucara.core.response.Response;
 import com.pucara.core.services.product.ProductService;
+import com.pucara.core.services.sale.SaleService;
 import com.pucara.core.services.transaction.PurchaseService;
 
 /**
@@ -298,7 +299,7 @@ public class PurchaseController implements Observer {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getID() == KeyEvent.KEY_PRESSED) {
-					if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					if (e.getKeyCode() == KeyEvent.VK_MINUS) {
 						if (!purchaseView.isFocusOnTextField()) {
 							String barcode = purchaseView.getSelectedProduct();
 							int numberBeforeChange = purchaseService
@@ -325,6 +326,13 @@ public class PurchaseController implements Observer {
 								purchaseService.cleanPartialList();
 							}
 						}
+					} else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+						purchaseService.removeProductFromList(purchaseView
+								.getSelectedProduct());
+						purchaseView.updatePartialElements(purchaseService
+								.getPartialList().toArray());
+						purchaseView.updateCostField(purchaseService
+								.getTotalValue());
 					} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
 						String barcode = purchaseView.getSelectedProduct();
 						addProductToPartialList(barcode);

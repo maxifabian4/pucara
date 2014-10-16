@@ -143,7 +143,7 @@ public class SaleController implements Observer {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getID() == KeyEvent.KEY_PRESSED) {
-					if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					if (e.getKeyCode() == KeyEvent.VK_MINUS) {
 						if (!saleView.isFocusOnTextField()) {
 							String barcode = saleView.getSelectedProduct();
 							int numberBeforeChange = SaleService
@@ -164,6 +164,11 @@ public class SaleController implements Observer {
 								saleView.selectPartialElement(CommonData.FIRST_ROW);
 							}
 						}
+					} else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+						SaleService.removeProductFromList(saleView
+								.getSelectedProduct());
+						saleView.updatePartialElements(SaleService
+								.getPartialList().toArray());
 					} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
 						String barcode = saleView.getSelectedProduct();
 
