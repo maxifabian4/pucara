@@ -191,6 +191,7 @@ public class StockView extends ProductView {
 				stockController.createUpdateProductListener());
 		popup.setActionListenerToComponent(textFieldKeysUpdate,
 				stockController.createUpdateProductListener());
+		popup.setVisible(true);
 	}
 
 	/**

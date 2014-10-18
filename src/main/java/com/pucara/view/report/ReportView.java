@@ -1,6 +1,5 @@
 package com.pucara.view.report;
 
-import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -72,6 +71,7 @@ public class ReportView extends JPanel {
 		SwingListPanel panel = new SwingListPanel(list.toArray(), null,
 				new ExpensesCellRenderer());
 		SystemPopup popup = new SystemPopup(panel);
+		popup.setVisible(true);
 	}
 
 }

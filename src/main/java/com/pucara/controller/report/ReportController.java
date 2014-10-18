@@ -42,8 +42,8 @@ public class ReportController {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ReportController.class);
 	private ReportView reportView;
-	private String[] keys = new String[] { "productos vendidos", "ganancia",
-			"costo del d\u00EDa", "caja inicial", "ganancia total" };
+	private String[] keys = new String[] { "productos vendidos", "ganancia (valor venta)",
+			"costo del d\u00EDa", "caja inicial", "caja actual" };
 	private String[] values;
 	private Double initialBox;
 
@@ -177,7 +177,7 @@ public class ReportController {
 
 	public JFreeChart createBarChartByDay() {
 		BarChart barchart = (BarChart) ChartFactory.createChart(
-				ChartFactory.BARCHART, "Ganancia/Costo por d\u00EDa",
+				ChartFactory.BARCHART, "Ventas/Costo por d\u00EDa",
 				"d\u00EDas", "pesos");
 
 		ChartInfoResponse gainResponse = ReportService.getChartByDayInfo(-6,
@@ -189,7 +189,7 @@ public class ReportController {
 		for (ChartInfoElement chartInfoElement : gainResponse
 				.getChartInformation()) {
 			subDay = Utilities.getSpanishDay(chartInfoElement.getKey());
-			barchart.addValue(chartInfoElement.getValue(), "ganancia", subDay);
+			barchart.addValue(chartInfoElement.getValue(), "venta", subDay);
 		}
 
 		for (ChartInfoElement chartInfoElement : expenseResponse
@@ -235,8 +235,9 @@ public class ReportController {
 	private String[] generateReportsForValues() {
 		Integer soldProducts = 0;
 		Double gain = 0.0;
+		Double sold = 0.0;
 		Double dailyCost = 0.0;
-		Double totalGain = 0.0;
+		Double totalBox = 0.0;
 
 		SaleDailyReportResponse saleResponse = ReportService
 				.getDailySaleReport();
@@ -245,6 +246,8 @@ public class ReportController {
 			soldProducts = saleResponse.getQuantity();
 			gain = saleResponse.getGain();
 			gain = Utilities.adjustDecimals(gain);
+			sold = saleResponse.getSold();
+			sold = Utilities.adjustDecimals(sold);
 		}
 
 		PurchaseDailyReportResponse purchaseResponse = ReportService
@@ -255,17 +258,13 @@ public class ReportController {
 			dailyCost = Utilities.adjustDecimals(dailyCost);
 		}
 
-		totalGain = gain - initialBox - dailyCost;
+		totalBox = initialBox - dailyCost + sold;
 
-		// return new String[] { soldProducts.toString(),
-		// Utilities.truncateDecimal(gain, 2).toString(),
-		// Utilities.truncateDecimal(dailyCost, 2).toString(),
-		// initialBox.toString(),
-		// Utilities.truncateDecimal(totalGain, 2).toString() };
-
-		return new String[] { soldProducts.toString(), gain.toString(),
+		return new String[] {
+				soldProducts.toString(),
+				String.format("%s (%s)", gain.toString(), sold.toString()),
 				dailyCost.toString(), initialBox.toString(),
-				totalGain.toString() };
+				totalBox.toString() };
 	}
 
 	/**

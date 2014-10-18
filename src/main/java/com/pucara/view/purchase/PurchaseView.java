@@ -225,6 +225,7 @@ public class PurchaseView extends ProductView {
 				purchaseController.createUpdateProductListener());
 		popup.setActionListenerToComponent(textFieldKeysUpdate,
 				purchaseController.createUpdateProductListener());
+		popup.setVisible(true);
 	}
 
 	public String getSelectedPurchaseBarcode() {

@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.pucara.core.database.MySqlAccess;
@@ -31,14 +30,18 @@ public class ReportService {
 				.getDailySaleReportFromView();
 
 		try {
-			saleReportStatement.next();
-			double gain = saleReportStatement.getDouble("gain");
-			int quantity = saleReportStatement.getInt("count");
+			double gain = 0;
+			double sold = 0;
+			int quantity = 0;
 
-			return new SaleDailyReportResponse(gain, quantity);
+			while (saleReportStatement.next()) {
+				gain += saleReportStatement.getDouble("gain");
+				sold += saleReportStatement.getDouble("sold");
+				quantity += saleReportStatement.getInt("count");
+			}
+
+			return new SaleDailyReportResponse(gain, sold, quantity);
 		} catch (SQLException e) {
-			// CustomLogger.log(e, LoggerLevel.ERROR,
-			// CommonMessageError.STATEMENT_SALE_ERROR);
 			return new SaleDailyReportResponse(new ErrorMessage(
 					ErrorType.STATEMENT_ERROR, e.getMessage()));
 		} finally {

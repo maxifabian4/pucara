@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
-import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.request.SearchProductRequest;
 import com.pucara.core.response.ProductListResponse;
