@@ -30,6 +30,7 @@ import com.pucara.core.response.ProductListResponse;
 import com.pucara.core.response.ProductResponse;
 import com.pucara.core.response.Response;
 import com.pucara.core.services.product.ProductService;
+import com.pucara.core.services.sale.SaleService;
 import com.pucara.core.services.transaction.PurchaseService;
 
 /**
@@ -336,6 +337,10 @@ public class PurchaseController implements Observer {
 								.getPartialList().toArray());
 						purchaseView.updateCostField(purchaseService
 								.getTotalValue());
+
+						if (purchaseService.getTotalNumberOfProducts() > 0) {
+							purchaseView.selectPartialElement(CommonData.FIRST_ROW);
+						}
 					} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
 						addProductToPartialList(barcode);
 						purchaseView.selectPartialElementByBarcode(barcode);
@@ -364,6 +369,8 @@ public class PurchaseController implements Observer {
 												.getPartialList().toArray());
 								purchaseView.updateCostField(purchaseService
 										.getTotalValue());
+								purchaseView
+										.selectPartialElementByBarcode(barcode);
 							}
 						}
 					}
@@ -385,13 +392,12 @@ public class PurchaseController implements Observer {
 				purchaseView.addPartialListToPanel(purchaseService
 						.getPartialList().toArray());
 				purchaseView.updateCostField(purchaseService.getTotalValue());
+				purchaseView.cleanInputTextField();
 			} else {
 				JOptionPane.showMessageDialog(null, response
 						.getErrorsMessages().get(0).getMessage(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
-
-			purchaseView.cleanInputTextField();
 		}
 	}
 

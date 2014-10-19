@@ -129,8 +129,11 @@ public class HeaderController {
 		return new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				// Remove existing central panel.
 				mainView.removeCentralPanel();
+				// Update updated information product.
 				mainView.addNewCentralPanel(saleView);
+				// Apply view properties.
 				saleView.repaint();
 				headerView.changeToBold(headerView.getSaleLabel());
 				saleView.setFocusOnInput();
@@ -205,14 +208,12 @@ public class HeaderController {
 			public void mouseClicked(MouseEvent arg0) {
 				// Remove existing central panel.
 				mainView.removeCentralPanel();
-
 				// Update updated information product.
 				mainView.addNewCentralPanel(purchaseView);
-
 				// Apply view properties.
 				purchaseView.repaint();
-				purchaseView.setFocusOnInput();
 				headerView.changeToBold(headerView.getPurchaseLabel());
+				purchaseView.setFocusOnInput();
 			}
 
 			@Override

@@ -170,6 +170,10 @@ public class SaleController implements Observer {
 						SaleService.removeProductFromList(barcode);
 						saleView.updatePartialElements(SaleService
 								.getPartialList().toArray());
+
+						if (SaleService.getTotalNumberOfProducts() > 0) {
+							saleView.selectPartialElement(CommonData.FIRST_ROW);
+						}
 					} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
 						if (!barcode.contains("@")) {
 							addProductToPartialList(barcode);
@@ -215,6 +219,7 @@ public class SaleController implements Observer {
 								SaleService.increaseRequiredProduct(barcode, n);
 								saleView.updatePartialElements(SaleService
 										.getPartialList().toArray());
+								saleView.selectPartialElementByBarcode(barcode);
 							}
 						}
 					}

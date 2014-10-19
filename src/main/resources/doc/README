@@ -1,3 +1,5 @@
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `daily_report_view` AS select distinct `s`.`id` AS `id`,sum(`s`.`gain`) AS `gain`,sum((`p`.`finalcost` * `sd`.`number_of_products`)) AS `sold`,sum(`sd`.`number_of_products`) AS `count` from ((((`x_sale_sale_detail` `xssd` join `sale` `s` on((`xssd`.`sale_id` = `s`.`id`))) join `sale_detail` `sd` on((`sd`.`id` = `xssd`.`sale_detail_id`))) join `x_sale_sale_detail_product` `xssdp` on((`s`.`id` = `xssdp`.`sale_id`))) join `product` `p` on((`p`.`barcode` = `xssdp`.`barcode`))) where (cast(`s`.`date` as date) = cast(now() as date)) group by `xssdp`.`barcode`
+
 ****************
 PROYECTO PUCARA
 ****************
