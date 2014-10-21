@@ -30,7 +30,6 @@ import com.pucara.core.response.ProductListResponse;
 import com.pucara.core.response.ProductResponse;
 import com.pucara.core.response.Response;
 import com.pucara.core.services.product.ProductService;
-import com.pucara.core.services.sale.SaleService;
 import com.pucara.core.services.transaction.PurchaseService;
 
 /**
@@ -75,6 +74,7 @@ public class PurchaseController implements Observer {
 							.performTransaction();
 
 					if (performedPurchase.wasSuccessful()) {
+						subject.catchUpdate(purchaseService.getPartialList());
 						cleanPartialList();
 						purchaseView.cleanPurchaseTextFields();
 						JOptionPane.showMessageDialog(null,
@@ -304,73 +304,80 @@ public class PurchaseController implements Observer {
 				if (e.getID() == KeyEvent.KEY_PRESSED) {
 					String barcode = purchaseView.getSelectedProduct();
 
-					if (e.getKeyCode() == KeyEvent.VK_MINUS) {
-						if (!purchaseView.isFocusOnTextField()) {
-							int numberBeforeChange = purchaseService
-									.getNumberOfDistinctProducts();
+					if (!barcode.equals(CommonData.EMPTY_STRING)) {
+						if (e.getKeyCode() == KeyEvent.VK_MINUS) {
+							if (!purchaseView.isFocusOnTextField()) {
+								int numberBeforeChange = purchaseService
+										.getNumberOfDistinctProducts();
 
-							purchaseService.decreaseRequiredProduct(barcode);
+								purchaseService
+										.decreaseRequiredProduct(barcode);
 
-							int numberAfterChange = purchaseService
-									.getNumberOfDistinctProducts();
-							purchaseView.updatePartialElements(purchaseService
-									.getPartialList().toArray());
-							purchaseView.updateCostField(purchaseService
-									.getTotalValue());
-
-							if (numberAfterChange == numberBeforeChange) {
-								purchaseView
-										.selectPartialElementByBarcode(barcode);
-							} else if (numberAfterChange < numberBeforeChange
-									&& numberAfterChange != 0) {
-								purchaseView.cleanListSelection();
-								purchaseView
-										.selectPartialElement(CommonData.FIRST_ROW);
-							} else if (numberAfterChange == 0) {
-								purchaseService.cleanPartialList();
-							}
-						}
-					} else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-						purchaseService.removeProductFromList(purchaseView
-								.getSelectedProduct());
-						purchaseView.updatePartialElements(purchaseService
-								.getPartialList().toArray());
-						purchaseView.updateCostField(purchaseService
-								.getTotalValue());
-
-						if (purchaseService.getTotalNumberOfProducts() > 0) {
-							purchaseView.selectPartialElement(CommonData.FIRST_ROW);
-						}
-					} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
-						addProductToPartialList(barcode);
-						purchaseView.selectPartialElementByBarcode(barcode);
-					} else if (e.getKeyCode() == KeyEvent.VK_F6) {
-						String[] options = { "OK" };
-						JPanel panel = new JPanel();
-						JLabel lbl = new JLabel("cantidad de productos: ");
-						JTextField txt = new JTextField("100");
-						panel.add(lbl);
-						panel.add(txt);
-						int selectedOption = JOptionPane.showOptionDialog(null,
-								panel, "Ingresar catidad de productos",
-								JOptionPane.NO_OPTION,
-								JOptionPane.QUESTION_MESSAGE, null, options,
-								options[0]);
-
-						if (selectedOption == 0) {
-							Integer n = Utilities
-									.getIntegerValue(txt.getText());
-
-							if (n != null) {
-								purchaseService.increaseRequiredProduct(
-										barcode, n);
+								int numberAfterChange = purchaseService
+										.getNumberOfDistinctProducts();
 								purchaseView
 										.updatePartialElements(purchaseService
 												.getPartialList().toArray());
 								purchaseView.updateCostField(purchaseService
 										.getTotalValue());
+
+								if (numberAfterChange == numberBeforeChange) {
+									purchaseView
+											.selectPartialElementByBarcode(barcode);
+								} else if (numberAfterChange < numberBeforeChange
+										&& numberAfterChange != 0) {
+									purchaseView.cleanListSelection();
+									purchaseView
+											.selectPartialElement(CommonData.FIRST_ROW);
+								} else if (numberAfterChange == 0) {
+									purchaseService.cleanPartialList();
+								}
+							}
+						} else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+							purchaseService.removeProductFromList(purchaseView
+									.getSelectedProduct());
+							purchaseView.updatePartialElements(purchaseService
+									.getPartialList().toArray());
+							purchaseView.updateCostField(purchaseService
+									.getTotalValue());
+
+							if (purchaseService.getTotalNumberOfProducts() > 0) {
 								purchaseView
-										.selectPartialElementByBarcode(barcode);
+										.selectPartialElement(CommonData.FIRST_ROW);
+							}
+						} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
+							addProductToPartialList(barcode);
+							purchaseView.selectPartialElementByBarcode(barcode);
+						} else if (e.getKeyCode() == KeyEvent.VK_F6) {
+							String[] options = { "OK" };
+							JPanel panel = new JPanel();
+							JLabel lbl = new JLabel("cantidad de productos: ");
+							JTextField txt = new JTextField("100");
+							panel.add(lbl);
+							panel.add(txt);
+							int selectedOption = JOptionPane.showOptionDialog(
+									null, panel,
+									"Ingresar catidad de productos",
+									JOptionPane.NO_OPTION,
+									JOptionPane.QUESTION_MESSAGE, null,
+									options, options[0]);
+
+							if (selectedOption == 0) {
+								Integer n = Utilities.getIntegerValue(txt
+										.getText());
+
+								if (n != null) {
+									purchaseService.increaseRequiredProduct(
+											barcode, n);
+									purchaseView
+											.updatePartialElements(purchaseService
+													.getPartialList().toArray());
+									purchaseView
+											.updateCostField(purchaseService
+													.getTotalValue());
+									purchaseView
+											.selectPartialElementByBarcode(barcode);
+								}
 							}
 						}
 					}

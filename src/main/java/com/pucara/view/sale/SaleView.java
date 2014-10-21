@@ -36,7 +36,7 @@ public class SaleView extends ProductView {
 	private SaleSummaryPanel summaryPanel;
 
 	public SaleView(UpdatesSource subject) {
-		saleController = new SaleController(this);
+		saleController = new SaleController(this, subject);
 		subject.addObserver(saleController);
 		generateContent();
 	}

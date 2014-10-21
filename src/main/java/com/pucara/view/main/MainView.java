@@ -7,8 +7,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 import com.pucara.common.CommonData;
-import com.pucara.controller.observable.UpdatesSource;
-import com.pucara.view.sale.SaleView;
 import com.pucara.core.database.MySqlAccess;
 
 /**
@@ -116,8 +114,8 @@ public class MainView extends JFrame {
 		this.getContentPane().add(headerView, HeaderView.ORIENTATION);
 
 		// Add the main panel by default ...
-		SaleView defaultPanel = new SaleView(new UpdatesSource());
-		this.getContentPane().add(defaultPanel, BorderLayout.CENTER);
+//		ReportView defaultPanel = new ReportView();
+//		this.getContentPane().add(defaultPanel, BorderLayout.CENTER);
 
 		// Create listeners for the frame ...
 		generateListeners();

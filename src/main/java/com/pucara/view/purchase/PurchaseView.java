@@ -79,7 +79,12 @@ public class PurchaseView extends ProductView {
 	 */
 	public String getSelectedProduct() {
 		if (listOfPartialProducts != null) {
-			return listOfPartialProducts.getSelectedBarcode(getSelectedIndex());
+			if (getSelectedIndex() != -1) {
+				return listOfPartialProducts
+						.getSelectedBarcode(getSelectedIndex());
+			} else {
+				return listOfPartialProducts.getSelectedBarcode(0);
+			}
 		} else {
 			return CommonData.EMPTY_STRING;
 		}

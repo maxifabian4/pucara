@@ -70,6 +70,12 @@ public class HeaderController {
 
 		this.stockView = new StockView(this.subject);
 		// this.stockController = new StockController(this.stockView);
+		
+		// Update updated information product.
+		mainView.addNewCentralPanel(saleView);
+		// Apply view properties.
+		saleView.repaint();
+		saleView.setFocusOnInput();
 	}
 
 	/**
@@ -213,7 +219,7 @@ public class HeaderController {
 				// Apply view properties.
 				purchaseView.repaint();
 				headerView.changeToBold(headerView.getPurchaseLabel());
-				purchaseView.setFocusOnInput();
+//				purchaseView.setFocusOnInput();
 			}
 
 			@Override

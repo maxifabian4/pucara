@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -14,6 +15,8 @@ import javax.swing.JTextField;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
+import com.pucara.controller.observable.UpdatesSource;
+import com.pucara.core.entities.PartialElement;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.request.SearchProductRequest;
 import com.pucara.core.response.ProductListResponse;
@@ -29,9 +32,11 @@ import com.pucara.view.sale.SaleView;
  */
 public class SaleController implements Observer {
 	private SaleView saleView;
+	private UpdatesSource subject;
 
-	public SaleController(SaleView saleView) {
+	public SaleController(SaleView saleView, UpdatesSource subject) {
 		this.saleView = saleView;
+		this.subject = subject;
 		SaleService.cleanPartialList();
 	}
 
@@ -105,9 +110,12 @@ public class SaleController implements Observer {
 							options[0]);
 
 					if (response == JOptionPane.YES_OPTION) {
+						List<PartialElement> elements = SaleService
+								.getPartialList();
 						Response performedSale = SaleService.makeASale();
 
 						if (performedSale.wasSuccessful()) {
+							subject.catchUpdate(elements);
 							cleanPartialList();
 						}
 					}
@@ -283,7 +291,12 @@ public class SaleController implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		SaleService.updateProductFromList((String) arg);
-		saleView.updatePartialElements(SaleService.getPartialList().toArray());
+
+		Object[] products = SaleService.getPartialList().toArray();
+		if (SaleService.getPartialList().toArray() != null
+				&& products.length != 0) {
+			saleView.updatePartialElements(products);
+		}
 	}
 
 }
