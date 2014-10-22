@@ -1,5 +1,6 @@
 package com.pucara.mysql;
 
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,12 +12,11 @@ import com.pucara.core.response.ProductResponse;
 import com.pucara.core.services.product.ProductService;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 /**
  * Unit test for simple App.
  */
-public class ProductServiceTest extends TestCase {
+public class ProductServiceTest {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ProductServiceTest.class);
 
@@ -48,11 +48,12 @@ public class ProductServiceTest extends TestCase {
 		LOGGER.debug("Product {} added succesfully.", newProduct);
 	}
 
+	@Test
 	public void addNProducts() {
 		// Establish connection.
 		MySqlAccess.establishConection();
 
-		int iterations = 850;
+		int iterations = 1;
 
 		for (int i = 0; i < iterations; i++) {
 			addProduct();

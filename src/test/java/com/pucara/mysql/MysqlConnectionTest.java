@@ -6,12 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.pucara.common.PropertyFile;
-
-import junit.framework.TestCase;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -19,10 +18,11 @@ import java.math.BigDecimal;
 /**
  * Unit test for simple App.
  */
-public class MysqlConnectionTest extends TestCase {
+public class MysqlConnectionTest {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(MysqlConnectionTest.class);
 
+	@Test
 	public void testConnection() throws IOException {
 		PropertyFile prop = new PropertyFile(
 				"src/main/resources/properties/db.properties");
@@ -40,10 +40,10 @@ public class MysqlConnectionTest extends TestCase {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
 
-			while (resultSet.next()) {
-				String tableName = resultSet.getString(1);
-				LOGGER.debug("Product: {}", tableName);
-			}
+			// while (resultSet.next()) {
+			// String tableName = resultSet.getString(1);
+			// LOGGER.debug("Products: {}", resultSet.getRow());
+			// }
 
 			LOGGER.debug("Clossing connection ...");
 			connection.close();
@@ -56,6 +56,7 @@ public class MysqlConnectionTest extends TestCase {
 		}
 	}
 
+	// remove it
 	public void extraTest() {
 		double[] xx = { 0, 0.25, 0.5, 0.75, 1 };
 
