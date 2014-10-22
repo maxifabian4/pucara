@@ -298,7 +298,7 @@ public class StockView extends ProductView {
 
 		// Add combo box.
 		form.addComboBox(CommonUIComponents.CATEGORY, Utilities
-				.generateArrayCategories(CategoryService.getAllCategories()
+				.generateArrayCategories(CategoryService.getAllCategories2()
 						.getAllCategories()));
 
 		// Add check box.

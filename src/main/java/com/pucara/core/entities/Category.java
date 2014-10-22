@@ -1,7 +1,7 @@
 package com.pucara.core.entities;
 
 /**
- * Clase creada para representar una categor�a en el sistema.
+ * Clase creada para representar una categor�a en el sistema. Should be removed!!!
  * 
  * @author Maximiliano
  * 
