@@ -23,13 +23,16 @@ import com.pucara.common.PropertyFile;
 import com.pucara.core.charts.BarChart;
 import com.pucara.core.charts.ChartFactory;
 import com.pucara.core.charts.LineChart;
+import com.pucara.core.charts.PieChart;
 import com.pucara.core.entities.report.ChartInfoElement;
 import com.pucara.core.entities.report.PurchaseDailyReport;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.response.ChartInfoResponse;
 import com.pucara.core.response.PurchaseDailyReportResponse;
 import com.pucara.core.response.SaleDailyReportResponse;
+import com.pucara.core.services.category.CategoryService;
 import com.pucara.core.services.report.ReportService;
+import com.pucara.persistence.domain.ProductsCategoryHelper;
 import com.pucara.view.report.DynamicReportPanel;
 import com.pucara.view.report.ReportView;
 
@@ -42,8 +45,9 @@ public class ReportController {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ReportController.class);
 	private ReportView reportView;
-	private String[] keys = new String[] { "productos vendidos", "ganancia (valor venta)",
-			"costo del d\u00EDa", "caja inicial", "caja actual" };
+	private String[] keys = new String[] { "productos vendidos",
+			"ganancia (valor venta)", "costo del d\u00EDa", "caja inicial",
+			"caja actual" };
 	private String[] values;
 	private Double initialBox;
 
@@ -203,6 +207,24 @@ public class ReportController {
 		return barchart.getChart();
 	}
 
+	public JFreeChart createCategoryPieChart() {
+		PieChart piechart = (PieChart) ChartFactory.createChart(
+				ChartFactory.PIECHART, "Productos por categoría",
+				CommonData.EMPTY_STRING, CommonData.EMPTY_STRING);
+
+		List<ProductsCategoryHelper> list = CategoryService
+				.getSoldProductsByCategory();
+
+		for (ProductsCategoryHelper item : list) {
+			piechart.addValue(item.getCategoryName(),
+					new Double(item.getNumberOfProducts()));
+		}
+
+		piechart.createChart();
+
+		return piechart.getChart();
+	}
+
 	public void addDailyInfoToPanel(DynamicReportPanel byDayPanel) {
 		JLabel titleLabel, valueLabel;
 
@@ -260,8 +282,7 @@ public class ReportController {
 
 		totalBox = initialBox - dailyCost + sold;
 
-		return new String[] {
-				soldProducts.toString(),
+		return new String[] { soldProducts.toString(),
 				String.format("%s (%s)", gain.toString(), sold.toString()),
 				dailyCost.toString(), initialBox.toString(),
 				totalBox.toString() };

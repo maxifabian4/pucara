@@ -11,6 +11,7 @@ import com.pucara.core.response.AllCategoriesResponse;
 import com.pucara.core.response.CategoryResponse;
 import com.pucara.core.services.mybatis.MyBatisUtil;
 import com.pucara.persistence.domain.Category;
+import com.pucara.persistence.domain.ProductsCategoryHelper;
 import com.pucara.persistence.mapper.CategoryMapper;
 
 /**
@@ -206,6 +207,18 @@ public class CategoryService {
 			sqlSession.close();
 		}
 
+	}
+
+	public static List<ProductsCategoryHelper> getSoldProductsByCategory() {
+		SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory()
+				.openSession();
+		try {
+			CategoryMapper categoryMapper = sqlSession
+					.getMapper(CategoryMapper.class);
+			return categoryMapper.getSoldProductsByCategory();
+		} finally {
+			sqlSession.close();
+		}
 	}
 
 	// public void updateUser(User user) {

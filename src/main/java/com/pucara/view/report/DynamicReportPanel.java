@@ -34,9 +34,9 @@ public class DynamicReportPanel extends JPanel {
 
 		if (createInfoPanel) {
 			leftPanel = new JPanel();
-			leftPanel.setBorder(new EmptyBorder(60, 10, 10, 20));
+			leftPanel.setBorder(new EmptyBorder(60, 100, 10, 20));
 			leftPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
-			leftPanel.setPreferredSize(new Dimension(dim.width / 2 - 250, 0));
+//			leftPanel.setPreferredSize(new Dimension(dim.width / 2 - 250, 0));
 			leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
 
 			this.add(leftPanel, BorderLayout.LINE_START);
@@ -52,7 +52,7 @@ public class DynamicReportPanel extends JPanel {
 			leftPanel.add(CommonUIComponents.createNewVerticalSeparatorBox(5));
 
 			leftPanel.add(component);
-			leftPanel.add(CommonUIComponents.createNewVerticalSeparatorBox(20));
+			leftPanel.add(CommonUIComponents.createNewVerticalSeparatorBox(5));
 
 			components.put(label.getText(), component);
 		}

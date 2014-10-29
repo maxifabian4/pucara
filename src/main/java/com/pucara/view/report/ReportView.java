@@ -37,6 +37,12 @@ public class ReportView extends JPanel {
 		this.add(byDayPanel);
 		// Add report information by year.
 		this.add(byYearPanel);
+		
+		// change
+
+		JFreeChart chart = reportController.createCategoryPieChart();
+		DynamicReportPanel panel = new DynamicReportPanel(chart, false);
+		this.add(panel);
 	}
 
 	/**

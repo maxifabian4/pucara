@@ -6,8 +6,10 @@ public class ChartFactory {
 	public static final int RATIOXYLINE = 4;
 	public static final int BARCHART = 5;
 	public static final int LINECHART = 6;
+	public static final int PIECHART = 7;
 
-	public static Chart createChart(int id, String title, String yaxis, String varId) {
+	public static Chart createChart(int id, String title, String yaxis,
+			String varId) {
 		switch (id) {
 		case XYLINE:
 			return null;
@@ -25,6 +27,8 @@ public class ChartFactory {
 			return new BarChart(title, yaxis, varId);
 		case LINECHART:
 			return new LineChart(title, yaxis, varId);
+		case PIECHART:
+			return new PieChart(title);
 		}
 
 		return null;

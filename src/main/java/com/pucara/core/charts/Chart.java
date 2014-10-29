@@ -39,7 +39,7 @@ public abstract class Chart {
 
 	public String saveChart(String outfileprefix, int width, int height) {
 		String filename = null;
-		String fullpath = "/home/pucara/Escritorio";
+//		String fullpath = "/home/pucara/Escritorio";
 
 		try {
 			if (chart == null) {

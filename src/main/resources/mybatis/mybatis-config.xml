@@ -10,6 +10,9 @@
         <typeAlias
             alias="Category"
             type="com.pucara.persistence.domain.Category" ></typeAlias>
+         <typeAlias
+            alias="ProductsCategoryHelper"
+            type="com.pucara.persistence.domain.ProductsCategoryHelper" ></typeAlias>
     </typeAliases>
 
     <environments default="development" >

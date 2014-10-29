@@ -17,8 +17,23 @@
         <result property='description' column='description'/>
     </resultMap>
     
+    <resultMap type='ProductsCategoryHelper' id='CategoriesResult'>
+        <result property='categoryName' column='categoryName'/>
+        <result property='numberOfProducts' column='numberOfProducts'/>
+    </resultMap>
+    
     <select id='getAllCategories' resultMap='CategoryResult'>
         SELECT * FROM category
+    </select>
+    
+    <select id='getSoldProductsByCategory' resultMap='CategoriesResult'>
+        SELECT
+           c.name                 AS categoryName,
+           COUNT(xssdp.barcode)   AS numberOfProducts
+	    FROM 
+	       x_sale_sale_detail_product xssdp JOIN product p ON (xssdp.barcode = p.barcode)
+           JOIN category c ON (p.categoryid = c.id)
+        GROUP BY p.categoryid;
     </select>
     
     <select id='getCategoryById' parameterType='int' resultType='com.pucara.persistence.domain.Category'>

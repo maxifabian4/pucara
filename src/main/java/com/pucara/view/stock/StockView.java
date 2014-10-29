@@ -297,9 +297,9 @@ public class StockView extends ProductView {
 		form = new SystemForm(textFieldKeys, values);
 
 		// Add combo box.
-		form.addComboBox(CommonUIComponents.CATEGORY, Utilities
-				.generateArrayCategories(CategoryService.getAllCategories2()
-						.getAllCategories()));
+//		form.addComboBox(CommonUIComponents.CATEGORY, Utilities
+//				.generateArrayCategories(CategoryService.getAllCategories2()
+//						.getAllCategories()));
 
 		// Add check box.
 		form.addCheckBox(CommonUIComponents.BY_PERCENTAGE, byPercentage,

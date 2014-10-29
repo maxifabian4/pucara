@@ -4,6 +4,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JScrollPane;
+
 import com.pucara.controller.category.CategoryController;
 import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.controller.purchase.PurchaseController;
@@ -70,7 +72,7 @@ public class HeaderController {
 
 		this.stockView = new StockView(this.subject);
 		// this.stockController = new StockController(this.stockView);
-		
+
 		// Update updated information product.
 		mainView.addNewCentralPanel(saleView);
 		// Apply view properties.
@@ -189,7 +191,7 @@ public class HeaderController {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				mainView.removeCentralPanel();
-				mainView.addNewCentralPanel(new ReportView());
+				mainView.addNewCentralPanel(new JScrollPane(new ReportView()));
 				headerView.changeToBold(headerView.getReportsLabel());
 			}
 
@@ -219,7 +221,7 @@ public class HeaderController {
 				// Apply view properties.
 				purchaseView.repaint();
 				headerView.changeToBold(headerView.getPurchaseLabel());
-//				purchaseView.setFocusOnInput();
+				// purchaseView.setFocusOnInput();
 			}
 
 			@Override
