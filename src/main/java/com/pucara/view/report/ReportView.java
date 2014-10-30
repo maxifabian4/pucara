@@ -31,23 +31,13 @@ public class ReportView extends JPanel {
 	private JPanel chartsPanel;
 	private Hashtable<String, Component> components;
 
-	// private ReportController reportController;
-	// private DynamicReportPanel byDayPanel;
-	// private DynamicReportPanel byYearPanel;
-
 	public ReportView() {
-		// reportController = new ReportController(this);
-
 		// Apply properties to the report view.
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 
 		// Initialize the information panel.
-		infoPanel = new JPanel();
-		infoPanel.setLayout(new GridLayout(1, 0));
-		// infoPanel.setPreferredSize(new Dimension(0, 2));
-		infoPanel.setBorder(new EmptyBorder(TOP_INFOPANEL_VALUE, 0, 0, 0));
-		infoPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+		initializeInfoPanel();
 
 		// Initialize the information panel.
 		chartsPanel = new JPanel();
@@ -61,18 +51,6 @@ public class ReportView extends JPanel {
 
 		// Initialize hash for components.
 		components = new Hashtable<String, Component>();
-
-		// generateContent();
-
-		// Add report information by day.
-		// this.add(byDayPanel);
-		// Add report information by year.
-		// this.add(byYearPanel);
-
-		// change
-		// JFreeChart chart = reportController.createCategoryPieChart();
-		// DynamicReportPanel panel = new DynamicReportPanel(chart, false);
-		// this.add(panel);
 	}
 
 	public void addNewInfoToPanel(String key, String value) {
@@ -82,34 +60,6 @@ public class ReportView extends JPanel {
 	public void addNewChartToPanel(ChartPanel chart) {
 		chartsPanel.add(chart);
 	}
-
-	/**
-	 * 
-	 */
-	// private void generateContent() {
-	// JFreeChart chartByDay = reportController.createBarChartByDay();
-	// byDayPanel = new DynamicReportPanel(chartByDay, true);
-	// reportController.addDailyInfoToPanel(byDayPanel);
-	// byDayPanel.addMouseListenerToComponent("caja inicial",
-	// reportController.createMouseListenerForInitialBox());
-	// byDayPanel.addMouseListenerToComponent("costo del d\u00EDa",
-	// reportController.createMouseListenerForDailyExpenses());
-	//
-	// JFreeChart chartByYear = reportController.createLineChartByYear();
-	// byYearPanel = new DynamicReportPanel(chartByYear, true);
-	// reportController.addYearInfoToPanel(byYearPanel);
-	// }
-
-	/**
-	 * 
-	 * @param values
-	 * @param keys
-	 * @param value
-	 */
-	// public void updateViewInformation(String[] keys, String[] values) {
-	// // byDayPanel.updateLabelValues(keys, values);
-	// // this.revalidate();
-	// }
 
 	public void addMouseListenerToComponent(String key,
 			MouseListener mouseListener) {
@@ -124,11 +74,18 @@ public class ReportView extends JPanel {
 		SystemPopup popup = new SystemPopup(panel);
 		popup.setVisible(true);
 	}
-	
-//	public void removeAllInformationPanel() {
-//		infoPanel.removeAll();
-//		this.repaint();
-//	}
+
+	public void removeAllInformationPanel() {
+		infoPanel.removeAll();
+		this.validate();
+	}
+
+	private void initializeInfoPanel() {
+		infoPanel = new JPanel();
+		infoPanel.setLayout(new GridLayout(1, 0));
+		infoPanel.setBorder(new EmptyBorder(TOP_INFOPANEL_VALUE, 0, 0, 0));
+		infoPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+	}
 
 	private JPanel newInfoPanel(String label, String number) {
 		JPanel infoContainer = new JPanel();

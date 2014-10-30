@@ -36,7 +36,7 @@ import com.pucara.persistence.domain.ProductsCategoryHelper;
 import com.pucara.view.report.ReportView;
 
 /**
- * This class represents the Category controller in the system.
+ * This class represents the Report controller in the system.
  * 
  * @author Maximiliano Fabian
  */
@@ -47,13 +47,12 @@ public class ReportController {
 	private String[] keys = new String[] { "productos vendidos",
 			"ganancia (valor venta)", "costo del d\u00EDa", "caja inicial",
 			"caja actual" };
-	// private String[] values; remove then is it will be not used
 	private Double initialBox;
 
 	public ReportController(ReportView reportView) {
 		this.reportView = reportView;
 		this.initialBox = getInitialBoxFromProperty();
-		// this.values = generateReportsForValues(); remove then
+
 		addAllInformationToView(generateReportsForValues());
 		addSpecificListenersToComponents();
 		addAllChartsToView(generateCharts());
@@ -99,11 +98,12 @@ public class ReportController {
 				if (selectedOption == 0) {
 					initialBox = Utilities.getDoubleValue(txt.getText());
 					saveInitialBoxIntoProperties(initialBox);
-					
+
 					// Update report view with the new information.
-//					reportView.removeAllInformationPanel();
-//					addAllInformationToView(generateReportsForValues());
-//					addSpecificListenersToComponents();
+					reportView.removeAllInformationPanel();
+					addAllInformationToView(generateReportsForValues());
+					addSpecificListenersToComponents();
+					reportView.validate();
 				}
 			}
 		};
@@ -240,35 +240,6 @@ public class ReportController {
 
 		return chartPanel;
 	}
-
-	// public void addDailyInfoToPanel(DynamicReportPanel byDayPanel) {
-	// JLabel titleLabel, valueLabel;
-	//
-	// for (int i = 0; i < keys.length; i++) {
-	// titleLabel = CommonUIComponents.createReportLabel(keys[i],
-	// Font.PLAIN, 17, CommonData.DARK_FONT_COLOR);
-	// titleLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-	//
-	// valueLabel = CommonUIComponents.createReportLabel(values[i],
-	// Font.BOLD, 25, CommonData.DARK_FONT_COLOR);
-	// valueLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-	//
-	// byDayPanel.addComponent(titleLabel, valueLabel);
-	// }
-	//
-	// }
-
-	// public void addYearInfoToPanel(DynamicReportPanel byYearPanel) {
-	// JLabel titleLabel = CommonUIComponents.createReportLabel("a\u00F1o",
-	// Font.PLAIN, 17, CommonData.DARK_FONT_COLOR);
-	// titleLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-	//
-	// JLabel valueLabel = CommonUIComponents.createReportLabel("2014",
-	// Font.BOLD, 25, CommonData.DARK_FONT_COLOR);
-	// valueLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-	//
-	// byYearPanel.addComponent(titleLabel, valueLabel);
-	// }
 
 	private String[] generateReportsForValues() {
 		Integer soldProducts = 0;
