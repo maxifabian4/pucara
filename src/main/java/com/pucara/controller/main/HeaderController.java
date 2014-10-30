@@ -1,16 +1,23 @@
 package com.pucara.controller.main;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 
+import com.pucara.common.CommonData;
 import com.pucara.controller.category.CategoryController;
 import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.controller.purchase.PurchaseController;
+import com.pucara.controller.report.ReportController;
 import com.pucara.controller.sale.SaleController;
 import com.pucara.controller.stock.StockController;
+import com.pucara.core.generic.FillPainter;
 import com.pucara.view.category.CategoryView;
 import com.pucara.view.main.HeaderView;
 import com.pucara.view.main.MainView;
@@ -190,8 +197,15 @@ public class HeaderController {
 		return new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				// Remove existing central panel.
 				mainView.removeCentralPanel();
-				mainView.addNewCentralPanel(new JScrollPane(new ReportView()));
+
+				ReportView view = new ReportView();
+				ReportController controller = new ReportController(view);
+
+				// Update updated information product.
+				mainView.addNewCentralPanel(view);
+				// Apply view properties.
 				headerView.changeToBold(headerView.getReportsLabel());
 			}
 

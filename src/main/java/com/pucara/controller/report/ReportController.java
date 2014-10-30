@@ -1,8 +1,7 @@
 package com.pucara.controller.report;
 
-import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Font;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
@@ -12,13 +11,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.pucara.common.CommonData;
-import com.pucara.common.CommonUIComponents;
 import com.pucara.common.PropertyFile;
 import com.pucara.core.charts.BarChart;
 import com.pucara.core.charts.ChartFactory;
@@ -33,7 +33,6 @@ import com.pucara.core.response.SaleDailyReportResponse;
 import com.pucara.core.services.category.CategoryService;
 import com.pucara.core.services.report.ReportService;
 import com.pucara.persistence.domain.ProductsCategoryHelper;
-import com.pucara.view.report.DynamicReportPanel;
 import com.pucara.view.report.ReportView;
 
 /**
@@ -48,14 +47,16 @@ public class ReportController {
 	private String[] keys = new String[] { "productos vendidos",
 			"ganancia (valor venta)", "costo del d\u00EDa", "caja inicial",
 			"caja actual" };
-	private String[] values;
+	// private String[] values; remove then is it will be not used
 	private Double initialBox;
 
 	public ReportController(ReportView reportView) {
 		this.reportView = reportView;
-		// Debe almacenarse utilizando el servicio de reportes !!!
 		this.initialBox = getInitialBoxFromProperty();
-		this.values = generateReportsForValues();
+		// this.values = generateReportsForValues(); remove then
+		addAllInformationToView(generateReportsForValues());
+		addSpecificListenersToComponents();
+		addAllChartsToView(generateCharts());
 	}
 
 	public MouseListener createMouseListenerForInitialBox() {
@@ -98,8 +99,11 @@ public class ReportController {
 				if (selectedOption == 0) {
 					initialBox = Utilities.getDoubleValue(txt.getText());
 					saveInitialBoxIntoProperties(initialBox);
-					values = generateReportsForValues();
-					reportView.updateViewInformation(keys, values);
+					
+					// Update report view with the new information.
+//					reportView.removeAllInformationPanel();
+//					addAllInformationToView(generateReportsForValues());
+//					addSpecificListenersToComponents();
 				}
 			}
 		};
@@ -151,7 +155,7 @@ public class ReportController {
 		};
 	}
 
-	public JFreeChart createLineChartByYear() {
+	private ChartPanel createLineChartByYear() {
 		LineChart lineChart = (LineChart) ChartFactory.createChart(
 				ChartFactory.LINECHART, "Ganancia/Costo por a\u00F1o", "pesos",
 				"meses");
@@ -176,10 +180,10 @@ public class ReportController {
 
 		lineChart.createChart();
 
-		return lineChart.getChart();
+		return createChartPanel(lineChart.getChart());
 	}
 
-	public JFreeChart createBarChartByDay() {
+	private ChartPanel createBarChartByDay() {
 		BarChart barchart = (BarChart) ChartFactory.createChart(
 				ChartFactory.BARCHART, "Ventas/Costo por d\u00EDa",
 				"d\u00EDas", "pesos");
@@ -204,10 +208,10 @@ public class ReportController {
 
 		barchart.createChart();
 
-		return barchart.getChart();
+		return createChartPanel(barchart.getChart());
 	}
 
-	public JFreeChart createCategoryPieChart() {
+	private ChartPanel createCategoryPieChart() {
 		PieChart piechart = (PieChart) ChartFactory.createChart(
 				ChartFactory.PIECHART, "Productos por categoría",
 				CommonData.EMPTY_STRING, CommonData.EMPTY_STRING);
@@ -222,37 +226,49 @@ public class ReportController {
 
 		piechart.createChart();
 
-		return piechart.getChart();
+		return createChartPanel(piechart.getChart());
 	}
 
-	public void addDailyInfoToPanel(DynamicReportPanel byDayPanel) {
-		JLabel titleLabel, valueLabel;
+	private ChartPanel createChartPanel(JFreeChart freeChart) {
+		ChartPanel chartPanel = new ChartPanel(freeChart);
 
-		for (int i = 0; i < keys.length; i++) {
-			titleLabel = CommonUIComponents.createReportLabel(keys[i],
-					Font.PLAIN, 17, CommonData.DARK_FONT_COLOR);
-			titleLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		Dimension dim = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		chartPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+		chartPanel.setPreferredSize(new Dimension(dim.width / 2 - 50,
+				dim.height / 4));
+		chartPanel.setBorder(new EmptyBorder(0, 30, 15, 30));
 
-			valueLabel = CommonUIComponents.createReportLabel(values[i],
-					Font.BOLD, 25, CommonData.DARK_FONT_COLOR);
-			valueLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-
-			byDayPanel.addComponent(titleLabel, valueLabel);
-		}
-
+		return chartPanel;
 	}
 
-	public void addYearInfoToPanel(DynamicReportPanel byYearPanel) {
-		JLabel titleLabel = CommonUIComponents.createReportLabel("a\u00F1o",
-				Font.PLAIN, 17, CommonData.DARK_FONT_COLOR);
-		titleLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+	// public void addDailyInfoToPanel(DynamicReportPanel byDayPanel) {
+	// JLabel titleLabel, valueLabel;
+	//
+	// for (int i = 0; i < keys.length; i++) {
+	// titleLabel = CommonUIComponents.createReportLabel(keys[i],
+	// Font.PLAIN, 17, CommonData.DARK_FONT_COLOR);
+	// titleLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+	//
+	// valueLabel = CommonUIComponents.createReportLabel(values[i],
+	// Font.BOLD, 25, CommonData.DARK_FONT_COLOR);
+	// valueLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+	//
+	// byDayPanel.addComponent(titleLabel, valueLabel);
+	// }
+	//
+	// }
 
-		JLabel valueLabel = CommonUIComponents.createReportLabel("2014",
-				Font.BOLD, 25, CommonData.DARK_FONT_COLOR);
-		valueLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-
-		byYearPanel.addComponent(titleLabel, valueLabel);
-	}
+	// public void addYearInfoToPanel(DynamicReportPanel byYearPanel) {
+	// JLabel titleLabel = CommonUIComponents.createReportLabel("a\u00F1o",
+	// Font.PLAIN, 17, CommonData.DARK_FONT_COLOR);
+	// titleLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+	//
+	// JLabel valueLabel = CommonUIComponents.createReportLabel("2014",
+	// Font.BOLD, 25, CommonData.DARK_FONT_COLOR);
+	// valueLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+	//
+	// byYearPanel.addComponent(titleLabel, valueLabel);
+	// }
 
 	private String[] generateReportsForValues() {
 		Integer soldProducts = 0;
@@ -324,4 +340,29 @@ public class ReportController {
 					CommonData.REPORT_PROPERTIES_PATH, e.getMessage());
 		}
 	}
+
+	private ChartPanel[] generateCharts() {
+		return new ChartPanel[] { createBarChartByDay(),
+				createLineChartByYear(), createCategoryPieChart() };
+	}
+
+	private void addAllChartsToView(ChartPanel[] charts) {
+		for (ChartPanel chartPanel : charts) {
+			reportView.addNewChartToPanel(chartPanel);
+		}
+	}
+
+	private void addAllInformationToView(String[] values) {
+		for (int i = 0; i < values.length; i++) {
+			reportView.addNewInfoToPanel(keys[i], values[i]);
+		}
+	}
+
+	private void addSpecificListenersToComponents() {
+		reportView.addMouseListenerToComponent("caja inicial",
+				createMouseListenerForInitialBox());
+		reportView.addMouseListenerToComponent("costo del d\u00EDa",
+				createMouseListenerForDailyExpenses());
+	}
+
 }

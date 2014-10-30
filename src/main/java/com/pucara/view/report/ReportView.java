@@ -1,16 +1,22 @@
 package com.pucara.view.report;
 
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseListener;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
-import org.jfree.chart.JFreeChart;
+import org.jfree.chart.ChartPanel;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.SwingListPanel;
 import com.pucara.common.SystemPopup;
-import com.pucara.controller.report.ReportController;
 import com.pucara.core.entities.report.PurchaseDailyReport;
 import com.pucara.view.render.ExpensesCellRenderer;
 
@@ -20,47 +26,79 @@ import com.pucara.view.render.ExpensesCellRenderer;
  */
 public class ReportView extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private ReportController reportController;
-	private DynamicReportPanel byDayPanel;
-	private DynamicReportPanel byYearPanel;
+	private static final int TOP_INFOPANEL_VALUE = 60;
+	private JPanel infoPanel;
+	private JPanel chartsPanel;
+	private Hashtable<String, Component> components;
+
+	// private ReportController reportController;
+	// private DynamicReportPanel byDayPanel;
+	// private DynamicReportPanel byYearPanel;
 
 	public ReportView() {
-		reportController = new ReportController(this);
+		// reportController = new ReportController(this);
 
-		// Apply properties to the view.
+		// Apply properties to the report view.
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 
-		generateContent();
+		// Initialize the information panel.
+		infoPanel = new JPanel();
+		infoPanel.setLayout(new GridLayout(1, 0));
+		// infoPanel.setPreferredSize(new Dimension(0, 2));
+		infoPanel.setBorder(new EmptyBorder(TOP_INFOPANEL_VALUE, 0, 0, 0));
+		infoPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+
+		// Initialize the information panel.
+		chartsPanel = new JPanel();
+		chartsPanel.setLayout(new GridLayout(1, 0));
+		chartsPanel.setBorder(new EmptyBorder(TOP_INFOPANEL_VALUE, 0, 0, 0));
+		chartsPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+
+		// Add both panels.
+		this.add(chartsPanel);
+		this.add(infoPanel);
+
+		// Initialize hash for components.
+		components = new Hashtable<String, Component>();
+
+		// generateContent();
 
 		// Add report information by day.
-		this.add(byDayPanel);
+		// this.add(byDayPanel);
 		// Add report information by year.
-		this.add(byYearPanel);
-		
-		// change
+		// this.add(byYearPanel);
 
-		JFreeChart chart = reportController.createCategoryPieChart();
-		DynamicReportPanel panel = new DynamicReportPanel(chart, false);
-		this.add(panel);
+		// change
+		// JFreeChart chart = reportController.createCategoryPieChart();
+		// DynamicReportPanel panel = new DynamicReportPanel(chart, false);
+		// this.add(panel);
+	}
+
+	public void addNewInfoToPanel(String key, String value) {
+		infoPanel.add(newInfoPanel(key, value));
+	}
+
+	public void addNewChartToPanel(ChartPanel chart) {
+		chartsPanel.add(chart);
 	}
 
 	/**
 	 * 
 	 */
-	private void generateContent() {
-		JFreeChart chartByDay = reportController.createBarChartByDay();
-		byDayPanel = new DynamicReportPanel(chartByDay, true);
-		reportController.addDailyInfoToPanel(byDayPanel);
-		byDayPanel.addMouseListenerToComponent("caja inicial",
-				reportController.createMouseListenerForInitialBox());
-		byDayPanel.addMouseListenerToComponent("costo del d\u00EDa",
-				reportController.createMouseListenerForDailyExpenses());
-
-		JFreeChart chartByYear = reportController.createLineChartByYear();
-		byYearPanel = new DynamicReportPanel(chartByYear, true);
-		reportController.addYearInfoToPanel(byYearPanel);
-	}
+	// private void generateContent() {
+	// JFreeChart chartByDay = reportController.createBarChartByDay();
+	// byDayPanel = new DynamicReportPanel(chartByDay, true);
+	// reportController.addDailyInfoToPanel(byDayPanel);
+	// byDayPanel.addMouseListenerToComponent("caja inicial",
+	// reportController.createMouseListenerForInitialBox());
+	// byDayPanel.addMouseListenerToComponent("costo del d\u00EDa",
+	// reportController.createMouseListenerForDailyExpenses());
+	//
+	// JFreeChart chartByYear = reportController.createLineChartByYear();
+	// byYearPanel = new DynamicReportPanel(chartByYear, true);
+	// reportController.addYearInfoToPanel(byYearPanel);
+	// }
 
 	/**
 	 * 
@@ -68,9 +106,16 @@ public class ReportView extends JPanel {
 	 * @param keys
 	 * @param value
 	 */
-	public void updateViewInformation(String[] keys, String[] values) {
-		byDayPanel.updateLabelValues(keys, values);
-		this.revalidate();
+	// public void updateViewInformation(String[] keys, String[] values) {
+	// // byDayPanel.updateLabelValues(keys, values);
+	// // this.revalidate();
+	// }
+
+	public void addMouseListenerToComponent(String key,
+			MouseListener mouseListener) {
+		if (components != null && components.get(key) != null) {
+			components.get(key).addMouseListener(mouseListener);
+		}
 	}
 
 	public void displayExpenseInformationList(List<PurchaseDailyReport> list) {
@@ -78,6 +123,36 @@ public class ReportView extends JPanel {
 				new ExpensesCellRenderer());
 		SystemPopup popup = new SystemPopup(panel);
 		popup.setVisible(true);
+	}
+	
+//	public void removeAllInformationPanel() {
+//		infoPanel.removeAll();
+//		this.repaint();
+//	}
+
+	private JPanel newInfoPanel(String label, String number) {
+		JPanel infoContainer = new JPanel();
+
+		infoContainer.setLayout(new BoxLayout(infoContainer, BoxLayout.Y_AXIS));
+		infoContainer.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+
+		JLabel key = new JLabel(label);
+		key.setAlignmentX(Component.CENTER_ALIGNMENT);
+		key.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 15));
+		key.setForeground(CommonData.DARK_FONT_COLOR);
+
+		JLabel value = new JLabel(number);
+		value.setAlignmentX(Component.CENTER_ALIGNMENT);
+		value.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 30));
+		value.setForeground(CommonData.DARK_FONT_COLOR);
+
+		infoContainer.add(key);
+		infoContainer.add(value);
+
+		// Add this values to the hash.
+		components.put(key.getText(), value);
+
+		return infoContainer;
 	}
 
 }

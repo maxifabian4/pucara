@@ -37,12 +37,16 @@ public class BarChart extends Chart {
 				yaxis, // domain axis label
 				varId, // range axis label
 				dataset, // data
-				PlotOrientation.HORIZONTAL, // orientation
+				PlotOrientation.VERTICAL, // orientation
 				true, // include legend
 				true, // tooltips?
 				false // URLs?
 				);
 
+		chart.getTitle().setPaint(Color.DARK_GRAY);
+		chart.getTitle().setFont(
+				new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 22));
+		
 		CategoryPlot plot = (CategoryPlot) chart.getPlot();
 		plot.setBackgroundPaint(CommonData.GENERAL_BACKGROUND_COLOR);
 		plot.setDomainGridlinePaint(Color.GRAY);

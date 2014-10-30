@@ -23,11 +23,6 @@ public class CategoryServiceTest {
 		Category createdCategory = CategoryService.getCategoryById(category
 				.getId());
 		Assert.assertNotNull(createdCategory);
-
-		// Assert.assertEquals(user.getEmailId(), createdUser.getEmailId());
-		// Assert.assertEquals(user.getPassword(), createdUser.getPassword());
-		// Assert.assertEquals(user.getFirstName(), createdUser.getFirstName());
-		// Assert.assertEquals(user.getLastName(), createdUser.getLastName());
 	}
 
 	@Test

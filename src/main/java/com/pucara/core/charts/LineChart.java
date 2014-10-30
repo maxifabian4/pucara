@@ -35,9 +35,13 @@ public class LineChart extends Chart {
 
 	@Override
 	public void createChart() {
-		chart = org.jfree.chart.ChartFactory.createLineChart(title, varId, yaxis,
-				(CategoryDataset) dataset, PlotOrientation.VERTICAL, true, true, false);
+		chart = org.jfree.chart.ChartFactory.createLineChart(title, varId,
+				yaxis, (CategoryDataset) dataset, PlotOrientation.VERTICAL,
+				true, true, false);
 		chart.setBackgroundPaint(Color.white);
+		chart.getTitle().setPaint(Color.DARK_GRAY);
+		chart.getTitle().setFont(
+				new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 22));
 		chart.setAntiAlias(true);
 
 		CategoryPlot plot = (CategoryPlot) chart.getPlot();
@@ -58,15 +62,19 @@ public class LineChart extends Chart {
 		legend.setFrame(new BlockBorder(Color.gray));
 
 		CategoryAxis domainAxis = plot.getDomainAxis();
-		domainAxis.setLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 15));
+		domainAxis.setLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
+				Font.BOLD, 15));
 		domainAxis.setLabelPaint(CommonData.DARK_FONT_COLOR);
-		domainAxis.setTickLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 15));
+		domainAxis.setTickLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
+				Font.PLAIN, 15));
 		domainAxis.setTickMarksVisible(false);
 
-		LineAndShapeRenderer lineandshaperenderer = (LineAndShapeRenderer) plot.getRenderer();
+		LineAndShapeRenderer lineandshaperenderer = (LineAndShapeRenderer) plot
+				.getRenderer();
 		lineandshaperenderer.setBaseShapesVisible(true);
 		lineandshaperenderer.setBaseItemLabelsVisible(true);
-		lineandshaperenderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+		lineandshaperenderer
+				.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
 		lineandshaperenderer.setSeriesStroke(0, new BasicStroke(2f));
 		lineandshaperenderer.setSeriesStroke(1, new BasicStroke(2f));
 

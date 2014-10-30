@@ -87,13 +87,13 @@ public class CommonData {
 			+ "FROM sale s JOIN x_sale_sale_detail_product xssdp ON ( s.id = xssdp.sale_id )"
 			+ "JOIN product p ON ( p.barcode = xssdp.barcode )"
 			+ "WHERE s.date > date_add(curdate(), INTERVAL %d DAY) "
-			+ "GROUP BY from_days(to_days(s.date)) " + "ORDER BY s.date DESC";
+			+ "GROUP BY from_days(to_days(s.date)) " + "ORDER BY s.date ASC";
 
 	public static final String EXPENSE_BY_DAY = "SELECT LOWER(dayname(from_days(to_days(date)))) AS 'day', from_days(to_days(date)) AS 'date', "
 			+ "SUM(expense) AS 'value' "
 			+ "FROM purchase "
 			+ "WHERE date > date_add(curdate(), INTERVAL %d DAY) "
-			+ "GROUP BY from_days(to_days(date)) " + "ORDER BY date DESC";
+			+ "GROUP BY from_days(to_days(date)) " + "ORDER BY date ASC";
 
 	public static final String GAIN_BY_YEAR = "SELECT LOWER(monthname(from_days(to_days(date)))) AS 'month', SUM(gain) AS 'value' "
 			+ "FROM sale "
@@ -145,5 +145,7 @@ public class CommonData {
 	// "src/main/resources/properties/report.properties";
 	// public static final String DB_PROPERTIES_PATH =
 	// "/home/pucara/Programas/pucara/properties/db.properties";
-	public static final String REPORT_PROPERTIES_PATH = "/home/pucara/Programas/pucara/properties/report.properties";
+	
+//	public static final String REPORT_PROPERTIES_PATH = "/home/pucara/Programas/pucara/properties/report.properties";
+	public static final String REPORT_PROPERTIES_PATH = "src/main/resources/properties/report.properties";
 }

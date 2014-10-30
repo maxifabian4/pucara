@@ -17,6 +17,7 @@ import org.jfree.chart.JFreeChart;
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonUIComponents;
 
+// should be removed
 public class DynamicReportPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Hashtable<String, Component> components;
@@ -35,8 +36,10 @@ public class DynamicReportPanel extends JPanel {
 		if (createInfoPanel) {
 			leftPanel = new JPanel();
 			leftPanel.setBorder(new EmptyBorder(60, 100, 10, 20));
+			// leftPanel.setBorder(new EmptyBorder(0, 0, 0, 50));
 			leftPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
-//			leftPanel.setPreferredSize(new Dimension(dim.width / 2 - 250, 0));
+			// leftPanel.setPreferredSize(new Dimension(dim.width / 2 - 250,
+			// 0));
 			leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
 
 			this.add(leftPanel, BorderLayout.LINE_START);
@@ -58,7 +61,8 @@ public class DynamicReportPanel extends JPanel {
 		}
 	}
 
-	public void addMouseListenerToComponent(String key, MouseListener mouseListener) {
+	public void addMouseListenerToComponent(String key,
+			MouseListener mouseListener) {
 		if (components != null && components.get(key) != null) {
 			components.get(key).addMouseListener(mouseListener);
 		}
@@ -77,10 +81,15 @@ public class DynamicReportPanel extends JPanel {
 		ChartPanel chartPanel = new ChartPanel(freeChart);
 
 		chartPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
-		chartPanel.setPreferredSize(new Dimension(dim.width / 2 - 50, dim.height / 2));
+		chartPanel.setPreferredSize(new Dimension(dim.width / 2 - 50,
+				dim.height / 2));
 		chartPanel.setBorder(new EmptyBorder(20, 10, 30, 100));
 
 		return chartPanel;
+	}
+
+	public JPanel getLeftPanel() {
+		return leftPanel;
 	}
 
 }
