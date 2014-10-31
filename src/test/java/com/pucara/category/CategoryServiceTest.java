@@ -1,11 +1,10 @@
 package com.pucara.category;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.pucara.core.generic.Utilities;
+import com.pucara.core.response.AllCategoriesResponse;
 import com.pucara.core.services.category.CategoryService;
 import com.pucara.persistence.domain.Category;
 
@@ -27,9 +26,9 @@ public class CategoryServiceTest {
 
 	@Test
 	public void testGetAllCategories() {
-		List<Category> categories = CategoryService.getAllCategories();
+		AllCategoriesResponse categories = CategoryService.getAllCategories();
 		Assert.assertNotNull(categories);
-		for (Category category : categories) {
+		for (Category category : categories.getAllCategories()) {
 			System.out.println(category);
 		}
 	}

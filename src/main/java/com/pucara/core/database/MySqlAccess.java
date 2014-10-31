@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
 import com.pucara.common.PropertyFile;
-import com.pucara.core.entities.Category;
 import com.pucara.core.entities.Product;
 import com.pucara.core.entities.ProductsCollection;
 import com.pucara.core.response.CategoryResponse;
@@ -26,6 +25,7 @@ import com.pucara.core.response.ProductListResponse;
 import com.pucara.core.response.ByIdResponse;
 import com.pucara.core.response.StatementResponse;
 import com.pucara.core.services.sale.SaleService;
+import com.pucara.persistence.domain.Category;
 
 /**
  * This class manages the main access to the database. All operation results are
@@ -457,6 +457,7 @@ public class MySqlAccess {
 
 	/**
 	 * Should be removed ... remove view from db too
+	 * 
 	 * @return
 	 */
 	public static ResultSet getDailyPurchaseReportFromView() {
@@ -1054,10 +1055,10 @@ public class MySqlAccess {
 	 * @throws IOException
 	 */
 	private static boolean connectDatabase() throws IOException {
-		String dbUrl = getPropertyFromFile("db.url");
+		String dbUrl = getPropertyFromFile("jdbc.url");
 		// String dbClass = getPropertyFromFile("db.class");
-		String username = getPropertyFromFile("db.username");
-		String password = getPropertyFromFile("db.password");
+		String username = getPropertyFromFile("jdbc.username");
+		String password = getPropertyFromFile("jdbc.password");
 
 		mySqlConnect = null;
 		statement = null;

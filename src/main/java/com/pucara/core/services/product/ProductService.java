@@ -250,7 +250,7 @@ public class ProductService {
 
 								if (request.getCategory() != null) {
 									newProduct.setCategoryId(request
-											.getCategory().getIdentifier());
+											.getCategory().getId());
 								}
 
 								newProduct.setDate(Utilities.getCurrentDate());

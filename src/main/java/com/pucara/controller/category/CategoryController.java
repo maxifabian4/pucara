@@ -8,12 +8,12 @@ import javax.swing.JOptionPane;
 
 import com.pucara.common.CommonData;
 
-import com.pucara.core.entities.Category;
 import com.pucara.core.request.NewCategoryRequest;
 import com.pucara.core.request.SearchCategoryRequest;
 import com.pucara.core.response.CategoryResponse;
 import com.pucara.core.services.category.CategoryService;
 
+import com.pucara.persistence.domain.Category;
 import com.pucara.view.category.CategoryView;
 
 /**

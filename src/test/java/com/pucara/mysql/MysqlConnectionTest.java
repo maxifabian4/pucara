@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.pucara.common.CommonData;
 import com.pucara.common.PropertyFile;
 
 import java.io.IOException;
@@ -24,14 +25,13 @@ public class MysqlConnectionTest {
 
 	@Test
 	public void testConnection() throws IOException {
-		PropertyFile prop = new PropertyFile(
-				"src/main/resources/properties/db.properties");
+		PropertyFile prop = new PropertyFile(CommonData.DB_PROPERTIES_PATH);
 
-		String dbUrl = prop.getProperty("db.url");
-		String dbClass = prop.getProperty("db.class");
-		String query = prop.getProperty("db.query");
-		String username = prop.getProperty("db.username");
-		String password = prop.getProperty("db.password");
+		String dbUrl = prop.getProperty("jdbc.url");
+		String dbClass = prop.getProperty("jdbc.class");
+		String query = prop.getProperty("jdbc.query");
+		String username = prop.getProperty("jdbc.username");
+		String password = prop.getProperty("jdbc.password");
 
 		try {
 			Class.forName(dbClass);
@@ -40,19 +40,18 @@ public class MysqlConnectionTest {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
 
-			// while (resultSet.next()) {
-			// String tableName = resultSet.getString(1);
-			// LOGGER.debug("Products: {}", resultSet.getRow());
-			// }
+			while (resultSet.next()) {
+				LOGGER.debug("Products: {}", resultSet.getString("description"));
+			}
 
 			LOGGER.debug("Clossing connection ...");
 			connection.close();
 			statement.close();
 			resultSet.close();
 		} catch (ClassNotFoundException cnfe) {
-			LOGGER.debug("Class Not Found: {}", cnfe.getMessage());
+			LOGGER.debug("Class Not Found: {}", cnfe);
 		} catch (SQLException se) {
-			LOGGER.debug("SQL: {}", se.getMessage());
+			LOGGER.debug("SQL: {}", se);
 		}
 	}
 

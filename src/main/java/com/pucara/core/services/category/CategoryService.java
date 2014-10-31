@@ -51,37 +51,6 @@ public class CategoryService {
 	}
 
 	/**
-	 * Returns all categories from the database.
-	 * 
-	 * @return AllCategoriesResponse
-	 */
-	public static AllCategoriesResponse getAllCategories2() {
-		// List<Category> allCategories = new ArrayList<Category>();
-		// ResultSet categoriesStatement = MySqlAccess.getAllCategories();
-		// Category newCategory = new Category();
-		//
-		// try {
-		// while (categoriesStatement.next()) {
-		// // newCategory.setIdentifier(categoriesStatement.getInt("id"));
-		// newCategory.setName(categoriesStatement.getString("name"));
-		// newCategory.setDescription(categoriesStatement
-		// .getString("description"));
-		//
-		// allCategories.add(newCategory);
-		// newCategory = new Category();
-		// }
-		//
-		// return new AllCategoriesResponse(allCategories);
-		// } catch (SQLException e) {
-		// return new AllCategoriesResponse(new ErrorMessage(
-		// ErrorType.STATEMENT_ERROR, e.getMessage()));
-		// } finally {
-		// MySqlAccess.closeResultSet();
-		// }
-		return null;
-	}
-
-	/**
 	 * Removes a category from the database.
 	 * 
 	 * @param name
@@ -184,13 +153,13 @@ public class CategoryService {
 	// }
 	// }
 
-	public static List<Category> getAllCategories() {
+	public static AllCategoriesResponse getAllCategories() {
 		SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory()
 				.openSession();
 		try {
 			CategoryMapper categoryMapper = sqlSession
 					.getMapper(CategoryMapper.class);
-			return categoryMapper.getAllCategories();
+			return new AllCategoriesResponse(categoryMapper.getAllCategories());
 		} finally {
 			sqlSession.close();
 		}

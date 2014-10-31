@@ -21,7 +21,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
-import com.pucara.core.entities.Category;
+import com.pucara.persistence.domain.Category;
 
 /**
  * This class creates a new panel that represents a new form.

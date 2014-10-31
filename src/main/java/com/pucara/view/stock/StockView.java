@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import com.pucara.persistence.domain.Category;
 import com.pucara.view.render.ProductStockCellRenderer;
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonUIComponents;
@@ -23,7 +24,6 @@ import com.pucara.common.SystemForm;
 import com.pucara.common.SystemPopup;
 import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.controller.stock.StockController;
-import com.pucara.core.entities.Category;
 import com.pucara.core.entities.Product;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.request.SearchProductRequest;
@@ -297,9 +297,9 @@ public class StockView extends ProductView {
 		form = new SystemForm(textFieldKeys, values);
 
 		// Add combo box.
-//		form.addComboBox(CommonUIComponents.CATEGORY, Utilities
-//				.generateArrayCategories(CategoryService.getAllCategories2()
-//						.getAllCategories()));
+		form.addComboBox(CommonUIComponents.CATEGORY, Utilities
+				.generateArrayCategories(CategoryService.getAllCategories()
+						.getAllCategories()));
 
 		// Add check box.
 		form.addCheckBox(CommonUIComponents.BY_PERCENTAGE, byPercentage,

@@ -2,7 +2,7 @@ package com.pucara.core.response;
 
 import java.util.List;
 
-import com.pucara.core.entities.Category;
+import com.pucara.persistence.domain.Category;
 
 /**
  * Removes a category based on the name.

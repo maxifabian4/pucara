@@ -1,6 +1,6 @@
 package com.pucara.core.request;
 
-import com.pucara.core.entities.Category;
+import com.pucara.persistence.domain.Category;
 
 /**
  * This class allows to make a new request in order to create a new Category.

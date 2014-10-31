@@ -1,6 +1,6 @@
 package com.pucara.core.request;
 
-import com.pucara.core.entities.Category;
+import com.pucara.persistence.domain.Category;
 
 /**
  * 

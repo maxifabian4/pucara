@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Random;
 
 import com.pucara.common.CommonData;
-import com.pucara.core.entities.Category;
 import com.pucara.core.entities.Product;
 import com.pucara.core.entities.report.PurchaseDailyReport;
+import com.pucara.persistence.domain.Category;
 
 public class Utilities {
 
