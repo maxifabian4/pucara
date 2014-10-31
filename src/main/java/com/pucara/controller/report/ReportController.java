@@ -25,14 +25,14 @@ import com.pucara.core.charts.ChartFactory;
 import com.pucara.core.charts.LineChart;
 import com.pucara.core.charts.PieChart;
 import com.pucara.core.entities.report.ChartInfoElement;
-import com.pucara.core.entities.report.PurchaseDailyReport;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.response.ChartInfoResponse;
-import com.pucara.core.response.PurchaseDailyReportResponse;
+import com.pucara.core.response.DailyExpensesResponse;
 import com.pucara.core.response.SaleDailyReportResponse;
 import com.pucara.core.services.category.CategoryService;
 import com.pucara.core.services.report.ReportService;
 import com.pucara.persistence.domain.ProductsCategoryHelper;
+import com.pucara.persistence.domain.DailyExpensesHelper;
 import com.pucara.view.report.ReportView;
 
 /**
@@ -134,21 +134,20 @@ public class ReportController {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				PurchaseDailyReportResponse response = ReportService
-						.getDailyPurchaseReport();
+				DailyExpensesResponse response = ReportService
+						.getDailyExpensesReport();
 
 				if (!response.wasSuccessful()) {
 					JOptionPane.showMessageDialog(null,
 							"Error tratando de obtener los gastos de sistema.");
 				} else {
-					List<PurchaseDailyReport> list = response
-							.getPurchasesList();
+					List<DailyExpensesHelper> list = response.getExpensesList();
 
 					if (list.isEmpty()) {
 						JOptionPane.showMessageDialog(null,
 								"No hay gastos en el día actual.");
 					} else {
-						reportView.displayExpenseInformationList(list);
+						reportView.displayExpensesInformationList(list);
 					}
 				}
 			}
@@ -259,8 +258,8 @@ public class ReportController {
 			sold = Utilities.adjustDecimals(sold);
 		}
 
-		PurchaseDailyReportResponse purchaseResponse = ReportService
-				.getDailyPurchaseReport();
+		DailyExpensesResponse purchaseResponse = ReportService
+				.getDailyExpensesReport();
 
 		if (purchaseResponse.wasSuccessful()) {
 			dailyCost = purchaseResponse.getTotalExpense();

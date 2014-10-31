@@ -13,6 +13,9 @@
          <typeAlias
             alias="ProductsCategoryHelper"
             type="com.pucara.persistence.domain.ProductsCategoryHelper" ></typeAlias>
+         <typeAlias
+            alias="DailyExpensesHelper"
+            type="com.pucara.persistence.domain.DailyExpensesHelper" ></typeAlias>
     </typeAliases>
 
     <environments default="development" >
@@ -41,6 +44,7 @@
 
     <mappers>
         <mapper resource="mappers/CategoryMapper.xml" />
+        <mapper resource="mappers/ReportMapper.xml" />
     </mappers>
 
 </configuration>

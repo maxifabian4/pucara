@@ -1,7 +1,7 @@
 package com.pucara.core.entities.report;
 
 /**
- * 
+ * Should be removed ...
  * @author Maximiliano Fabian
  */
 public class SimplePurchaseElement {

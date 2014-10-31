@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+  'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.pucara.persistence.mapper.ReportMapper" >
+
+    <resultMap type='DailyExpensesHelper' id='DailyExpensesMap'>
+        <result property='description' column='description'/>
+        <result property='expense' column='expense'/>
+        <result property='date' column='date'/>
+    </resultMap>
+
+    <select id='getDailyReport' resultMap='DailyExpensesMap'>
+        SELECT 
+           p.description AS description,
+           p.expense AS expense,
+           p.date AS date
+        FROM purchase p
+        WHERE (CAST(p.date as date) = CURDATE());
+    </select>
+
+</mapper>

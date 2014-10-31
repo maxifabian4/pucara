@@ -456,7 +456,7 @@ public class MySqlAccess {
 	}
 
 	/**
-	 * 
+	 * Should be removed ... remove view from db too
 	 * @return
 	 */
 	public static ResultSet getDailyPurchaseReportFromView() {

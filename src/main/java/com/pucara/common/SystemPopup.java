@@ -109,7 +109,6 @@ public class SystemPopup extends JFrame {
 		this.setUndecorated(true);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setBackground(new Color(.3f, .3f, .3f, .3f));
-//		this.setVisible(true);
 		this.setAlwaysOnTop(true);
 		this.addMouseListener(new MouseListener() {
 

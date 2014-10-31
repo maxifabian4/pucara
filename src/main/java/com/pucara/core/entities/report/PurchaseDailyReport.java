@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * 
+ * Should be removed !! we can remove it
  * @author Maximiliano Fabian
  */
 public class PurchaseDailyReport {

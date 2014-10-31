@@ -18,6 +18,7 @@ import com.pucara.common.CommonData;
 import com.pucara.common.SwingListPanel;
 import com.pucara.common.SystemPopup;
 import com.pucara.core.entities.report.PurchaseDailyReport;
+import com.pucara.persistence.domain.DailyExpensesHelper;
 import com.pucara.view.render.ExpensesCellRenderer;
 
 /**
@@ -68,7 +69,15 @@ public class ReportView extends JPanel {
 		}
 	}
 
+	// Should be removed.
 	public void displayExpenseInformationList(List<PurchaseDailyReport> list) {
+		SwingListPanel panel = new SwingListPanel(list.toArray(), null,
+				new ExpensesCellRenderer());
+		SystemPopup popup = new SystemPopup(panel);
+		popup.setVisible(true);
+	}
+
+	public void displayExpensesInformationList(List<DailyExpensesHelper> list) {
 		SwingListPanel panel = new SwingListPanel(list.toArray(), null,
 				new ExpensesCellRenderer());
 		SystemPopup popup = new SystemPopup(panel);
