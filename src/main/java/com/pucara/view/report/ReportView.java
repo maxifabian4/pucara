@@ -69,18 +69,10 @@ public class ReportView extends JPanel {
 		}
 	}
 
-	// Should be removed.
-	public void displayExpenseInformationList(List<PurchaseDailyReport> list) {
-		SwingListPanel panel = new SwingListPanel(list.toArray(), null,
-				new ExpensesCellRenderer());
-		SystemPopup popup = new SystemPopup(panel);
-		popup.setVisible(true);
-	}
-
 	public void displayExpensesInformationList(List<DailyExpensesHelper> list) {
 		SwingListPanel panel = new SwingListPanel(list.toArray(), null,
 				new ExpensesCellRenderer());
-		SystemPopup popup = new SystemPopup(panel);
+		SystemPopup popup = new SystemPopup(panel, "Gastos del día");
 		popup.setVisible(true);
 	}
 

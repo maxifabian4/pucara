@@ -1,8 +1,10 @@
 package com.pucara.common;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
@@ -11,7 +13,9 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 /**
  * 
@@ -48,7 +52,7 @@ public class SystemPopup extends JFrame {
 	/**
 	 * Use it as a generic mode.
 	 */
-	public SystemPopup(Component component) {
+	public SystemPopup(Component component, String title) {
 		/**
 		 * Apply properties to the frame.
 		 */
@@ -59,7 +63,7 @@ public class SystemPopup extends JFrame {
 		 */
 		configureFrameLayout();
 
-		this.getContentPane().add(component);
+		this.getContentPane().add(creatAllStuff(component, title));
 	}
 
 	public void addConfirmButton(String key, ActionListener actionListener) {
@@ -137,6 +141,28 @@ public class SystemPopup extends JFrame {
 				SystemPopup.this.dispose();
 			}
 		});
+	}
+
+	private Component creatAllStuff(Component component, String title) {
+		JPanel container = new JPanel();
+		container.setLayout(new BorderLayout());
+
+		JPanel header = new JPanel();
+		header.setLayout(new BorderLayout());
+		header.setBorder(new EmptyBorder(10, 10, 10, 10));
+		header.setBackground(CommonData.BACKGROUND_PANEL_COLOR);
+
+		JLabel titleLabel = new JLabel(title);
+		titleLabel.setForeground(CommonData.LIGHT_FONT_COLOR);
+		titleLabel.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD,
+				17));
+
+		header.add(titleLabel);
+
+		container.add(header, BorderLayout.PAGE_START);
+		container.add(component, BorderLayout.CENTER);
+
+		return container;
 	}
 
 }
