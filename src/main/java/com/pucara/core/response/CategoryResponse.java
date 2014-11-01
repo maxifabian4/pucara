@@ -5,8 +5,6 @@ import java.util.List;
 import com.pucara.persistence.domain.Category;
 
 /**
- * Removes a category based on the name.
- * 
  * @author Maximiliano
  */
 public class CategoryResponse extends Response {

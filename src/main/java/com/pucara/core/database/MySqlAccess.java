@@ -17,7 +17,6 @@ import com.pucara.common.CommonMessageError;
 import com.pucara.common.PropertyFile;
 import com.pucara.core.entities.Product;
 import com.pucara.core.entities.ProductsCollection;
-import com.pucara.core.response.CategoryResponse;
 import com.pucara.core.response.DatabaseResponse;
 import com.pucara.core.response.ErrorMessage;
 import com.pucara.core.response.ErrorType;
@@ -47,22 +46,22 @@ public class MySqlAccess {
 	 *            Condition to be considered.
 	 * @return A category object wrapped in a Response.
 	 */
-	public static CategoryResponse findCategoryCondition(String condition) {
-		try {
-			// Result set get the result of the SQL query.
-			resultSet = statement.executeQuery(String.format(
-					"SELECT id, name, description FROM %s.category %s",
-					getPropertyFromFile("db.database"), condition));
-			resultSet.next();
-
-			return new CategoryResponse(getCategory(resultSet));
-		} catch (SQLException e) {
-			return new CategoryResponse(new ErrorMessage(
-					ErrorType.STATEMENT_ERROR, e.getMessage()));
-		} finally {
-			closeResultSet();
-		}
-	}
+//	public static CategoryResponse findCategoryCondition(String condition) {
+//		try {
+//			// Result set get the result of the SQL query.
+//			resultSet = statement.executeQuery(String.format(
+//					"SELECT id, name, description FROM %s.category %s",
+//					getPropertyFromFile("db.database"), condition));
+//			resultSet.next();
+//
+//			return new CategoryResponse(getCategory(resultSet));
+//		} catch (SQLException e) {
+//			return new CategoryResponse(new ErrorMessage(
+//					ErrorType.STATEMENT_ERROR, e.getMessage()));
+//		} finally {
+//			closeResultSet();
+//		}
+//	}
 
 	/**
 	 * Searches a product by single conditions.
@@ -99,29 +98,29 @@ public class MySqlAccess {
 	 * @param newDescription
 	 * @return StatementResponse
 	 */
-	public static StatementResponse updateCategory(String oldName,
-			String newName, String newDescription) {
-		try {
-			// Result set get the result of the SQL query
-			int affectedRows = statement.executeUpdate("UPDATE "
-					+ getPropertyFromFile("db.database")
-					+ ".category SET name = '" + newName + "', description = '"
-					+ newDescription + "' WHERE name = '" + oldName + "'");
-
-			if (affectedRows == 1) {
-				return new StatementResponse(affectedRows);
-			} else {
-				return new StatementResponse(new ErrorMessage(
-						ErrorType.UPDATE_CATEGORY_ERROR,
-						"No rows have been affected during the update."));
-			}
-		} catch (SQLException e) {
-			return new StatementResponse(new ErrorMessage(
-					ErrorType.STATEMENT_ERROR, e.getMessage()));
-		} finally {
-			MySqlAccess.closeResultSet();
-		}
-	}
+//	public static StatementResponse updateCategory(String oldName,
+//			String newName, String newDescription) {
+//		try {
+//			// Result set get the result of the SQL query
+//			int affectedRows = statement.executeUpdate("UPDATE "
+//					+ getPropertyFromFile("db.database")
+//					+ ".category SET name = '" + newName + "', description = '"
+//					+ newDescription + "' WHERE name = '" + oldName + "'");
+//
+//			if (affectedRows == 1) {
+//				return new StatementResponse(affectedRows);
+//			} else {
+//				return new StatementResponse(new ErrorMessage(
+//						ErrorType.UPDATE_CATEGORY_ERROR,
+//						"No rows have been affected during the update."));
+//			}
+//		} catch (SQLException e) {
+//			return new StatementResponse(new ErrorMessage(
+//					ErrorType.STATEMENT_ERROR, e.getMessage()));
+//		} finally {
+//			MySqlAccess.closeResultSet();
+//		}
+//	}
 
 	/**
 	 * Updates an existing product in the database by barcode.
@@ -1021,14 +1020,14 @@ public class MySqlAccess {
 	 * @return
 	 * @throws SQLException
 	 */
-	private static Category getCategory(ResultSet resultSet)
-			throws SQLException {
-		Integer id = resultSet.getInt("id");
-		String name = resultSet.getString("name");
-		String description = resultSet.getString("description");
-
-		return new Category(id, name, description);
-	}
+//	private static Category getCategory(ResultSet resultSet)
+//			throws SQLException {
+//		Integer id = resultSet.getInt("id");
+//		String name = resultSet.getString("name");
+//		String description = resultSet.getString("description");
+//
+//		return new Category(id, name, description);
+//	}
 
 	/**
 	 * Retrieves the last field stored in a specific table.

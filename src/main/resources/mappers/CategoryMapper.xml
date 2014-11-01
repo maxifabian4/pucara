@@ -44,5 +44,31 @@
         FROM category
         WHERE id = #{id}
     </select>
+    
+    <select id='getCategoryByName' parameterType='String' resultType='com.pucara.persistence.domain.Category'>
+        SELECT
+           id,
+           name,
+           description
+        FROM category
+        WHERE name = #{name}
+    </select>
+    
+    <update id='updateCategory' parameterType='map'>
+        UPDATE category
+        SET
+        <if test="category.name != ''">
+           name = #{category.name}
+        </if>
+		<if test="category.name != '' and category.description != ''">
+		   , description = #{category.description}
+        </if>
+        <if test="category.name == '' and category.description != ''">
+		   description = #{category.description}
+        </if>
+        WHERE
+           name = #{oldName}
+    </update>
+    
 
 </mapper>

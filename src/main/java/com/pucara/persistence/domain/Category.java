@@ -1,5 +1,7 @@
 package com.pucara.persistence.domain;
 
+import com.pucara.common.CommonData;
+
 public class Category {
 	private Integer id;
 	private String name;
@@ -13,8 +15,8 @@ public class Category {
 
 	public Category() {
 		this.id = null;
-		this.name = null;
-		this.description = null;
+		this.name = CommonData.EMPTY_STRING;
+		this.description = CommonData.EMPTY_STRING;
 	}
 
 	public void setId(Integer id) {
@@ -43,8 +45,7 @@ public class Category {
 
 	@Override
 	public String toString() {
-		return String.format("Category [id:%d, name:%s, description:%s]", id,
-				name, description);
+		return name;
 	}
 
 }

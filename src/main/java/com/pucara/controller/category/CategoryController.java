@@ -41,16 +41,17 @@ public class CategoryController {
 				newCategory.setName(categoryView.getCategoryNameFromView().toLowerCase());
 				newCategory.setDescription(categoryView.getCategoryDescriptionFromView()
 						.toLowerCase());
-				CategoryResponse response = CategoryService.addCategory(new NewCategoryRequest(
-						newCategory));
+//				CategoryResponse response = CategoryService.addCategory(new NewCategoryRequest(
+//						newCategory));
 
-				if (!response.wasSuccessful()) {
-					JOptionPane.showMessageDialog(null, response.getErrorsMessages().get(0)
-							.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-				} else {
-					categoryView.updateCategoriesTable();
-					categoryView.selectElementOnTable(newCategory.getName(), 0);
-				}
+				// if (!response.wasSuccessful()) {
+				// JOptionPane.showMessageDialog(null,
+				// response.getErrorsMessages().get(0)
+				// .getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				// } else {
+				// categoryView.updateCategoriesTable();
+				// categoryView.selectElementOnTable(newCategory.getName(), 0);
+				// }
 			}
 		};
 	}
@@ -66,16 +67,16 @@ public class CategoryController {
 			public void actionPerformed(ActionEvent arg0) {
 				String categoryFromView = categoryView.getCategoryToFind().toLowerCase();
 
-				CategoryResponse nameResponse = CategoryService
-						.existsCategory(new SearchCategoryRequest(null, categoryFromView));
+//				CategoryResponse nameResponse = CategoryService
+//						.existsCategory(new SearchCategoryRequest(null, categoryFromView));
 
-				if (nameResponse.wasSuccessful()) {
-					categoryView.selectElementOnTable(nameResponse.getCategory().getName(),
-							CommonData.NAME_CATEGORY_COLUMN);
-				} else {
-					JOptionPane.showMessageDialog(null, nameResponse.getErrorsMessages().get(0)
-							.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-				}
+//				if (nameResponse.wasSuccessful()) {
+//					categoryView.selectElementOnTable(nameResponse.getCategory().getName(),
+//							CommonData.NAME_CATEGORY_COLUMN);
+//				} else {
+//					JOptionPane.showMessageDialog(null, nameResponse.getErrorsMessages().get(0)
+//							.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//				}
 			}
 		};
 	}

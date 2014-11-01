@@ -54,7 +54,6 @@ public class SystemForm extends JPanel {
 				Color.LIGHT_GRAY);
 		inputBarcode.setBorder(BorderFactory.createCompoundBorder(empty,
 				matteBorder));
-		// inputBarcode.setForeground(Color.LIGHT_GRAY);
 
 		return inputBarcode;
 	}
@@ -66,7 +65,6 @@ public class SystemForm extends JPanel {
 				CommonData.DEFAULT_SELECTION_COLOR);
 		inputBarcode.setBorder(BorderFactory.createCompoundBorder(empty,
 				matteBorder));
-		// inputBarcode.setForeground(CommonData.DARK_FONT_COLOR);
 
 		return inputBarcode;
 	}

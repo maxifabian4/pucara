@@ -97,7 +97,7 @@ public class HeaderController {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				mainView.removeCentralPanel();
-				mainView.addNewCentralPanel(new CategoryView());
+//				mainView.addNewCentralPanel(new CategoryView());
 			}
 
 			@Override
