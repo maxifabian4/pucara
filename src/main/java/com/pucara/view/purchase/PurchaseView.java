@@ -262,8 +262,10 @@ public class PurchaseView extends ProductView {
 	 *
 	 */
 	public void updateProductsList() {
-		listOfPartialProducts.populateDataInTheList(purchaseController
-				.generatePartialProductRows());
+		if (listOfPartialProducts != null) {
+			listOfPartialProducts.populateDataInTheList(purchaseController
+					.generatePartialProductRows());
+		}
 	}
 
 	/**

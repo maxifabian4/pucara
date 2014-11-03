@@ -9,13 +9,14 @@
         <result property='date' column='date'/>
     </resultMap>
 
-    <select id='getDailyReport' resultMap='DailyExpensesMap'>
+    <select id='getDailyReport' parameterType='Date' resultMap='DailyExpensesMap'>
         SELECT 
            p.description AS description,
            p.expense AS expense,
            p.date AS date
         FROM purchase p
-        WHERE (CAST(p.date as date) = CURDATE());
+        WHERE DATE_FORMAT(p.date, "%Y-%m-%d") = DATE_FORMAT(#{date}, "%Y-%m-%d");
+<!--         WHERE CAST(p.date as date) = CURDATE(); -->
     </select>
 
 </mapper>

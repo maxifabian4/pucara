@@ -3,6 +3,7 @@ package com.pucara.core.services.report;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -50,37 +51,6 @@ public class ReportService {
 			MySqlAccess.closeResultSet();
 		}
 	}
-
-	// public static DailyExpensesResponse getDailyPurchaseReport() {
-	// ResultSet saleReportStatement = MySqlAccess
-	// .getDailyPurchaseReportFromView();
-	//
-	// try {
-	// List<PurchaseDailyReport> responses = new
-	// ArrayList<PurchaseDailyReport>();
-	// String description;
-	// double expense;
-	// Timestamp date;
-	//
-	// while (saleReportStatement.next()) {
-	// description = saleReportStatement.getString("description");
-	// expense = saleReportStatement.getDouble("expense");
-	// date = saleReportStatement.getTimestamp("date");
-	//
-	// responses.add(new PurchaseDailyReport(expense, description,
-	// date, null));
-	// }
-	//
-	// return new DailyExpensesResponse(responses);
-	// } catch (SQLException e) {
-	// // CustomLogger.log(e, LoggerLevel.ERROR,
-	// // CommonMessageError.STATEMENT_PURCHASE_ERROR);
-	// return new DailyExpensesResponse(new ErrorMessage(
-	// ErrorType.STATEMENT_ERROR, e.getMessage()));
-	// } finally {
-	// MySqlAccess.closeResultSet();
-	// }
-	// }
 
 	/**
 	 * 
@@ -146,13 +116,13 @@ public class ReportService {
 	/**
 	 * This method uses mappers.
 	 */
-	public static DailyExpensesResponse getDailyExpensesReport() {
+	public static DailyExpensesResponse getDailyExpensesReport(Date date) {
 		SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory()
 				.openSession();
 		try {
 			ReportMapper reportMapper = sqlSession
 					.getMapper(ReportMapper.class);
-			return new DailyExpensesResponse(reportMapper.getDailyReport());
+			return new DailyExpensesResponse(reportMapper.getDailyReport(date));
 		} finally {
 			sqlSession.close();
 		}

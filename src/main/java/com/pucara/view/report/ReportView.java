@@ -1,9 +1,12 @@
 package com.pucara.view.report;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -12,12 +15,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
+import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import net.sourceforge.jdatepicker.impl.UtilDateModel;
+
 import org.jfree.chart.ChartPanel;
 
 import com.pucara.common.CommonData;
+import com.pucara.common.CommonUIComponents;
 import com.pucara.common.SwingListPanel;
 import com.pucara.common.SystemPopup;
-import com.pucara.core.entities.report.PurchaseDailyReport;
+import com.pucara.core.generic.Utilities;
 import com.pucara.persistence.domain.DailyExpensesHelper;
 import com.pucara.view.render.ExpensesCellRenderer;
 
@@ -30,7 +38,9 @@ public class ReportView extends JPanel {
 	private static final int TOP_INFOPANEL_VALUE = 60;
 	private JPanel infoPanel;
 	private JPanel chartsPanel;
+	private SwingListPanel expensesListPanel;
 	private Hashtable<String, Component> components;
+	private JDatePickerImpl datePicker;
 
 	public ReportView() {
 		// Apply properties to the report view.
@@ -69,15 +79,28 @@ public class ReportView extends JPanel {
 		}
 	}
 
-	public void displayExpensesInformationList(List<DailyExpensesHelper> list) {
-		SwingListPanel panel = new SwingListPanel(list.toArray(), null,
+	public void displayExpensesInformationList(List<DailyExpensesHelper> list,
+			ActionListener action) {
+		expensesListPanel = new SwingListPanel(list.toArray(), null,
 				new ExpensesCellRenderer());
-		SystemPopup popup = new SystemPopup(panel, "Gastos del día");
+
+		UtilDateModel model = new UtilDateModel();
+		JDatePanelImpl datePanel = new JDatePanelImpl(model);
+		datePicker = new JDatePickerImpl(datePanel);
+		datePicker.addActionListener(action);
+
+		SystemPopup popup = new SystemPopup(joinPanelAndPicker(
+				expensesListPanel, datePicker), "Gastos del día");
 		popup.setVisible(true);
 	}
 
 	public void removeAllInformationPanel() {
 		infoPanel.removeAll();
+		this.validate();
+	}
+
+	public void updateExpensesInformationList(List<DailyExpensesHelper> list) {
+		expensesListPanel.populateDataInTheList(list.toArray());
 		this.validate();
 	}
 
@@ -113,4 +136,40 @@ public class ReportView extends JPanel {
 		return infoContainer;
 	}
 
+	private Component joinPanelAndPicker(SwingListPanel infoPanel,
+			JDatePickerImpl datePicker) {
+		JPanel generalContainer = new JPanel();
+		generalContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
+		generalContainer.setLayout(new BorderLayout());
+		generalContainer.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+
+		JPanel headerPanel = new JPanel();
+		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
+		headerPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
+		headerPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+
+		JLabel subTitle = new JLabel("seleccionar fecha");
+		subTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+		subTitle.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 15));
+		subTitle.setForeground(CommonData.DARK_FONT_COLOR);
+
+		headerPanel.add(subTitle);
+		headerPanel.add(CommonUIComponents.createNewVerticalSeparatorBox(10));
+		headerPanel.add(datePicker);
+
+		generalContainer.add(headerPanel, BorderLayout.PAGE_START);
+		generalContainer.add(infoPanel, BorderLayout.CENTER);
+
+		return generalContainer;
+	}
+
+	public Date getSelectedDate() {
+		if (datePicker == null) {
+			return new Date();
+		} else {
+			return Utilities.getDateFrom(datePicker.getModel().getYear(),
+					datePicker.getModel().getMonth() + 1, datePicker.getModel()
+							.getDay());
+		}
+	}
 }

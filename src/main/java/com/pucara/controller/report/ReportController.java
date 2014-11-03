@@ -2,9 +2,12 @@ package com.pucara.controller.report;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -135,7 +138,7 @@ public class ReportController {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				DailyExpensesResponse response = ReportService
-						.getDailyExpensesReport();
+						.getDailyExpensesReport(new Date());
 
 				if (!response.wasSuccessful()) {
 					JOptionPane.showMessageDialog(null,
@@ -147,8 +150,28 @@ public class ReportController {
 						JOptionPane.showMessageDialog(null,
 								"No hay gastos en el día actual.");
 					} else {
-						reportView.displayExpensesInformationList(list);
+						reportView.displayExpensesInformationList(list,
+								createActionForPickerDate());
 					}
+				}
+			}
+		};
+	}
+
+	private ActionListener createActionForPickerDate() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DailyExpensesResponse response = ReportService
+						.getDailyExpensesReport(reportView.getSelectedDate());
+
+				if (!response.wasSuccessful()) {
+					JOptionPane.showMessageDialog(null,
+							"Error tratando de obtener los gastos de sistema.");
+				} else {
+					List<DailyExpensesHelper> list = response.getExpensesList();
+					reportView.updateExpensesInformationList(list);
 				}
 			}
 		};
@@ -259,7 +282,7 @@ public class ReportController {
 		}
 
 		DailyExpensesResponse purchaseResponse = ReportService
-				.getDailyExpensesReport();
+				.getDailyExpensesReport(new Date());
 
 		if (purchaseResponse.wasSuccessful()) {
 			dailyCost = purchaseResponse.getTotalExpense();

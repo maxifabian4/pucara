@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,21 +72,6 @@ public class Utilities {
 	}
 
 	/**
-	 * Calculates the current sale price for a product. Also, determines how to
-	 * round the final result.
-	 * 
-	 * @param product
-	 * @return double
-	 */
-	// public static double getTotalProductPrice(Product product) {
-	// double cost = product.getCost();
-	// // int percentage = product.getPercentage();
-	// // double division = (double) percentage / 100;
-	//
-	// return cost;
-	// }
-
-	/**
 	 * 
 	 * @param count
 	 * @param productAt
@@ -98,20 +84,6 @@ public class Utilities {
 
 		return cost * division * count;
 	}
-
-	/**
-	 * 
-	 * @param product
-	 * @return
-	 */
-	// public static Double getProductSalePrice(Product product) {
-	// double cost = product.getCost();
-	// int percentage = product.getPercentage();
-	// double division = (double) percentage / 100;
-	// Double value = cost * division + cost;
-	//
-	// return truncateDecimal(value, 2).doubleValue();
-	// }
 
 	/**
 	 * @param x
@@ -163,26 +135,6 @@ public class Utilities {
 
 		return rows;
 	}
-
-	/**
-	 * Generates a list of rows, in order to add each product in a table.
-	 * 
-	 * @param allProducts
-	 * @return List<String[]>
-	 */
-	// public static List<String[]> generateArrayRowsProduct(
-	// List<Product> allProducts) {
-	// List<String[]> rows = new ArrayList<String[]>();
-	//
-	// for (Product product : allProducts) {
-	// rows.add(new String[] { product.getBarcode().toString(),
-	// product.getDescription().toString(),
-	// product.getStock().toString(),
-	// truncateDecimal(product.getCost(), 2).toString() });
-	// }
-	//
-	// return rows;
-	// }
 
 	/**
 	 * 
@@ -283,18 +235,6 @@ public class Utilities {
 	}
 
 	/**
-	 * remove!
-	 * 
-	 * @param gain
-	 * @return
-	 */
-	// public static String getDoubleFormat(double value) {
-	// value = Math.floor(value * 100) / 100;
-	//
-	// return String.valueOf(value);
-	// }
-
-	/**
 	 * 
 	 * @param string
 	 * @return
@@ -318,39 +258,6 @@ public class Utilities {
 			return null;
 		}
 	}
-
-	/**
-	 * REMOVE !!!
-	 * 
-	 * @param allProducts
-	 * @return
-	 */
-	// public static ListStockProduct[] generateListObjectProducts(List<Product>
-	// allProducts) {
-	// ListStockProduct[] list = new ListStockProduct[allProducts.size()];
-	// String barcode, description, stock, price;
-	// Integer minStock;
-	// Product product;
-	//
-	// for (int i = 0; i < allProducts.size(); i++) {
-	// product = allProducts.get(i);
-	// barcode = product.getBarcode();
-	// description = product.getDescription();
-	// stock = product.getStock().toString();
-	// price = truncateDecimal(product.getCost(), 2).toString();
-	// minStock = product.getMinStock();
-	//
-	// // if (product.getStock() <= product.getMinStock()) {
-	// // minStock = true;
-	// // }
-	//
-	// list[i] = new ListStockProduct(barcode, description, stock, minStock,
-	// price);
-	// // minStock = false;
-	// }
-	//
-	// return list;
-	// }
 
 	public static String getSpanishDay(String dayName) {
 		dayName = dayName.substring(0, 3);
@@ -408,4 +315,14 @@ public class Utilities {
 		return null;
 	}
 
+	public static Date getDateFrom(int year, int month, int day) {
+		String date = year + "-" + month + "-" + day;
+
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			return formatter.parse(date);
+		} catch (ParseException e) {
+			return new Date();
+		}
+	}
 }
