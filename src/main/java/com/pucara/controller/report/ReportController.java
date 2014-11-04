@@ -146,13 +146,8 @@ public class ReportController {
 				} else {
 					List<DailyExpensesHelper> list = response.getExpensesList();
 
-					if (list.isEmpty()) {
-						JOptionPane.showMessageDialog(null,
-								"No hay gastos en el día actual.");
-					} else {
-						reportView.displayExpensesInformationList(list,
-								createActionForPickerDate());
-					}
+					reportView.displayExpensesInformationList(list,
+							createActionForPickerDate());
 				}
 			}
 		};

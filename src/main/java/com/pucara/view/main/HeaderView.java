@@ -156,7 +156,7 @@ public class HeaderView extends JPanel {
 				.createNewHorizontalSeparatorBox(CommonUIComponents.VERTICAL_STRUT_VALUE));
 
 		// Close current frame
-		closeLabel = CommonUIComponents.createMenuLabel("salir",
+		closeLabel = CommonUIComponents.createMenuLabel("x",
 				headerController.createCloseListener());
 		this.add(closeLabel);
 	}
