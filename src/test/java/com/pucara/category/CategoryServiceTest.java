@@ -85,7 +85,4 @@ public class CategoryServiceTest {
 		}
 	}
 
-	@Test
-	public void A() {
-	}
 }
