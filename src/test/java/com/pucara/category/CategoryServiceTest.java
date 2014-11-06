@@ -74,7 +74,7 @@ public class CategoryServiceTest {
 		Assert.assertFalse(response.wasSuccessful());
 		LOGGER.debug(response.getErrorsMessages().get(0).getMessage());
 	}
-	
+
 	@Test
 	public void testGetAllCategories() {
 		AllCategoriesResponse categories = CategoryService.getAllCategories();
@@ -85,4 +85,7 @@ public class CategoryServiceTest {
 		}
 	}
 
+	@Test
+	public void A() {
+	}
 }

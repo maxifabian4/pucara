@@ -29,7 +29,7 @@ public class PieChart extends Chart {
 				new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 22));
 		
 		PiePlot plot = (PiePlot) chart.getPlot();
-		plot.setSimpleLabels(true);
+//		plot.setSimpleLabels(true);
 		plot.setBackgroundPaint(CommonData.GENERAL_BACKGROUND_COLOR);
 		plot.setSectionOutlinesVisible(false);
 		plot.setOutlineVisible(false);

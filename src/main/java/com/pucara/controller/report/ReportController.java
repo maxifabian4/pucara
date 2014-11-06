@@ -237,8 +237,9 @@ public class ReportController {
 				.getSoldProductsByCategory();
 
 		for (ProductsCategoryHelper item : list) {
-			piechart.addValue(item.getCategoryName(),
-					new Double(item.getNumberOfProducts()));
+			piechart.addValue(
+					item.getCategoryName() + " (" + item.getNumberOfProducts()
+							+ ")", new Double(item.getNumberOfProducts()));
 		}
 
 		piechart.createChart();
