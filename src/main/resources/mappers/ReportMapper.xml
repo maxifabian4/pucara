@@ -16,7 +16,6 @@
            p.date AS date
         FROM purchase p
         WHERE DATE_FORMAT(p.date, "%Y-%m-%d") = DATE_FORMAT(#{date}, "%Y-%m-%d");
-<!--         WHERE CAST(p.date as date) = CURDATE(); -->
     </select>
 
 </mapper>

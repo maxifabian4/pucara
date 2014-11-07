@@ -6,13 +6,11 @@ import java.awt.Font;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
-import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import com.pucara.common.CommonData;
@@ -46,7 +44,11 @@ public class BarChart extends Chart {
 		chart.getTitle().setPaint(Color.DARK_GRAY);
 		chart.getTitle().setFont(
 				new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 22));
-		
+		chart.getLegend().setBorder(0.0, 0.0, 0.0, 0.0);
+		chart.getLegend().setBackgroundPaint(
+				CommonData.GENERAL_BACKGROUND_COLOR);
+		chart.setBackgroundPaint(CommonData.GENERAL_BACKGROUND_COLOR);
+
 		CategoryPlot plot = (CategoryPlot) chart.getPlot();
 		plot.setBackgroundPaint(CommonData.GENERAL_BACKGROUND_COLOR);
 		plot.setDomainGridlinePaint(Color.GRAY);
@@ -61,9 +63,9 @@ public class BarChart extends Chart {
 		r.setSeriesPaint(0, new Color(154, 204, 3));
 		r.setSeriesPaint(1, new Color(234, 206, 28));
 
-		LegendTitle legend = chart.getLegend(0);
-		legend.setBackgroundPaint(CommonData.GENERAL_BACKGROUND_COLOR);
-		legend.setFrame(new BlockBorder(Color.gray));
+//		LegendTitle legend = chart.getLegend(0);
+//		legend.setBackgroundPaint(CommonData.GENERAL_BACKGROUND_COLOR);
+//		legend.setFrame(new BlockBorder(Color.gray));
 
 		CategoryAxis domainAxis = plot.getDomainAxis();
 		domainAxis.setLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT,

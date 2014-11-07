@@ -7,13 +7,11 @@ import java.awt.Font;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
@@ -42,7 +40,11 @@ public class LineChart extends Chart {
 		chart.getTitle().setPaint(Color.DARK_GRAY);
 		chart.getTitle().setFont(
 				new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 22));
-		chart.setAntiAlias(true);
+//		chart.setAntiAlias(true);
+		chart.getLegend().setBorder(0.0, 0.0, 0.0, 0.0);
+		chart.getLegend().setBackgroundPaint(
+				CommonData.GENERAL_BACKGROUND_COLOR);
+		chart.setBackgroundPaint(CommonData.GENERAL_BACKGROUND_COLOR);
 
 		CategoryPlot plot = (CategoryPlot) chart.getPlot();
 		plot.setBackgroundPaint(CommonData.GENERAL_BACKGROUND_COLOR);
@@ -57,9 +59,9 @@ public class LineChart extends Chart {
 		numberaxis.setUpperMargin(0.2D);
 		numberaxis.setTickMarksVisible(false);
 
-		LegendTitle legend = chart.getLegend(0);
-		legend.setBackgroundPaint(CommonData.GENERAL_BACKGROUND_COLOR);
-		legend.setFrame(new BlockBorder(Color.gray));
+		// LegendTitle legend = chart.getLegend(0);
+		// legend.setBackgroundPaint(CommonData.GENERAL_BACKGROUND_COLOR);
+		// legend.setFrame(new BlockBorder(Color.gray));
 
 		CategoryAxis domainAxis = plot.getDomainAxis();
 		domainAxis.setLabelFont(new Font(CommonData.ROBOTO_LIGHT_FONT,

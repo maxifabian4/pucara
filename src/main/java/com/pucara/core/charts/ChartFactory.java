@@ -7,6 +7,7 @@ public class ChartFactory {
 	public static final int BARCHART = 5;
 	public static final int LINECHART = 6;
 	public static final int PIECHART = 7;
+	public static final int RINGCHART = 8;
 
 	public static Chart createChart(int id, String title, String yaxis,
 			String varId) {
@@ -29,6 +30,8 @@ public class ChartFactory {
 			return new LineChart(title, yaxis, varId);
 		case PIECHART:
 			return new PieChart(title);
+		case RINGCHART:
+			return new RingChart(title);
 		}
 
 		return null;

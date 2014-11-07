@@ -26,7 +26,7 @@ import com.pucara.common.PropertyFile;
 import com.pucara.core.charts.BarChart;
 import com.pucara.core.charts.ChartFactory;
 import com.pucara.core.charts.LineChart;
-import com.pucara.core.charts.PieChart;
+import com.pucara.core.charts.RingChart;
 import com.pucara.core.entities.report.ChartInfoElement;
 import com.pucara.core.generic.Utilities;
 import com.pucara.core.response.ChartInfoResponse;
@@ -229,8 +229,8 @@ public class ReportController {
 	}
 
 	private ChartPanel createCategoryPieChart() {
-		PieChart piechart = (PieChart) ChartFactory.createChart(
-				ChartFactory.PIECHART, "Productos por categoría",
+		RingChart piechart = (RingChart) ChartFactory.createChart(
+				ChartFactory.RINGCHART, "Productos por categoría",
 				CommonData.EMPTY_STRING, CommonData.EMPTY_STRING);
 
 		List<ProductsCategoryHelper> list = CategoryService

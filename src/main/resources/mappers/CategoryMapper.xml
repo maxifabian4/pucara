@@ -29,11 +29,11 @@
     <select id='getSoldProductsByCategory' resultMap='CategoriesResult'>
         SELECT
            c.name                 AS categoryName,
-           COUNT(xssdp.barcode)   AS numberOfProducts
+           SUM(xssdp.count    )   AS numberOfProducts
 	    FROM 
 	       x_sale_sale_detail_product xssdp JOIN product p ON (xssdp.barcode = p.barcode)
            JOIN category c ON (p.categoryid = c.id)
-        GROUP BY p.categoryid;
+        GROUP BY c.name;
     </select>
     
     <select id='getCategoryById' parameterType='int' resultType='com.pucara.persistence.domain.Category'>
