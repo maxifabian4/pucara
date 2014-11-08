@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.ui.HorizontalAlignment;
-import org.jfree.ui.VerticalAlignment;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.plot.RingPlot;
 
