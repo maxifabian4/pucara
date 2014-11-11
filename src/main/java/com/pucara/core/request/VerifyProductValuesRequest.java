@@ -14,6 +14,7 @@ public class VerifyProductValuesRequest {
 	private String percentage;
 	private String minStock;
 	private String stock;
+	// Should be an id ...
 	private Category category;
 
 	public VerifyProductValuesRequest(String barcode, String description,

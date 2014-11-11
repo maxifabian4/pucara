@@ -21,6 +21,7 @@ import com.pucara.core.request.VerifyProductValuesRequest;
 import com.pucara.core.response.ProductListResponse;
 import com.pucara.core.response.ProductResponse;
 import com.pucara.core.services.product.ProductService;
+import com.pucara.persistence.domain.Category;
 import com.pucara.view.stock.StockView;
 
 /**
@@ -251,6 +252,7 @@ public class StockController implements Observer {
 		// Retrieve information from the stock view.
 		List<String> popupComponents = stockView.getPopupComponents();
 		String description, initialCost, finalCost, percentage, minStock, barcode;
+		Category categoryFromView;
 
 		if (stockView.isByPercentage()) {
 			description = popupComponents.get(0);
@@ -258,18 +260,22 @@ public class StockController implements Observer {
 			percentage = popupComponents.get(2);
 			minStock = popupComponents.get(3);
 			barcode = stockView.getSelectedBarcode();
+			categoryFromView = stockView.getCategoryFromView();
 
 			return new VerifyProductValuesRequest(barcode, description,
-					initialCost, "0.0", percentage, "0", minStock, null);
+					initialCost, "0.0", percentage, "0", minStock,
+					categoryFromView);
 		} else {
 			description = popupComponents.get(0);
 			initialCost = popupComponents.get(1);
 			finalCost = popupComponents.get(2);
 			minStock = popupComponents.get(3);
 			barcode = stockView.getSelectedBarcode();
+			categoryFromView = stockView.getCategoryFromView();
 
 			return new VerifyProductValuesRequest(barcode, description,
-					initialCost, finalCost, "0.0", "0", minStock, null);
+					initialCost, finalCost, "0.0", "0", minStock,
+					categoryFromView);
 		}
 	}
 

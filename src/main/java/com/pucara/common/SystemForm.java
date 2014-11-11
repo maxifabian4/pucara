@@ -69,8 +69,10 @@ public class SystemForm extends JPanel {
 		return inputBarcode;
 	}
 
-	public void addComboBox(String key, Category[] categories) {
-		Component component = createComboElementForm(key, categories);
+	public void addComboBox(String key, Category[] categories,
+			Integer selectedCategory) {
+		Component component = createComboElementForm(key, categories,
+				selectedCategory);
 
 		this.add(component, Component.LEFT_ALIGNMENT);
 	}
@@ -151,7 +153,8 @@ public class SystemForm extends JPanel {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
 
-	private Component createComboElementForm(String text, Category[] items) {
+	private Component createComboElementForm(String text, Category[] items,
+			Integer selectedCategory) {
 		JPanel container = new JPanel();
 
 		container.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
@@ -163,6 +166,14 @@ public class SystemForm extends JPanel {
 
 		JComboBox combo = CommonUIComponents.createNewComboBox(items);
 		combo.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+		if (selectedCategory != null) {
+			for (Category category : items) {
+				if (category.getId().equals(selectedCategory)) {
+					combo.setSelectedItem(category);
+				}
+			}
+		}
 
 		container.add(label);
 		container.add(CommonUIComponents.createNewVerticalSeparatorBox(10));

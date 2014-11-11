@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.pucara.persistence.domain.Category;
+
 /**
  * 
  * @author Maximiliano Fabian
@@ -81,6 +83,10 @@ public class SystemPopup extends JFrame {
 	public void setActionListenerToComponent(String[] textFieldKeys,
 			ActionListener listener) {
 		form.setActionListenerToComponent(textFieldKeys, listener);
+	}
+
+	public void addComboBox(Category[] categories, Integer selectedCategory) {
+		form.addComboBox(CommonUIComponents.CATEGORY, categories, selectedCategory);
 	}
 
 	/**
@@ -153,8 +159,8 @@ public class SystemPopup extends JFrame {
 
 		JLabel titleLabel = new JLabel(title);
 		titleLabel.setForeground(CommonData.LIGHT_FONT_COLOR);
-		titleLabel.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD,
-				17));
+		titleLabel
+				.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 17));
 
 		header.add(titleLabel);
 
@@ -162,6 +168,10 @@ public class SystemPopup extends JFrame {
 		container.add(component, BorderLayout.CENTER);
 
 		return container;
+	}
+
+	public SystemForm getForm() {
+		return form;
 	}
 
 }

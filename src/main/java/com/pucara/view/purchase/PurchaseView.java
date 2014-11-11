@@ -8,10 +8,12 @@ import java.awt.event.FocusListener;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import com.pucara.persistence.domain.Category;
 import com.pucara.view.render.ProductPurchaseCellRenderer;
 import com.pucara.view.render.ProductSalePotentialCellRenderer;
 import com.pucara.view.render.object.ListSalePotentialProduct;
@@ -24,7 +26,9 @@ import com.pucara.common.SystemPopup;
 import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.controller.purchase.PurchaseController;
 import com.pucara.core.entities.Product;
+import com.pucara.core.generic.Utilities;
 import com.pucara.core.request.SearchProductRequest;
+import com.pucara.core.services.category.CategoryService;
 import com.pucara.core.services.product.ProductService;
 
 /**
@@ -226,6 +230,8 @@ public class PurchaseView extends ProductView {
 		popup.addKeyListener(purchaseController.createKeyListener());
 		popup.addKeyListenerAllFields(textFieldKeysUpdate,
 				purchaseController.createKeyListener());
+		popup.addComboBox(Utilities.generateArrayCategories(CategoryService
+				.getAllCategories().getAllCategories()), selectedProduct.getCategoryId());
 		popup.addConfirmButton("Actualizar",
 				purchaseController.createUpdateProductListener());
 		popup.setActionListenerToComponent(textFieldKeysUpdate,
@@ -292,6 +298,16 @@ public class PurchaseView extends ProductView {
 		JTextField textField = (JTextField) expenseForm
 				.getComponentFormAt(CommonUIComponents.PURCHASE_COST);
 		textField.setText(String.valueOf(totalCost));
+	}
+
+	@Override
+	public void cleanSummaryLabel() {
+	}
+
+	public Category getCategoryFromView() {
+		JComboBox cb = (JComboBox) popup.getForm().getComponentFormAt(
+				CommonUIComponents.CATEGORY);
+		return (Category) cb.getSelectedItem();
 	}
 
 	/**
@@ -398,10 +414,6 @@ public class PurchaseView extends ProductView {
 		centerContainer.add(listOfPartialProducts, BorderLayout.CENTER);
 		this.add(centerContainer, BorderLayout.CENTER);
 		this.validate();
-	}
-
-	@Override
-	public void cleanSummaryLabel() {
 	}
 
 }

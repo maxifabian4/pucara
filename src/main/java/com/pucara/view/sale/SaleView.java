@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -162,6 +163,16 @@ public class SaleView extends ProductView {
 		return listOfPotentialProducts.getNumberOfElements() > 0;
 	}
 
+	@Override
+	public void cleanSummaryLabel() {
+
+	}
+
+	public void showError(String message) {
+		JOptionPane.showMessageDialog(null, message, "Error",
+				JOptionPane.ERROR_MESSAGE);
+	}
+
 	private void createFooterPanel(Object[] products) {
 		summaryPanel = new SaleSummaryPanel(products);
 		this.add(summaryPanel, BorderLayout.PAGE_END);
@@ -244,11 +255,6 @@ public class SaleView extends ProductView {
 		panelLeft.add(inputBarcode, BorderLayout.PAGE_START);
 
 		this.add(panelLeft, BorderLayout.LINE_START);
-	}
-
-	@Override
-	public void cleanSummaryLabel() {
-
 	}
 
 }

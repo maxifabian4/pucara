@@ -274,6 +274,21 @@ public class SaleService {
 		}
 	}
 
+	public static Response increaseRequiredProduct(String barcode, Integer n) {
+		Product product = productsCollection.alreadyExists(barcode);
+
+		if (product != null && product.getStock() >= n) {
+			return productsCollection.increaseQuantityProduct(barcode, n);
+		} else if (product != null) {
+			return new Response(new ErrorMessage(ErrorType.INSUFFICIENT_STOCK,
+					String.format(CommonMessageError.INSUFFICIENT_STOCK,
+							barcode)));
+		} else {
+			return new Response(new ErrorMessage(ErrorType.ELEMENT_NOT_FOUND,
+					CommonMessageError.ELEMENT_NOT_FOUND));
+		}
+	}
+
 	/**
 	 * Returns the gain of a sale. SHOULD BE ABSTRACT !!!
 	 * 
@@ -395,10 +410,6 @@ public class SaleService {
 		} else {
 			return null;
 		}
-	}
-
-	public static void increaseRequiredProduct(String barcode, Integer n) {
-		productsCollection.increaseQuantityProduct(barcode, n);
 	}
 
 }

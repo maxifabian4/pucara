@@ -56,14 +56,6 @@ public class StockView extends ProductView {
 		generateContent(textFieldPlusKeys);
 	}
 
-	/**
-	 * Probably we need to remove it ...
-	 */
-	// public void selectInputTextField() {
-	// inputBarcode.requestFocus();
-	// inputBarcode.requestFocusInWindow();
-	// }
-
 	// CHANGE !!!!!!!!!!!!
 	public String getProductBarcode() {
 		JTextField tf = (JTextField) form
@@ -76,12 +68,6 @@ public class StockView extends ProductView {
 				.getComponentFormAt(CommonUIComponents.DESCRIPTION);
 		return tf.getText();
 	}
-
-	// public String getProductInitialCost() {
-	// JTextField tf = (JTextField) form
-	// .getComponentFormAt(CommonUIComponents.COST);
-	// return tf.getText();
-	// }
 
 	public String getProductPercentage() {
 		JTextField tf = (JTextField) form
@@ -187,6 +173,9 @@ public class StockView extends ProductView {
 		popup.addKeyListener(stockController.createKeyListener());
 		popup.addKeyListenerAllFields(textFieldKeysUpdate,
 				stockController.createKeyListener());
+		popup.addComboBox(Utilities.generateArrayCategories(CategoryService
+				.getAllCategories().getAllCategories()), selectedProduct
+				.getCategoryId());
 		popup.addConfirmButton("Actualizar",
 				stockController.createUpdateProductListener());
 		popup.setActionListenerToComponent(textFieldKeysUpdate,
@@ -232,6 +221,17 @@ public class StockView extends ProductView {
 
 	public boolean isByPercentage() {
 		return byPercentage;
+	}
+
+	@Override
+	public void cleanSummaryLabel() {
+		listOfProducts.cleanSummaryLabel();
+	}
+
+	public Category getCategoryFromView() {
+		JComboBox cb = (JComboBox) popup.getForm().getComponentFormAt(
+				CommonUIComponents.CATEGORY);
+		return (Category) cb.getSelectedItem();
 	}
 
 	/**
@@ -299,7 +299,7 @@ public class StockView extends ProductView {
 		// Add combo box.
 		form.addComboBox(CommonUIComponents.CATEGORY, Utilities
 				.generateArrayCategories(CategoryService.getAllCategories()
-						.getAllCategories()));
+						.getAllCategories()), null);
 
 		// Add check box.
 		form.addCheckBox(CommonUIComponents.BY_PERCENTAGE, byPercentage,
@@ -342,11 +342,6 @@ public class StockView extends ProductView {
 
 		container.add(listOfProducts, BorderLayout.CENTER);
 		this.add(container, BorderLayout.CENTER);
-	}
-
-	@Override
-	public void cleanSummaryLabel() {
-		listOfProducts.cleanSummaryLabel();
 	}
 
 }

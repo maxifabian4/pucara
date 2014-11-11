@@ -224,10 +224,18 @@ public class SaleController implements Observer {
 									.getIntegerValue(txt.getText());
 
 							if (n != null) {
-								SaleService.increaseRequiredProduct(barcode, n);
-								saleView.updatePartialElements(SaleService
-										.getPartialList().toArray());
-								saleView.selectPartialElementByBarcode(barcode);
+								Response result = SaleService
+										.increaseRequiredProduct(barcode, n);
+
+								if (result.wasSuccessful()) {
+									saleView.updatePartialElements(SaleService
+											.getPartialList().toArray());
+									saleView.selectPartialElementByBarcode(barcode);
+								} else {
+									saleView.showError(result
+											.getErrorsMessages().get(0)
+											.getMessage());
+								}
 							}
 						}
 					}
