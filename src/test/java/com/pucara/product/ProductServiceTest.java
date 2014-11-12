@@ -1,4 +1,4 @@
-package com.pucara.mysql;
+package com.pucara.product;
 
 import org.junit.Test;
 import org.slf4j.Logger;
