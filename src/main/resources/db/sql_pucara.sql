@@ -301,12 +301,6 @@ select SUM(s.gain) AS gain, SUM(sd.number_of_products) AS count from x_sale_sale
 CREATE VIEW daily_purchase_report_view AS
 select p.description as description, p.expense as expense, p.date as date from purchase p where date(p.date) = curdate();
 
-/* Export Table to CSV */
--- SELECT * INTO OUTFILE '/tmp/products.csv'
--- FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
--- LINES TERMINATED BY '\n'
--- FROM product;
-
 /* Import From CSV */
 -- LOAD DATA INFILE '/tmp/products.csv' INTO TABLE product
 -- FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'

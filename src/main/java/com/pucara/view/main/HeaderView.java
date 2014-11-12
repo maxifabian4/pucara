@@ -1,10 +1,13 @@
 package com.pucara.view.main;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -156,7 +159,7 @@ public class HeaderView extends JPanel {
 				.createNewHorizontalSeparatorBox(CommonUIComponents.VERTICAL_STRUT_VALUE));
 
 		// Close current frame
-		closeLabel = CommonUIComponents.createMenuLabel("x",
+		closeLabel = CommonUIComponents.createMenuIconLabel("power.png",
 				headerController.createCloseListener());
 		this.add(closeLabel);
 	}

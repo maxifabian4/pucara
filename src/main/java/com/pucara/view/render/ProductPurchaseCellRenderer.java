@@ -55,8 +55,8 @@ public class ProductPurchaseCellRenderer extends JPanel implements
 		iconContainer.setLayout(new GridBagLayout());
 		iconContainer.setBackground(new Color(0, 0, 255, 0));
 
-		ImageIcon icon = createImageIcon(CommonData.IMAGES_PATH
-				+ "withstock.png");
+		ImageIcon icon = CommonUIComponents
+				.createImageIcon(CommonData.IMAGES_PATH + "withstock.png");
 		JLabel iconLabel = new JLabel("", icon, JLabel.LEFT);
 		iconLabel.setBackground(new Color(0, 0, 255, 0));
 		iconLabel.setOpaque(true);
@@ -65,11 +65,12 @@ public class ProductPurchaseCellRenderer extends JPanel implements
 				.createNewHorizontalSeparatorBox(10));
 
 		if (Integer.valueOf(entry.getStock()).equals(0)) {
-			iconLabel.setIcon(createImageIcon(CommonData.IMAGES_PATH
-					+ "withoutstock.png"));
+			iconLabel.setIcon(CommonUIComponents
+					.createImageIcon(CommonData.IMAGES_PATH
+							+ "withoutstock.png"));
 		} else if (Integer.valueOf(entry.getStock()) <= entry.getMinStock()) {
-			iconLabel.setIcon(createImageIcon(CommonData.IMAGES_PATH
-					+ "minstock.png"));
+			iconLabel.setIcon(CommonUIComponents
+					.createImageIcon(CommonData.IMAGES_PATH + "minstock.png"));
 		}
 
 		JPanel container = new JPanel();
@@ -109,8 +110,8 @@ public class ProductPurchaseCellRenderer extends JPanel implements
 	}
 
 	private JLabel getStarLabel(int numberOfProducts) {
-		ImageIcon starIcon = createImageIcon(CommonData.IMAGES_PATH
-				+ "start.png");
+		ImageIcon starIcon = CommonUIComponents
+				.createImageIcon(CommonData.IMAGES_PATH + "start.png");
 		JLabel starLabel = new JLabel("" + numberOfProducts, starIcon,
 				JLabel.LEFT);
 
@@ -123,14 +124,4 @@ public class ProductPurchaseCellRenderer extends JPanel implements
 		return starLabel;
 	}
 
-	/** Returns an ImageIcon, or null if the path was invalid. */
-	private ImageIcon createImageIcon(String path) {
-		java.net.URL imgURL = getClass().getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: " + path);
-			return null;
-		}
-	}
 }

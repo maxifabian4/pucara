@@ -17,7 +17,6 @@ import javax.swing.border.EmptyBorder;
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonUIComponents;
 import com.pucara.core.entities.Product;
-import com.pucara.core.generic.Utilities;
 
 /**
  * 
@@ -57,7 +56,7 @@ public class ProductStockCellRenderer extends JPanel implements
 		iconContainer.setLayout(new GridBagLayout());
 		iconContainer.setBackground(new Color(0, 0, 255, 0));
 
-		ImageIcon icon = createImageIcon(CommonData.IMAGES_PATH
+		ImageIcon icon = CommonUIComponents.createImageIcon(CommonData.IMAGES_PATH
 				+ "withstock.png");
 		JLabel iconLabel = new JLabel("", icon, JLabel.LEFT);
 		iconLabel.setBackground(new Color(0, 0, 255, 0));
@@ -67,11 +66,12 @@ public class ProductStockCellRenderer extends JPanel implements
 				.createNewHorizontalSeparatorBox(10));
 
 		if (Integer.valueOf(entry.getStock()).equals(0)) {
-			iconLabel.setIcon(createImageIcon(CommonData.IMAGES_PATH
-					+ "withoutstock.png"));
+			iconLabel.setIcon(CommonUIComponents
+					.createImageIcon(CommonData.IMAGES_PATH
+							+ "withoutstock.png"));
 		} else if (Integer.valueOf(entry.getStock()) <= entry.getMinStock()) {
-			iconLabel.setIcon(createImageIcon(CommonData.IMAGES_PATH
-					+ "minstock.png"));
+			iconLabel.setIcon(CommonUIComponents
+					.createImageIcon(CommonData.IMAGES_PATH + "minstock.png"));
 		}
 
 		JPanel container = new JPanel();
@@ -106,14 +106,4 @@ public class ProductStockCellRenderer extends JPanel implements
 		return this;
 	}
 
-	/** Returns an ImageIcon, or null if the path was invalid. */
-	protected ImageIcon createImageIcon(String path) {
-		java.net.URL imgURL = getClass().getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: " + path);
-			return null;
-		}
-	}
 }

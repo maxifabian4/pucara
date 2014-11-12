@@ -8,9 +8,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -133,6 +136,17 @@ public class CommonUIComponents {
 		label.setAlignmentX(Label.CENTER);
 
 		label.addMouseListener(listener);
+
+		return label;
+	}
+
+	public static JLabel createMenuIconLabel(String file,
+			MouseListener mouseListener) {
+		ImageIcon icon = createImageIcon(CommonData.IMAGES_PATH + file);
+		JLabel label = new JLabel(CommonData.EMPTY_STRING, icon, JLabel.CENTER);
+		label.addMouseListener(mouseListener);
+		label.setBackground(new Color(0, 255, 255, 0));
+		label.setOpaque(true);
 
 		return label;
 	}
@@ -319,6 +333,19 @@ public class CommonUIComponents {
 		checkBox.addActionListener(actionListener);
 
 		return checkBox;
+	}
+
+	/**
+	 * Returns an ImageIcon, or null if the path was invalid.
+	 */
+	public static ImageIcon createImageIcon(String path) {
+		java.net.URL imgURL = CommonUIComponents.class.getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL);
+		} else {
+			System.err.println("Couldn't find file: " + path);
+			return null;
+		}
 	}
 
 }

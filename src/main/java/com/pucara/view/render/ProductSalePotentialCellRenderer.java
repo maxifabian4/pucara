@@ -51,8 +51,8 @@ public class ProductSalePotentialCellRenderer extends JPanel implements
 		iconContainer.setLayout(new GridBagLayout());
 		iconContainer.setBackground(new Color(250, 250, 250, 1));
 
-		ImageIcon icon = createImageIcon(CommonData.IMAGES_PATH
-				+ "empty11x10.png");
+		ImageIcon icon = CommonUIComponents
+				.createImageIcon(CommonData.IMAGES_PATH + "empty11x10.png");
 		JLabel iconLabel = new JLabel("", icon, JLabel.LEFT);
 		iconLabel.setBackground(new Color(0, 0, 255, 0));
 		iconLabel.setOpaque(true);
@@ -62,8 +62,9 @@ public class ProductSalePotentialCellRenderer extends JPanel implements
 
 		if (entry.getStock().equals(0)) {
 			iconContainer.setBackground(new Color(0, 0, 255, 1));
-			iconLabel.setIcon(createImageIcon(CommonData.IMAGES_PATH
-					+ "withoutstock11x10.png"));
+			iconLabel.setIcon(CommonUIComponents
+					.createImageIcon(CommonData.IMAGES_PATH
+							+ "withoutstock11x10.png"));
 			description.setForeground(Color.GRAY);
 		}
 
@@ -94,19 +95,4 @@ public class ProductSalePotentialCellRenderer extends JPanel implements
 		return this;
 	}
 
-	/**
-	 * Returns an ImageIcon, or null if the path was invalid.
-	 * 
-	 * @param path
-	 * @return
-	 */
-	private ImageIcon createImageIcon(String path) {
-		java.net.URL imgURL = getClass().getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: " + path);
-			return null;
-		}
-	}
 }
