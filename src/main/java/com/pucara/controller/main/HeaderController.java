@@ -1,23 +1,15 @@
 package com.pucara.controller.main;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.UIManager;
-
-import com.pucara.common.CommonData;
 import com.pucara.controller.category.CategoryController;
 import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.controller.purchase.PurchaseController;
 import com.pucara.controller.report.ReportController;
 import com.pucara.controller.sale.SaleController;
 import com.pucara.controller.stock.StockController;
-import com.pucara.core.generic.FillPainter;
 import com.pucara.view.category.CategoryView;
 import com.pucara.view.main.HeaderView;
 import com.pucara.view.main.MainView;
@@ -97,7 +89,7 @@ public class HeaderController {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				mainView.removeCentralPanel();
-//				mainView.addNewCentralPanel(new CategoryView());
+				// mainView.addNewCentralPanel(new CategoryView());
 			}
 
 			@Override
@@ -128,6 +120,7 @@ public class HeaderController {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				headerView.changeCursorLabel(headerView.getStockLabel());
+				// headerView.changeToBold(headerView.getStockLabel());
 			}
 
 			@Override
@@ -157,6 +150,7 @@ public class HeaderController {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				headerView.changeCursorLabel(headerView.getSaleLabel());
+				// headerView.changeToBold(headerView.getSaleLabel());
 			}
 
 			@Override
@@ -174,16 +168,18 @@ public class HeaderController {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				mainView.closeApplication();
-				headerView.changeToBold(headerView.getCloseLabel());
+				// headerView.changeToBold(headerView.getCloseLabel());
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				headerView.changeCursorLabel(headerView.getCloseLabel());
+				// headerView.changeToBold(headerView.getCloseLabel());
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
+				// headerView.changeToLight(headerView.getCloseLabel());
 			}
 
 		};
@@ -212,10 +208,12 @@ public class HeaderController {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				headerView.changeCursorLabel(headerView.getReportsLabel());
+				// headerView.changeToBold(headerView.getReportsLabel());
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
+				// headerView.changeToLight(headerView.getReportsLabel());
 			}
 		};
 	}
@@ -241,10 +239,12 @@ public class HeaderController {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				headerView.changeCursorLabel(headerView.getPurchaseLabel());
+				// headerView.changeToBold(headerView.getPurchaseLabel());
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
+				// headerView.changeToLight(headerView.getPurchaseLabel());
 			}
 		};
 	}

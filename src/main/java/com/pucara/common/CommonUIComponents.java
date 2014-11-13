@@ -8,8 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -130,7 +128,7 @@ public class CommonUIComponents {
 	public static JLabel createMenuLabel(String title, MouseListener listener) {
 		JLabel label = new JLabel(title);
 
-		label.setForeground(CommonData.LIGHT_FONT_COLOR);
+		label.setForeground(CommonData.DARK_FONT_COLOR);
 		label.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN,
 				CommonData.GENERAL_FONT_SIZE_LABEL));
 		label.setAlignmentX(Label.CENTER);

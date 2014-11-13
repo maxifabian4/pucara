@@ -1,13 +1,9 @@
 package com.pucara.view.main;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
-import java.awt.Font;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -40,13 +36,15 @@ public class HeaderView extends JPanel {
 
 	public void changeToBold(JLabel label) {
 		cleanAllLabels();
-		label.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD,
-				CommonData.GENERAL_FONT_SIZE_LABEL));
+		// label.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD,
+		// CommonData.GENERAL_FONT_SIZE_LABEL));
+		label.setForeground(CommonData.DEFAULT_SELECTION_COLOR);
 	}
 
 	public void changeToLight(JLabel label) {
-		label.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN,
-				CommonData.GENERAL_FONT_SIZE_LABEL));
+		// label.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN,
+		// CommonData.GENERAL_FONT_SIZE_LABEL));
+		label.setForeground(CommonData.DARK_FONT_COLOR);
 	}
 
 	public void changeCursorLabel(JLabel label) {
@@ -82,7 +80,7 @@ public class HeaderView extends JPanel {
 		changeToLight(purchaseLabel);
 		changeToLight(stockLabel);
 		changeToLight(reportsLabel);
-		changeToLight(closeLabel);
+		// changeToLight(closeLabel);
 	}
 
 	/**
@@ -97,15 +95,16 @@ public class HeaderView extends JPanel {
 
 		// Add Empty border and background ...
 		this.setBorder(new EmptyBorder(10, 10, 10, 15));
-		this.setBackground(CommonData.BACKGROUND_PANEL_COLOR);
+		this.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 
 		// Add each label depending of the menu ...
 
 		// Sale
 		saleLabel = CommonUIComponents.createMenuLabel("ventas",
 				headerController.createSaleListener());
-		saleLabel.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD,
-				CommonData.GENERAL_FONT_SIZE_LABEL));
+		// saleLabel.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD,
+		// CommonData.GENERAL_FONT_SIZE_LABEL));
+		saleLabel.setForeground(CommonData.DEFAULT_SELECTION_COLOR);
 		this.add(saleLabel);
 
 		/**
@@ -159,7 +158,7 @@ public class HeaderView extends JPanel {
 				.createNewHorizontalSeparatorBox(CommonUIComponents.VERTICAL_STRUT_VALUE));
 
 		// Close current frame
-		closeLabel = CommonUIComponents.createMenuIconLabel("power.png",
+		closeLabel = CommonUIComponents.createMenuIconLabel("powerblack.png",
 				headerController.createCloseListener());
 		this.add(closeLabel);
 	}
