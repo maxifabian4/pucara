@@ -14,8 +14,8 @@ public class CommonData {
 	 */
 	public static final Color DARK_FONT_COLOR = Color.DARK_GRAY;
 	public static final Color LIGHT_FONT_COLOR = new Color(237, 237, 237);
-	public static final Color GENERAL_BACKGROUND_COLOR = new Color(250, 250,
-			250);
+	public static final Color GENERAL_BACKGROUND_COLOR = new Color(240, 240,
+			240);
 	// public static final Color GENERAL_BACKGROUND_COLOR = new Color(228, 228,
 	// 228);
 	public static final Color BACKGROUND_TABLE_COLOR = new Color(241, 241, 241);
@@ -117,7 +117,7 @@ public class CommonData {
 	public static final int FONT_SIZE_NUM_REPORT = 20;
 	public static final int MAX_HEIGHT_TABLE_PANEL = 650;
 	public static final int GENERAL_FONT_SIZE = 15;
-	public static final int GENERAL_FONT_SIZE_TITLE_FORM = 35;
+	public static final int GENERAL_FONT_SIZE_TITLE_VIEW = 25;
 	public static final int GENERAL_FONT_SIZE_LABEL = 21;
 
 	/**

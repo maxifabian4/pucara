@@ -103,20 +103,19 @@ public class CommonUIComponents {
 	}
 
 	/**
-	 * Creates a new title for an specific form.
+	 * Creates a new title for an specific view/panel.
 	 * 
 	 * @param text
 	 * @return JLabel
 	 */
-	public static JLabel createNewFormTitle(String text) {
-		JLabel lblAgregarNuevaCategoria = new JLabel(text);
+	public static JLabel createNewViewTitle(String text) {
+		JLabel lbl = new JLabel(text);
 
-		lblAgregarNuevaCategoria.setForeground(CommonData.DARK_FONT_COLOR);
-		lblAgregarNuevaCategoria.setFont(new Font(CommonData.GENERAL_FONT,
-				Font.PLAIN, CommonData.GENERAL_FONT_SIZE_TITLE_FORM));
-		lblAgregarNuevaCategoria.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		lbl.setForeground(CommonData.DARK_FONT_COLOR);
+		lbl.setFont(new Font(CommonData.GENERAL_FONT, Font.BOLD,
+				CommonData.GENERAL_FONT_SIZE_TITLE_VIEW));
 
-		return lblAgregarNuevaCategoria;
+		return lbl;
 	}
 
 	/**
@@ -160,7 +159,7 @@ public class CommonUIComponents {
 
 		combo.setBorder(new EmptyBorder(7, 7, 7, 7));
 		combo.setForeground(CommonData.DARK_FONT_COLOR);
-		combo.setBackground(Color.WHITE);
+		combo.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 		combo.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN,
 				CommonData.GENERAL_FONT_SIZE));
 
@@ -328,7 +327,22 @@ public class CommonUIComponents {
 		checkBox.setForeground(CommonData.DARK_FONT_COLOR);
 		checkBox.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 		checkBox.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 17));
-		checkBox.addActionListener(actionListener);
+
+		if (actionListener != null) {
+			checkBox.addActionListener(actionListener);
+		}
+
+		return checkBox;
+	}
+
+	public static Component createNewCheckBoxForOptions(String label,
+			boolean selected) {
+		JCheckBox checkBox = new JCheckBox(label);
+
+		checkBox.setSelected(selected);
+		checkBox.setForeground(CommonData.DARK_FONT_COLOR);
+		checkBox.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+		checkBox.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 14));
 
 		return checkBox;
 	}

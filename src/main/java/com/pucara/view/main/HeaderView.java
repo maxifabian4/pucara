@@ -27,6 +27,7 @@ public class HeaderView extends JPanel {
 	private JLabel stockLabel;
 	private JLabel reportsLabel;
 	private JLabel purchaseLabel;
+	private JLabel configurationLabel;
 	private JLabel closeLabel;
 
 	public HeaderView(MainView mainView) {
@@ -75,11 +76,16 @@ public class HeaderView extends JPanel {
 		return closeLabel;
 	}
 
+	public JLabel getConfigurationLabel() {
+		return configurationLabel;
+	}
+
 	private void cleanAllLabels() {
 		changeToLight(saleLabel);
 		changeToLight(purchaseLabel);
 		changeToLight(stockLabel);
 		changeToLight(reportsLabel);
+		changeToLight(configurationLabel);
 		// changeToLight(closeLabel);
 	}
 
@@ -124,17 +130,6 @@ public class HeaderView extends JPanel {
 		this.add(CommonUIComponents
 				.createNewHorizontalSeparatorBox(CommonUIComponents.VERTICAL_STRUT_VALUE));
 
-		// Category
-		// categoryLabel = CommonUIComponents.createMenuLabel("categor\u00EDas",
-		// headerController.createCategoryListener());
-		// this.add(categoryLabel);
-
-		/**
-		 * Separate panels.
-		 */
-		// this.add(CommonUIComponents
-		// .createNewHorizontalSeparatorBox(CommonUIComponents.VERTICAL_STRUT_VALUE));
-
 		// Stock
 		stockLabel = CommonUIComponents.createMenuLabel("stock",
 				headerController.createStockListener());
@@ -150,6 +145,17 @@ public class HeaderView extends JPanel {
 		reportsLabel = CommonUIComponents.createMenuLabel("reportes",
 				headerController.createReportsListener());
 		this.add(reportsLabel);
+
+		/**
+		 * Separate panels.
+		 */
+		this.add(CommonUIComponents
+				.createNewHorizontalSeparatorBox(CommonUIComponents.VERTICAL_STRUT_VALUE));
+
+		// Configuration
+		configurationLabel = CommonUIComponents.createMenuLabel("opciones",
+				headerController.createConfigurationListener());
+		this.add(configurationLabel);
 
 		/**
 		 * Separate panels.

@@ -4,13 +4,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import com.pucara.controller.category.CategoryController;
+import com.pucara.controller.configuration.ConfigurationController;
 import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.controller.purchase.PurchaseController;
 import com.pucara.controller.report.ReportController;
 import com.pucara.controller.sale.SaleController;
 import com.pucara.controller.stock.StockController;
-import com.pucara.view.category.CategoryView;
+import com.pucara.view.configuration.ConfigurationView;
 import com.pucara.view.main.HeaderView;
 import com.pucara.view.main.MainView;
 import com.pucara.view.purchase.PurchaseView;
@@ -33,11 +33,6 @@ public class HeaderController {
 	// Main view.
 	private MainView mainView;
 
-	// Category view (no supported).
-	private CategoryView categoryView;
-	// Category controller (no supported).
-	private CategoryController categoryController;
-
 	// Purchase view.
 	private PurchaseView purchaseView;
 	// Purchase controller.
@@ -55,51 +50,29 @@ public class HeaderController {
 	// Stock controller.
 	private StockController stockController;
 
+	// Configuration view.
+	private ConfigurationView configurationView;
+	// Configuration controller.
+	private ConfigurationController configurationController;
+
 	public HeaderController(HeaderView headerView, MainView mainView) {
 		this.subject = new UpdatesSource();
 		this.headerView = headerView;
 		this.mainView = mainView;
 
 		this.purchaseView = new PurchaseView(this.subject);
-		// this.purchaseController = new PurchaseController(this.purchaseView,
-		// this.subject);
-
 		this.saleView = new SaleView(this.subject);
-		// this.saleController = new SaleController(this.saleView);
-		// subject.addObserver(this.saleController);
-		// this.saleController.setSubject(this.subject);
-
 		this.stockView = new StockView(this.subject);
-		// this.stockController = new StockController(this.stockView);
+
+		this.configurationView = new ConfigurationView();
+		this.configurationController = new ConfigurationController(
+				configurationView);
 
 		// Update updated information product.
 		mainView.addNewCentralPanel(saleView);
 		// Apply view properties.
 		saleView.repaint();
 		saleView.setFocusOnInput();
-	}
-
-	/**
-	 * Not supported so far.
-	 * 
-	 * @return MouseListener
-	 */
-	public MouseListener createCategoryListener() {
-		return new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				mainView.removeCentralPanel();
-				// mainView.addNewCentralPanel(new CategoryView());
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-			}
-		};
 	}
 
 	/**
@@ -110,8 +83,11 @@ public class HeaderController {
 		return new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				// Remove existing central panel.
 				mainView.removeCentralPanel();
+				// Update updated information product.
 				mainView.addNewCentralPanel(stockView);
+				// Apply view properties.
 				stockView.repaint();
 				headerView.changeToBold(headerView.getStockLabel());
 				stockView.setFocusOnInput();
@@ -120,7 +96,6 @@ public class HeaderController {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				headerView.changeCursorLabel(headerView.getStockLabel());
-				// headerView.changeToBold(headerView.getStockLabel());
 			}
 
 			@Override
@@ -150,7 +125,6 @@ public class HeaderController {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				headerView.changeCursorLabel(headerView.getSaleLabel());
-				// headerView.changeToBold(headerView.getSaleLabel());
 			}
 
 			@Override
@@ -168,18 +142,15 @@ public class HeaderController {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				mainView.closeApplication();
-				// headerView.changeToBold(headerView.getCloseLabel());
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				headerView.changeCursorLabel(headerView.getCloseLabel());
-				// headerView.changeToBold(headerView.getCloseLabel());
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
-				// headerView.changeToLight(headerView.getCloseLabel());
 			}
 
 		};
@@ -208,12 +179,35 @@ public class HeaderController {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				headerView.changeCursorLabel(headerView.getReportsLabel());
-				// headerView.changeToBold(headerView.getReportsLabel());
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
-				// headerView.changeToLight(headerView.getReportsLabel());
+			}
+		};
+	}
+
+	public MouseListener createConfigurationListener() {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// Remove existing central panel.
+				mainView.removeCentralPanel();
+				// Update updated information product.
+				mainView.addNewCentralPanel(configurationView);
+				configurationView.repaint();
+				// Apply view properties.
+				headerView.changeToBold(headerView.getConfigurationLabel());
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				headerView
+						.changeCursorLabel(headerView.getConfigurationLabel());
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
 			}
 		};
 	}
@@ -233,18 +227,15 @@ public class HeaderController {
 				// Apply view properties.
 				purchaseView.repaint();
 				headerView.changeToBold(headerView.getPurchaseLabel());
-				// purchaseView.setFocusOnInput();
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				headerView.changeCursorLabel(headerView.getPurchaseLabel());
-				// headerView.changeToBold(headerView.getPurchaseLabel());
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
-				// headerView.changeToLight(headerView.getPurchaseLabel());
 			}
 		};
 	}
