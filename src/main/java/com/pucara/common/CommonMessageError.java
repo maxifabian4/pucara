@@ -26,4 +26,5 @@ public class CommonMessageError {
 	public static final String STATEMENT_SALE_ERROR = "Error tratanto de obtener informaci\u00F3n de la vista de ventas.";
 	public static final String STATEMENT_PURCHASE_ERROR = "Error tratanto de obtener informaci\u00F3n de la vista de costos.";
 	public static final String STATEMENT_CHART_ERROR = "Error tratanto de obtener informaci\u00F3n correspondiente a un gr\u00E1fico.";
+	public static final String EXPORT_ERROR = "Error tratando de exportar informaci\u00F3n de la entidad '%s', desde la base de datos.";
 }

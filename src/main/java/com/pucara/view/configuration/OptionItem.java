@@ -37,4 +37,8 @@ public class OptionItem extends JPanel {
 		this.components.put(key, value);
 		this.add(value);
 	}
+
+	public HashMap<String, Component> getAllComponents() {
+		return components;
+	}
 }

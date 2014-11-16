@@ -72,6 +72,17 @@ public class Utilities {
 	}
 
 	/**
+	 * Returns the current date based on the system configuration without
+	 * special characters.
+	 * 
+	 * @return String
+	 */
+	public static String getCurrentDateWithoutChars() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		return dateFormat.format(new Date());
+	}
+
+	/**
 	 * 
 	 * @param count
 	 * @param productAt
@@ -324,5 +335,20 @@ public class Utilities {
 		} catch (ParseException e) {
 			return new Date();
 		}
+	}
+
+	public static String duplicateCharacter(char pattern, String initialString) {
+		String finalString = "";
+		char[] array = initialString.toCharArray();
+
+		for (int i = 0; i < array.length; i++) {
+			finalString += array[i];
+
+			if (array[i] == '\\') {
+				finalString += array[i];
+			}
+		}
+
+		return finalString + "\\\\";
 	}
 }

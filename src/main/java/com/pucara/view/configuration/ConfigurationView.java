@@ -1,9 +1,14 @@
 package com.pucara.view.configuration;
 
+import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -13,6 +18,7 @@ import com.pucara.common.CommonUIComponents;
 
 public class ConfigurationView extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private OptionItem choseEntitiesOption;
 
 	public ConfigurationView() {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -32,13 +38,13 @@ public class ConfigurationView extends JPanel {
 				"Exportar");
 
 		// Add option items for entities.
-		OptionItem choseEntitiesOption = new OptionItem(
+		choseEntitiesOption = new OptionItem(
 				"Elige que entidades deseas exportar (Por defecto se guardar\u00E1 en formato CSV):");
-		choseEntitiesOption.addComponent("Productos", CommonUIComponents
+		choseEntitiesOption.addComponent("product", CommonUIComponents
 				.createNewCheckBoxForOptions("Productos", true));
-		choseEntitiesOption.addComponent("Categor\u00EDas", CommonUIComponents
+		choseEntitiesOption.addComponent("category", CommonUIComponents
 				.createNewCheckBoxForOptions("Categor\u00EDas", true));
-		choseEntitiesOption.addComponent("Proveedores", CommonUIComponents
+		choseEntitiesOption.addComponent("supplier", CommonUIComponents
 				.createNewCheckBoxForOptions("Proveedores", true));
 
 		exportConfiguration.addOptionItem(choseEntitiesOption);
@@ -57,4 +63,19 @@ public class ConfigurationView extends JPanel {
 		this.add(exportConfiguration);
 	}
 
+	public List<String> getSelectedEntities() {
+		HashMap<String, Component> components = choseEntitiesOption
+				.getAllComponents();
+		List<String> entities = new ArrayList<String>();
+
+		for (String key : components.keySet()) {
+			JCheckBox checkBox = (JCheckBox) components.get(key);
+
+			if (checkBox.isSelected()) {
+				entities.add(key);
+			}
+		}
+
+		return entities;
+	}
 }

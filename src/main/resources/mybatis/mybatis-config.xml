@@ -45,6 +45,7 @@
     <mappers>
         <mapper resource="mappers/CategoryMapper.xml" />
         <mapper resource="mappers/ReportMapper.xml" />
+        <mapper resource="mappers/ConfigurationMapper.xml" />
     </mappers>
 
 </configuration>
