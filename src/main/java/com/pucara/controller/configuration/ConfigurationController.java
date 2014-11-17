@@ -86,6 +86,10 @@ public class ConfigurationController {
 	private Response exportDataFor(List<String> entities, String path) {
 		Response response = new Response();
 
+		if (entities.contains("supplier")) {
+			entities.add("provides");
+		}
+
 		for (String entity : entities) {
 			String absolutePath = String.format("%s%s_%s.csv",
 					Utilities.duplicateCharacter('\\', path), entity,
