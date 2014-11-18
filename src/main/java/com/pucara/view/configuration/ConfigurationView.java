@@ -33,7 +33,7 @@ public class ConfigurationView extends JPanel {
 	}
 
 	public void generateAllOptions(ActionListener actionListener) {
-		// Add options to the view.
+		// Add Export options to the view.
 		ConfigurationItem exportConfiguration = new ConfigurationItem(
 				"Exportar");
 
@@ -49,7 +49,7 @@ public class ConfigurationView extends JPanel {
 
 		exportConfiguration.addOptionItem(choseEntitiesOption);
 
-		// Add chosen button.
+		// Add folder chosen button.
 		OptionItem chosenButtonOption = new OptionItem(
 				"Seleccionar carpeta de destino:");
 		JButton destinationButton = CommonUIComponents
@@ -60,7 +60,24 @@ public class ConfigurationView extends JPanel {
 
 		exportConfiguration.addOptionItem(chosenButtonOption);
 
+		// Add Import options to the view.
+		ConfigurationItem importConfiguration = new ConfigurationItem(
+				"Importar");
+
+		// Add files chosen button.
+		OptionItem chosenFilesButtonOption = new OptionItem(
+				"Seleccionar archivos para ser importados:");
+		JButton filesButton = CommonUIComponents
+				.createDefaultSystemButton("Seleccionar archivos");
+		// filesButton.addActionListener(actionListener);
+		chosenFilesButtonOption.addComponent("Seleccionar archivos",
+				filesButton);
+
+		importConfiguration.addOptionItem(chosenFilesButtonOption);
+
 		this.add(exportConfiguration);
+		this.add(CommonUIComponents.createNewVerticalSeparatorBox(40));
+		this.add(importConfiguration);
 	}
 
 	public List<String> getSelectedEntities() {
