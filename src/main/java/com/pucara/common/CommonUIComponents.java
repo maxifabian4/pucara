@@ -13,13 +13,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -374,146 +371,6 @@ public class CommonUIComponents {
 			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
-	}
-
-	/**
-	 * Pucara One
-	 */
-
-	public static JTextField createInputTextFieldOne2() {
-		JTextField textFieldComponent = new JTextField(
-				"Introduzca un producto ...");
-
-		Border empty = new EmptyBorder(7, 9, 7, 9);
-		textFieldComponent.setBorder(empty);
-		textFieldComponent.setBackground(Color.WHITE);
-		textFieldComponent.setForeground(Color.GRAY);
-		textFieldComponent.setSelectedTextColor(CommonData.LIGHT_FONT_COLOR);
-		textFieldComponent.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
-				Font.PLAIN, 17));
-
-		return textFieldComponent;
-	}
-
-	public static JTextField createInputTextFieldOne() {
-		// ArrayList<String> items = new ArrayList<String>();
-		// Locale[] locales = Locale.getAvailableLocales();
-		// for (int i = 0; i < locales.length; i++) {
-		// String item = locales[i].getDisplayName();
-		// items.add(item);
-		// }
-
-		JTextField textFieldComponent = new JTextField();
-		setupAutoComplete(textFieldComponent,
-				ProductService.getAllDescriptions());
-
-		Border empty = new EmptyBorder(7, 9, 7, 9);
-		textFieldComponent.setBorder(empty);
-		textFieldComponent.setBackground(Color.WHITE);
-		textFieldComponent.setForeground(Color.GRAY);
-		textFieldComponent.setSelectedTextColor(CommonData.LIGHT_FONT_COLOR);
-		textFieldComponent.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
-				Font.PLAIN, 17));
-
-		return textFieldComponent;
-	}
-
-	private static boolean isAdjusting(JComboBox cbInput) {
-		if (cbInput.getClientProperty("is_adjusting") instanceof Boolean) {
-			return (Boolean) cbInput.getClientProperty("is_adjusting");
-		}
-		return false;
-	}
-
-	private static void setAdjusting(JComboBox cbInput, boolean adjusting) {
-		cbInput.putClientProperty("is_adjusting", adjusting);
-	}
-
-	public static void setupAutoComplete(final JTextField txtInput,
-			final List<String> items) {
-		final DefaultComboBoxModel model = new DefaultComboBoxModel();
-		final JComboBox cbInput = new JComboBox(model) {
-			public Dimension getPreferredSize() {
-				return new Dimension(super.getPreferredSize().width, 0);
-			}
-		};
-
-		// *formato al combo box*
-		cbInput.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 17));
-		// **
-
-		setAdjusting(cbInput, false);
-		for (String item : items) {
-			model.addElement(item);
-		}
-		cbInput.setSelectedItem(null);
-		cbInput.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!isAdjusting(cbInput)) {
-					if (cbInput.getSelectedItem() != null) {
-						txtInput.setText(cbInput.getSelectedItem().toString());
-					}
-				}
-			}
-		});
-
-		txtInput.addKeyListener(new KeyAdapter() {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				setAdjusting(cbInput, true);
-				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					if (cbInput.isPopupVisible()) {
-						e.setKeyCode(KeyEvent.VK_ENTER);
-					}
-				}
-				if (e.getKeyCode() == KeyEvent.VK_ENTER
-						|| e.getKeyCode() == KeyEvent.VK_UP
-						|| e.getKeyCode() == KeyEvent.VK_DOWN) {
-					e.setSource(cbInput);
-					cbInput.dispatchEvent(e);
-					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						txtInput.setText(cbInput.getSelectedItem().toString());
-						cbInput.setPopupVisible(false);
-					}
-				}
-				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-					cbInput.setPopupVisible(false);
-				}
-				setAdjusting(cbInput, false);
-			}
-		});
-		txtInput.getDocument().addDocumentListener(new DocumentListener() {
-			public void insertUpdate(DocumentEvent e) {
-				updateList();
-			}
-
-			public void removeUpdate(DocumentEvent e) {
-				updateList();
-			}
-
-			public void changedUpdate(DocumentEvent e) {
-				updateList();
-			}
-
-			private void updateList() {
-				setAdjusting(cbInput, true);
-				model.removeAllElements();
-				String input = txtInput.getText();
-				if (!input.isEmpty()) {
-					for (String item : items) {
-						if (item.toLowerCase().startsWith(input.toLowerCase())) {
-							model.addElement(item);
-						}
-					}
-				}
-				cbInput.setPopupVisible(model.getSize() > 0);
-				setAdjusting(cbInput, false);
-			}
-		});
-		txtInput.setLayout(new BorderLayout());
-		txtInput.add(cbInput, BorderLayout.SOUTH);
 	}
 
 }
