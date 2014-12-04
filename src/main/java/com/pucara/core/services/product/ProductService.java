@@ -3,8 +3,10 @@ package com.pucara.core.services.product;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,11 +20,15 @@ import com.pucara.core.request.SearchProductRequest;
 import com.pucara.core.request.UpdateProductRequest;
 import com.pucara.core.request.VerifyProductValuesRequest;
 import com.pucara.core.response.AllProductsResponse;
+import com.pucara.core.response.DailyExpensesResponse;
 import com.pucara.core.response.ErrorMessage;
 import com.pucara.core.response.ErrorType;
 import com.pucara.core.response.ProductListResponse;
 import com.pucara.core.response.ProductResponse;
 import com.pucara.core.response.StatementResponse;
+import com.pucara.core.services.mybatis.MyBatisUtil;
+import com.pucara.persistence.mapper.ProductMapper;
+import com.pucara.persistence.mapper.ReportMapper;
 
 /**
  * This class provides the methods to create and update a product in the
@@ -321,6 +327,21 @@ public class ProductService {
 		}
 
 		return assignedBarcode;
+	}
+
+	/**
+	 * This method uses mappers.
+	 */
+	public static List<String> getAllDescriptions() {
+		SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory()
+				.openSession();
+		try {
+			ProductMapper productMapper = sqlSession
+					.getMapper(ProductMapper.class);
+			return productMapper.getAllDescriptions();
+		} finally {
+			sqlSession.close();
+		}
 	}
 
 }

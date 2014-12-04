@@ -32,11 +32,11 @@ public class SwingListPanel extends JPanel {
 		/**
 		 * Allows apply look and feel properties on scrolls.
 		 */
-//		applyLookAndFeelProperties();
+		// applyLookAndFeelProperties();
 
 		setLayout(new BorderLayout());
-		this.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
-
+		this.setBackground(new Color(0, 0, 0, 1));
+//		this.setPreferredSize(new Dimension(0, 100));
 		productList = new JList(items);
 		productList.setCellRenderer(render);
 		productList.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
@@ -44,6 +44,7 @@ public class SwingListPanel extends JPanel {
 				new SharedListSelectionHandler(view));
 
 		JScrollPane pane = new JScrollPane(productList);
+		pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		// Remove scroll border ...
 		pane.setBorder(null);
 		// Modify vertical scroll bar size ...

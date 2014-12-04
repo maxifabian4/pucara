@@ -34,7 +34,8 @@ public class ProductSaleCellRenderer extends JPanel implements ListCellRenderer 
 		removeAll();
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(10, 10, 10, 10));
-		setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+		// setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+		setBackground(Color.WHITE);
 
 		PartialElement entry = (PartialElement) value;
 
@@ -93,8 +94,8 @@ public class ProductSaleCellRenderer extends JPanel implements ListCellRenderer 
 			starLabel.setForeground(CommonData.LIGHT_FONT_COLOR);
 			stock.setForeground(CommonData.LIGHT_FONT_COLOR);
 		} else {
-			setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
-			container.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+			setBackground(Color.WHITE);
+			container.setBackground(Color.WHITE);
 			description.setForeground(CommonData.DARK_FONT_COLOR);
 			barcode.setForeground(Color.LIGHT_GRAY);
 			price.setForeground(CommonData.DARK_FONT_COLOR);

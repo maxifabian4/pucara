@@ -14,8 +14,10 @@ public class CommonData {
 	 */
 	public static final Color DARK_FONT_COLOR = Color.DARK_GRAY;
 	public static final Color LIGHT_FONT_COLOR = new Color(237, 237, 237);
-	public static final Color GENERAL_BACKGROUND_COLOR = new Color(240, 240,
-			240);
+	public static final Color GENERAL_BACKGROUND_COLOR = new Color(230, 230,
+			230);
+//	public static final Color GENERAL_BACKGROUND_COLOR = new Color(240, 240,
+//			240);
 	// public static final Color GENERAL_BACKGROUND_COLOR = new Color(228, 228,
 	// 228);
 	public static final Color BACKGROUND_TABLE_COLOR = new Color(241, 241, 241);

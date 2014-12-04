@@ -74,5 +74,11 @@ public class MysqlConnectionTest {
 
 		System.out.println(i + xx[cont]);
 	}
+	
+	@Test
+	public void extraTestw() {
+		String[] namesArray = "".split(";");
+		System.out.println(namesArray.length);
+	}
 
 }
