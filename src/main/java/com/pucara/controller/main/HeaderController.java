@@ -19,7 +19,9 @@ import com.pucara.view.sale.SaleView;
 import com.pucara.view.stock.StockView;
 
 /**
- * This class represents the Header controller in the system.
+ * REMOVE !!
+ * 
+ * This class represents the Header controller in the system. 
  * 
  * @author Maximiliano
  */

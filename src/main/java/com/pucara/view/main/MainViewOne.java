@@ -7,7 +7,6 @@ import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -32,7 +31,7 @@ import com.pucara.view.render.ProductSaleCellRenderer;
  */
 public class MainViewOne extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private JPanel centerPanel;
+	// private JPanel centerPanel;
 	private JPanel headerPanel;
 	private JTextField inputTextField;
 	private SwingListPanelOne cardList;
@@ -55,8 +54,8 @@ public class MainViewOne extends JFrame {
 		this.add(headerPanel, BorderLayout.PAGE_START);
 
 		// Add center to the content pane.
-		centerPanel = createCenterPanel();
-		this.add(centerPanel, BorderLayout.CENTER);
+		// JPanel centerPanel = createCenterPanel();
+		this.add(createCenterPanel(), BorderLayout.CENTER);
 	}
 
 	public void displayComponents() {
@@ -83,9 +82,9 @@ public class MainViewOne extends JFrame {
 		});
 	}
 
-	public void createNewTextField(ActionListener actionListener) {
+	public void createNewTextField() {
 		inputTextField = CommonUIComponents.createInputTextFieldOne();
-		inputTextField.addActionListener(actionListener);
+		// inputTextField.addActionListener(actionListener);
 		headerPanel.add(inputTextField);
 	}
 
@@ -136,7 +135,7 @@ public class MainViewOne extends JFrame {
 
 		JPanel leftPanel = new JPanel(new BorderLayout());
 		leftPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
-//		CommonUIComponents.applyScrollLookAndFeelProperties();
+		// CommonUIComponents.applyScrollLookAndFeelProperties();
 		partialProductsList = new SwingListPanel(new Object[] {}, null,
 				new ProductSaleCellRenderer());
 		leftPanel.add(partialProductsList, BorderLayout.CENTER);
@@ -181,4 +180,11 @@ public class MainViewOne extends JFrame {
 		}
 	}
 
+	/**
+	 * Retrieve components from view.
+	 */
+
+	public JTextField getInputTextField() {
+		return inputTextField;
+	}
 }

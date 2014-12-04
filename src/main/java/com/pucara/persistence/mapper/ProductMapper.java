@@ -6,4 +6,6 @@ public interface ProductMapper {
 
 	public List<String> getAllDescriptions();
 
+	public String getBarcodeByDescription(String description);
+
 }

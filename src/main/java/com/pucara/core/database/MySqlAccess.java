@@ -27,6 +27,11 @@ import com.pucara.core.services.sale.SaleService;
 import com.pucara.persistence.domain.Category;
 
 /**
+ * No la estaría necesitando remover luego !!!!!
+ * 
+ * 
+ * 
+ * 
  * This class manages the main access to the database. All operation results are
  * retrieved based on a {@link com.pucara.core.response.Response} object.
  * 

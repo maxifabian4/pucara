@@ -3,10 +3,21 @@
   'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace="com.pucara.persistence.mapper.ProductMapper" >
 
-    <select id='getAllDescriptions' resultType="java.lang.String">
+    <select
+        id="getAllDescriptions"
+        resultType="java.lang.String" >
         SELECT 
            p.description
-        FROM product p;
+        FROM product p;
     </select>
+
+    <select
+        id="getBarcodeByDescription"
+        parameterType="String"
+        resultType="java.lang.String" >
+        SELECT 
+           p.barcode
+        FROM product p
+        WHERE description = #{description};    </select>
 
 </mapper>

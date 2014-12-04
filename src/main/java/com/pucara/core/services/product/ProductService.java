@@ -344,4 +344,16 @@ public class ProductService {
 		}
 	}
 
+	public static String getBarcodeByDescription(String description) {
+		SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory()
+				.openSession();
+		try {
+			ProductMapper productMapper = sqlSession
+					.getMapper(ProductMapper.class);
+			return productMapper.getBarcodeByDescription(description);
+		} finally {
+			sqlSession.close();
+		}
+	}
+
 }
