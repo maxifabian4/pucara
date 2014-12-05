@@ -31,7 +31,7 @@ import com.pucara.core.services.category.CategoryService;
 import com.pucara.core.services.product.ProductService;
 
 /**
- * 
+ * REMOVE
  * @author Maximiliano Fabian
  */
 public class StockView extends ProductView {
@@ -225,7 +225,7 @@ public class StockView extends ProductView {
 
 	@Override
 	public void cleanSummaryLabel() {
-		listOfProducts.cleanSummaryLabel();
+//		listOfProducts.cleanSummaryLabel();
 	}
 
 	public Category getCategoryFromView() {
@@ -276,7 +276,7 @@ public class StockView extends ProductView {
 			@Override
 			public void focusGained(FocusEvent e) {
 				inputBarcode = SystemForm.applySelectedProperties(inputBarcode);
-				listOfProducts.cleanSelection();
+//				listOfProducts.cleanSelection();
 			}
 
 			@Override

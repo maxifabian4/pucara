@@ -32,6 +32,7 @@ import com.pucara.core.services.category.CategoryService;
 import com.pucara.core.services.product.ProductService;
 
 /**
+ * REMOVE!
  * Sale view of the application, it allows visualize all partial products and
  * search by barcode/description.
  * 
@@ -172,7 +173,7 @@ public class PurchaseView extends ProductView {
 	}
 
 	public void cleanListSelection() {
-		listOfPartialProducts.cleanSelection();
+//		listOfPartialProducts.cleanSelection();
 	}
 
 	/**
@@ -364,11 +365,11 @@ public class PurchaseView extends ProductView {
 			public void focusGained(FocusEvent e) {
 				inputBarcode = SystemForm.applySelectedProperties(inputBarcode);
 				if (listOfPartialProducts != null) {
-					listOfPartialProducts.cleanSelection();
+//					listOfPartialProducts.cleanSelection();
 				}
 
 				if (listOfPotentialProducts != null) {
-					listOfPotentialProducts.cleanSelection();
+//					listOfPotentialProducts.cleanSelection();
 				}
 			}
 

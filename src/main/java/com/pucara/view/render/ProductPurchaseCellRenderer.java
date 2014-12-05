@@ -19,7 +19,7 @@ import com.pucara.common.CommonUIComponents;
 import com.pucara.core.entities.PartialElement;
 
 /**
- * 
+ * REMOVE!
  * @author Maximiliano Fabian
  */
 public class ProductPurchaseCellRenderer extends JPanel implements

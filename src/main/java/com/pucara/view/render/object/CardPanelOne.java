@@ -27,11 +27,11 @@ public class CardPanelOne extends JPanel {
 
 	public void selectionMode(boolean isSelected) {
 		if (isSelected) {
-			MatteBorder matteBorder = BorderFactory.createMatteBorder(0, 2, 0,
+			MatteBorder matteBorder = BorderFactory.createMatteBorder(0, 3, 0,
 					0, CommonData.DEFAULT_SELECTION_COLOR);
 			component.setBorder(matteBorder);
 		} else {
-			MatteBorder matteBorder = BorderFactory.createMatteBorder(0, 2, 0,
+			MatteBorder matteBorder = BorderFactory.createMatteBorder(0, 3, 0,
 					0, CommonData.GENERAL_BACKGROUND_COLOR);
 			component.setBorder(matteBorder);
 		}

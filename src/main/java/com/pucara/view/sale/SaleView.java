@@ -22,6 +22,7 @@ import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.controller.sale.SaleController;
 
 /**
+ * REMOVE
  * Sale view of the application, it allows to visualize all partial products and
  * search by barcode/description.
  * 
@@ -117,7 +118,7 @@ public class SaleView extends ProductView {
 	}
 
 	public void cleanListSelection() {
-		listOfPartialProducts.cleanSelection();
+//		listOfPartialProducts.cleanSelection();
 	}
 
 	public boolean isFocusOnTextField() {
@@ -237,11 +238,11 @@ public class SaleView extends ProductView {
 				inputBarcode = SystemForm.applySelectedProperties(inputBarcode);
 
 				if (listOfPartialProducts != null) {
-					listOfPartialProducts.cleanSelection();
+//					listOfPartialProducts.cleanSelection();
 				}
 
 				if (listOfPotentialProducts != null) {
-					listOfPotentialProducts.cleanSelection();
+//					listOfPotentialProducts.cleanSelection();
 				}
 			}
 

@@ -290,16 +290,16 @@ public class CommonUIComponents {
 
 			UIManager.getLookAndFeelDefaults().put(
 					"ScrollBar:ScrollBarThumb[Enabled].backgroundPainter",
-					// new FillPainter(Color.WHITE));
-					new FillPainter(CommonData.GENERAL_BACKGROUND_COLOR));
+					new FillPainter(Color.WHITE));
+			// new FillPainter(CommonData.GENERAL_BACKGROUND_COLOR));
 			UIManager.getLookAndFeelDefaults().put(
 					"ScrollBar:ScrollBarThumb[MouseOver].backgroundPainter",
-					new FillPainter(CommonData.GENERAL_BACKGROUND_COLOR));
-			// new FillPainter(CommonData.MOUSEOVER_SCROLL_COLOR));
+					// new FillPainter(CommonData.GENERAL_BACKGROUND_COLOR));
+					new FillPainter(Color.WHITE));
 			UIManager.getLookAndFeelDefaults().put(
 					"ScrollBar:ScrollBarTrack[Enabled].backgroundPainter",
-					new FillPainter(CommonData.GENERAL_BACKGROUND_COLOR));
-			// new FillPainter(Color.DARK_GRAY));
+					// new FillPainter(CommonData.GENERAL_BACKGROUND_COLOR));
+					new FillPainter(Color.WHITE));
 			UIManager.getLookAndFeelDefaults().put(
 					"ScrollBar:\"ScrollBar.button\".size", 0);
 			UIManager.getLookAndFeelDefaults().put(

@@ -21,7 +21,7 @@ import com.pucara.common.CommonUIComponents;
 import com.pucara.core.entities.Product;
 
 /**
- * 
+ * REMOVE!
  * @author Maximiliano Fabian
  */
 public class ProductSalePotentialCellRenderer extends JPanel implements

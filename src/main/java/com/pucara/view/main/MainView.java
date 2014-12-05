@@ -10,6 +10,7 @@ import com.pucara.common.CommonData;
 import com.pucara.core.database.MySqlAccess;
 
 /**
+ * Remove!
  * Principal view of the application.
  * 
  * @author Maximiliano

@@ -2,30 +2,23 @@ package com.pucara.common;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
-import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
 
 import com.pucara.core.entities.Product;
-import com.pucara.core.generic.FillPainter;
 
 public class SwingListPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JList productList;
-	private JLabel summaryLabel;
 
 	public SwingListPanel(Object[] items, ProductView view,
 			ListCellRenderer render) {
@@ -36,7 +29,7 @@ public class SwingListPanel extends JPanel {
 
 		setLayout(new BorderLayout());
 		this.setBackground(new Color(0, 0, 0, 1));
-//		this.setPreferredSize(new Dimension(0, 100));
+		// this.setPreferredSize(new Dimension(0, 100));
 		productList = new JList(items);
 		productList.setCellRenderer(render);
 		productList.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
@@ -56,7 +49,6 @@ public class SwingListPanel extends JPanel {
 		sbH.setPreferredSize(new Dimension(7, 0));
 
 		add(pane, BorderLayout.CENTER);
-		add(createSelectedItemsLabel(), BorderLayout.PAGE_END);
 	}
 
 	public void selectBarcodeOnList(String barcode) {
@@ -80,16 +72,6 @@ public class SwingListPanel extends JPanel {
 
 		productList.setSelectedIndices(indices);
 		productList.ensureIndexIsVisible(indices[indices.length - 1]);
-
-		// Enable label summary.
-		summaryLabel.setVisible(true);
-		summaryLabel.setText(String.format("productos seleccionados: %d",
-				products.size()));
-	}
-
-	public void cleanSelection() {
-		productList.clearSelection();
-		summaryLabel.setVisible(false);
 	}
 
 	public void populateDataInTheList(Object[] listObjectProducts) {
@@ -131,10 +113,6 @@ public class SwingListPanel extends JPanel {
 		productList.requestFocus();
 	}
 
-	public void cleanSummaryLabel() {
-		summaryLabel.setVisible(false);
-	}
-
 	private int getIndex(String barcode) {
 		ListModel model = productList.getModel();
 		Product object;
@@ -155,55 +133,6 @@ public class SwingListPanel extends JPanel {
 		} else {
 			return -1;
 		}
-	}
-
-	/**
-	 * Allows apply look and feel properties on scrolls.
-	 */
-	private void applyLookAndFeelProperties() {
-		try {
-			UIManager
-					.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-
-			UIManager.getLookAndFeelDefaults().put(
-					"ScrollBar:ScrollBarThumb[Enabled].backgroundPainter",
-					new FillPainter(Color.LIGHT_GRAY));
-			UIManager.getLookAndFeelDefaults().put(
-					"ScrollBar:ScrollBarThumb[MouseOver].backgroundPainter",
-					new FillPainter(CommonData.MOUSEOVER_SCROLL_COLOR));
-			UIManager.getLookAndFeelDefaults().put(
-					"ScrollBar:ScrollBarTrack[Enabled].backgroundPainter",
-					new FillPainter(CommonData.GENERAL_BACKGROUND_COLOR));
-
-			UIManager.getLookAndFeelDefaults().put(
-					"ScrollBar:\"ScrollBar.button\".size", 0);
-			UIManager.getLookAndFeelDefaults().put(
-					"ScrollBar.decrementButtonGap", 0);
-			UIManager.getLookAndFeelDefaults().put(
-					"ScrollBar.incrementButtonGap", 0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	private Component createSelectedItemsLabel() {
-		// Create panel.
-		JPanel container = new JPanel();
-		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-		container.setBorder(new EmptyBorder(20, 0, 0, 0));
-		container.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
-
-		summaryLabel = CommonUIComponents
-				.createLabelForm(CommonData.EMPTY_STRING);
-		summaryLabel.setVisible(false);
-
-		container.add(summaryLabel);
-
-		return container;
 	}
 
 }

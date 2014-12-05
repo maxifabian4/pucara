@@ -1,5 +1,6 @@
 package com.pucara.common;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -9,8 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.mysql.jdbc.NotUpdatable;
 import com.pucara.core.entities.PartialElement;
-import com.pucara.core.generic.Utilities;
 
 /**
  * @author Maximiliano Fabian
@@ -51,24 +52,27 @@ public class SaleSummaryPanel extends JPanel {
 
 	private void createContent() {
 		// Apply properties to the container panel.
-		this.setBorder(new EmptyBorder(20, 20, 20, 20));
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+		// this.setLayout(new BorderLayout());
+		// this.setBorder(new EmptyBorder(20, 20, 20, 20));
+		this.setBackground(Color.WHITE);
 
 		// Create labels and apply format.
 		numberOfProdLabel = new JLabel(numberOfProducts);
 		numberOfProdLabel.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
-				Font.BOLD, 20));
+				Font.PLAIN, 18));
 		numberOfProdLabel.setForeground(Color.LIGHT_GRAY);
+		numberOfProdLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		totalLabel = new JLabel(total);
-		totalLabel
-				.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 60));
+		totalLabel.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN,
+				37));
 		totalLabel.setForeground(CommonData.DARK_FONT_COLOR);
+		totalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		// Add labels to the container.
-		this.add(numberOfProdLabel, Component.LEFT_ALIGNMENT);
-		this.add(totalLabel, Component.LEFT_ALIGNMENT);
+		this.add(numberOfProdLabel);
+		this.add(totalLabel);
 	}
 
 	public void updateContent(Object[] products) {

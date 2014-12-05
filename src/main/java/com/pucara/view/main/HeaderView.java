@@ -13,6 +13,7 @@ import com.pucara.common.CommonUIComponents;
 import com.pucara.controller.main.HeaderController;
 
 /**
+ * REMOVE!
  * Header view, implemented with JPanel.
  * 
  * @author Maximiliano

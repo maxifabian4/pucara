@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.BoxLayout;
@@ -18,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonUIComponents;
+import com.pucara.common.SaleSummaryPanel;
 import com.pucara.common.SwingListPanel;
 import com.pucara.common.SwingListPanelOne;
 import com.pucara.controller.main.MainControllerOne;
@@ -36,6 +36,7 @@ public class MainViewOne extends JFrame {
 	private JTextField inputTextField;
 	private SwingListPanelOne cardList;
 	private SwingListPanel partialProductsList;
+	private SaleSummaryPanel summaryPanel;
 
 	/**
 	 * Public constructor. Allows initialize all the components.
@@ -135,7 +136,8 @@ public class MainViewOne extends JFrame {
 
 		JPanel leftPanel = new JPanel(new BorderLayout());
 		leftPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
-		// CommonUIComponents.applyScrollLookAndFeelProperties();
+
+		CommonUIComponents.applyScrollLookAndFeelProperties();
 		partialProductsList = new SwingListPanel(new Object[] {}, null,
 				new ProductSaleCellRenderer());
 		leftPanel.add(partialProductsList, BorderLayout.CENTER);
@@ -173,18 +175,39 @@ public class MainViewOne extends JFrame {
 		public ImagePanel(Image img) {
 			this.img = img;
 			setLayout(new BorderLayout());
+			setBackground(CommonData.DEFAULT_SELECTION_COLOR);
 		}
 
-		public void paintComponent(Graphics g) {
-			g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), null);
-		}
+		// public void paintComponent(Graphics g) {
+		// // g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), null);
+		// }
+	}
+
+	public void cleanInputTextField() {
+		inputTextField.setText(CommonData.EMPTY_STRING);
 	}
 
 	/**
-	 * Retrieve components from view.
+	 * Retrieves components from view.
 	 */
 
 	public JTextField getInputTextField() {
 		return inputTextField;
 	}
+
+	public boolean alreadyExistSummary() {
+		return summaryPanel != null;
+	}
+
+	public void updateSummary(Object[] products) {
+		if (summaryPanel != null) {
+			summaryPanel.updateContent(products);
+		}
+	}
+
+	public void createSummary(Object[] products) {
+		summaryPanel = new SaleSummaryPanel(products);
+		addNewCard(summaryPanel);
+	}
+
 }

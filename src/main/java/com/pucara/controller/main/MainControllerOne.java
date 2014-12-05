@@ -18,6 +18,7 @@ import javax.swing.event.DocumentListener;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
+import com.pucara.common.SaleSummaryPanel;
 import com.pucara.core.database.MySqlAccess;
 import com.pucara.core.response.Response;
 import com.pucara.core.services.product.ProductService;
@@ -34,6 +35,14 @@ public class MainControllerOne {
 		MySqlAccess.establishConection();
 
 		mainView.createNewTextField();
+
+		// try {
+		// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		// } catch (ClassNotFoundException | InstantiationException
+		// | IllegalAccessException | UnsupportedLookAndFeelException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 		setupAutoComplete(mainView.getInputTextField(),
 				ProductService.getAllDescriptions());
 	}
@@ -55,8 +64,15 @@ public class MainControllerOne {
 						.getErrorsMessages().get(0).getMessage(),
 						"Advertencia", JOptionPane.WARNING_MESSAGE);
 			} else {
-				mainView.addPartialListToPanel(SaleService.getPartialList()
-						.toArray());
+				Object[] products = SaleService.getPartialList().toArray();
+				mainView.addPartialListToPanel(products);
+				mainView.cleanInputTextField();
+
+				if (mainView.alreadyExistSummary()) {
+					mainView.updateSummary(products);
+				} else {
+					mainView.createSummary(products);
+				}
 			}
 		}
 	}
@@ -69,12 +85,14 @@ public class MainControllerOne {
 	 */
 	private void setupAutoComplete(final JTextField txtInput,
 			final List<String> items) {
-		final DefaultComboBoxModel model = new DefaultComboBoxModel();
+		final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
 
 		/**
 		 * Style and listeners for the combo box.
 		 */
-		final JComboBox cbInput = new JComboBox(model) {
+		final JComboBox<?> cbInput = new JComboBox<String>(model) {
+			private static final long serialVersionUID = 1L;
+
 			public Dimension getPreferredSize() {
 				return new Dimension(super.getPreferredSize().width, 0);
 			}
@@ -119,8 +137,9 @@ public class MainControllerOne {
 							&& cbInput.getSelectedItem() != null) {
 						txtInput.setText(cbInput.getSelectedItem().toString());
 						cbInput.setPopupVisible(false);
-						addProductToPartialList(ProductService.getBarcodeByDescription(cbInput.getSelectedItem()
-								.toString()));
+						addProductToPartialList(ProductService
+								.getBarcodeByDescription(cbInput
+										.getSelectedItem().toString()));
 					}
 				}
 
@@ -165,14 +184,14 @@ public class MainControllerOne {
 		txtInput.add(cbInput, BorderLayout.SOUTH);
 	}
 
-	private boolean isAdjusting(JComboBox cbInput) {
+	private boolean isAdjusting(JComboBox<?> cbInput) {
 		if (cbInput.getClientProperty("is_adjusting") instanceof Boolean) {
 			return (Boolean) cbInput.getClientProperty("is_adjusting");
 		}
 		return false;
 	}
 
-	private void setAdjusting(JComboBox cbInput, boolean adjusting) {
+	private void setAdjusting(JComboBox<?> cbInput, boolean adjusting) {
 		cbInput.putClientProperty("is_adjusting", adjusting);
 	}
 
