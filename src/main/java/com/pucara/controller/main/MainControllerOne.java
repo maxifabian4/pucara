@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -18,7 +19,6 @@ import javax.swing.event.DocumentListener;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
-import com.pucara.common.SaleSummaryPanel;
 import com.pucara.core.database.MySqlAccess;
 import com.pucara.core.response.Response;
 import com.pucara.core.services.product.ProductService;
@@ -31,24 +31,126 @@ public class MainControllerOne {
 	public MainControllerOne(MainViewOne mainView) {
 		this.mainView = mainView;
 
-		// Must be removed, since all db access is migrated to Liquibase ...
+		// Must be removed, since all db access is migrated to Liquibase.
 		MySqlAccess.establishConection();
 
+		// Create general input text field and listener.
 		mainView.createNewTextField();
-
-		// try {
-		// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		// } catch (ClassNotFoundException | InstantiationException
-		// | IllegalAccessException | UnsupportedLookAndFeelException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
 		setupAutoComplete(mainView.getInputTextField(),
 				ProductService.getAllDescriptions());
+
+		// Create list for partial products.
+		mainView.createPartialList(generateListKeyListener());
 	}
 
 	public void displayView() {
 		mainView.displayComponents();
+	}
+
+	private KeyListener generateListKeyListener() {
+		return new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getID() == KeyEvent.KEY_PRESSED) {
+					String barcode = mainView.getSelectedProduct();
+
+					if (e.getKeyCode() == KeyEvent.VK_MINUS) {
+
+						// if (!saleView.isFocusOnTextField()) {
+						int numberBeforeChange = SaleService
+								.getNumberOfDistinctProducts();
+
+						SaleService.decreaseRequiredProduct(barcode);
+
+						int numberAfterChange = SaleService
+								.getNumberOfDistinctProducts();
+						mainView.updatePartialElements(SaleService
+								.getPartialList().toArray());
+
+						if (numberAfterChange == numberBeforeChange) {
+							mainView.selectPartialElementByBarcode(barcode);
+						} else if (numberAfterChange < numberBeforeChange
+								&& numberAfterChange != 0) {
+							mainView.selectPartialElement(CommonData.FIRST_ROW);
+						}
+					}
+					// else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					// SaleService.removeProductFromList(barcode);
+					// saleView.updatePartialElements(SaleService
+					// .getPartialList().toArray());
+					//
+					// if (SaleService.getTotalNumberOfProducts() > 0) {
+					// saleView.selectPartialElement(CommonData.FIRST_ROW);
+					// }
+					// } else if (e.getKeyCode() == KeyEvent.VK_ADD) {
+					// if (!barcode.contains("@")) {
+					// addProductToPartialList(barcode);
+					// saleView.selectPartialElementByBarcode(barcode);
+					// }
+					// } else if (e.getKeyCode() == KeyEvent.VK_F5
+					// && SaleService.getTotalNumberOfProducts() > 0) {
+					// Object[] options = { "Si", "No" };
+					// int response = JOptionPane.showOptionDialog(null,
+					// "Desea completar la venta?",
+					// "Confirmar venta ...",
+					// JOptionPane.YES_NO_OPTION,
+					// JOptionPane.WARNING_MESSAGE, null, options,
+					// options[0]);
+					//
+					// if (response == JOptionPane.YES_OPTION) {
+					// Response performedSale = SaleService.makeASale();
+					//
+					// if (performedSale.wasSuccessful()) {
+					// cleanPartialList();
+					// } else {
+					// // TODO Show a message with the error !!!!
+					// }
+					// }
+					// } else if (e.getKeyCode() == KeyEvent.VK_F6) {
+					// String[] options = { "OK" };
+					// JPanel panel = new JPanel();
+					// JLabel lbl = new JLabel("cantidad de productos: ");
+					// JTextField txt = new JTextField("100");
+					// panel.add(lbl);
+					// panel.add(txt);
+					// int selectedOption = JOptionPane.showOptionDialog(null,
+					// panel, "Ingresar catidad de productos",
+					// JOptionPane.NO_OPTION,
+					// JOptionPane.QUESTION_MESSAGE, null, options,
+					// options[0]);
+					//
+					// if (selectedOption == 0) {
+					// Integer n = Utilities
+					// .getIntegerValue(txt.getText());
+					//
+					// if (n != null) {
+					// Response result = SaleService
+					// .increaseRequiredProduct(barcode, n);
+					//
+					// if (result.wasSuccessful()) {
+					// saleView.updatePartialElements(SaleService
+					// .getPartialList().toArray());
+					// saleView.selectPartialElementByBarcode(barcode);
+					// } else {
+					// saleView.showError(result
+					// .getErrorsMessages().get(0)
+					// .getMessage());
+					// }
+					// }
+					// }
+					// }
+				}
+			}
+		};
 	}
 
 	private void addProductToPartialList(String inputBarcodeText) {
@@ -194,5 +296,4 @@ public class MainControllerOne {
 	private void setAdjusting(JComboBox<?> cbInput, boolean adjusting) {
 		cbInput.putClientProperty("is_adjusting", adjusting);
 	}
-
 }

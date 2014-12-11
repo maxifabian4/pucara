@@ -26,6 +26,7 @@ import com.pucara.core.services.sale.SaleService;
 import com.pucara.view.sale.SaleView;
 
 /**
+ * remove!!
  * This class represents the Category controller in the system.
  * 
  * @author Maximiliano Fabian

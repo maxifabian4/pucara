@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.KeyListener;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -31,8 +33,10 @@ import com.pucara.view.render.ProductSaleCellRenderer;
  */
 public class MainViewOne extends JFrame {
 	private static final long serialVersionUID = 1L;
-	// private JPanel centerPanel;
 	private JPanel headerPanel;
+	private JPanel leftPanel;
+	private JPanel rightPanel;
+	private JPanel centerPanel;
 	private JTextField inputTextField;
 	private SwingListPanelOne cardList;
 	private SwingListPanel partialProductsList;
@@ -55,8 +59,8 @@ public class MainViewOne extends JFrame {
 		this.add(headerPanel, BorderLayout.PAGE_START);
 
 		// Add center to the content pane.
-		// JPanel centerPanel = createCenterPanel();
-		this.add(createCenterPanel(), BorderLayout.CENTER);
+		centerPanel = createCenterPanel();
+		this.add(centerPanel, BorderLayout.CENTER);
 	}
 
 	public void displayComponents() {
@@ -85,7 +89,6 @@ public class MainViewOne extends JFrame {
 
 	public void createNewTextField() {
 		inputTextField = CommonUIComponents.createInputTextFieldOne();
-		// inputTextField.addActionListener(actionListener);
 		headerPanel.add(inputTextField);
 	}
 
@@ -134,16 +137,13 @@ public class MainViewOne extends JFrame {
 		centerPanel.setBorder(new EmptyBorder(20, 80, 20, 80));
 		centerPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 
-		JPanel leftPanel = new JPanel(new BorderLayout());
+		leftPanel = new JPanel(new BorderLayout());
 		leftPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 
 		CommonUIComponents.applyScrollLookAndFeelProperties();
-		partialProductsList = new SwingListPanel(new Object[] {}, null,
-				new ProductSaleCellRenderer());
-		leftPanel.add(partialProductsList, BorderLayout.CENTER);
 		centerPanel.add(leftPanel);
 
-		JPanel rightPanel = new JPanel(new BorderLayout());
+		rightPanel = new JPanel(new BorderLayout());
 		rightPanel.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
 		cardList = new SwingListPanelOne(new CardPanelRendererOne(null));
 
@@ -166,14 +166,15 @@ public class MainViewOne extends JFrame {
 
 	class ImagePanel extends JPanel {
 		private static final long serialVersionUID = 1L;
-		private Image img;
+
+		// private Image img;
 
 		public ImagePanel(String img) {
 			this(new ImageIcon(img).getImage());
 		}
 
 		public ImagePanel(Image img) {
-			this.img = img;
+			// this.img = img;
 			setLayout(new BorderLayout());
 			setBackground(CommonData.DEFAULT_SELECTION_COLOR);
 		}
@@ -210,4 +211,57 @@ public class MainViewOne extends JFrame {
 		addNewCard(summaryPanel);
 	}
 
+	public void createPartialList(KeyListener keyListener) {
+		// Create partial list.
+		partialProductsList = new SwingListPanel(new Object[] {}, null,
+				new ProductSaleCellRenderer());
+		partialProductsList.addListKeyListener(keyListener);
+
+		// Add list to the panel.
+		leftPanel.add(partialProductsList, BorderLayout.CENTER);
+	}
+
+	public String getSelectedProduct() {
+		if (partialProductsList != null
+				&& partialProductsList.getNumberOfElements() > 0) {
+			return partialProductsList.getSelectedBarcode().getBarcode();
+		} else {
+			return CommonData.EMPTY_STRING;
+		}
+	}
+
+	public void updatePartialElements(Object[] products) {
+		if (products == null || products.length == 0) {
+			summaryPanel.removeAll();
+			summaryPanel.revalidate();
+			summaryPanel.repaint();
+
+			cardList.removeItem(summaryPanel);
+			cardList.revalidate();
+			cardList.repaint();
+
+			summaryPanel = null;
+
+//			leftPanel.remove(partialProductsList);
+//			leftPanel.revalidate();
+//			leftPanel.repaint();
+//			partialProductsList = null;
+			partialProductsList.populateDataInTheList(new Object[] {});
+			
+			inputTextField.requestFocus();
+		} else {
+			partialProductsList.populateDataInTheList(products);
+			summaryPanel.updateContent(products);
+		}
+
+		this.repaint();
+	}
+
+	public void selectPartialElementByBarcode(String barcode) {
+		partialProductsList.selectBarcodeOnList(barcode);
+	}
+
+	public void selectPartialElement(int index) {
+		partialProductsList.selectItemByIndex(index);
+	}
 }

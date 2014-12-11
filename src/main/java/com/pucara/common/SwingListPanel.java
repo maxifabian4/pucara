@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
@@ -14,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
+import com.pucara.core.entities.PartialElement;
 import com.pucara.core.entities.Product;
 
 public class SwingListPanel extends JPanel {
@@ -80,6 +82,14 @@ public class SwingListPanel extends JPanel {
 
 	public void addListMouseListener(MouseListener listener) {
 		productList.addMouseListener(listener);
+	}
+
+	// For One version ...
+	public PartialElement getSelectedBarcode() {
+		PartialElement selected = (PartialElement) productList
+				.getSelectedValue();
+
+		return selected;
 	}
 
 	public String getSelectedBarcode(int index) {
