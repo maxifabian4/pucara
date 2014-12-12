@@ -89,9 +89,9 @@ public class ReportView extends JPanel {
 		datePicker = new JDatePickerImpl(datePanel);
 		datePicker.addActionListener(action);
 
-		SystemPopup popup = new SystemPopup(joinPanelAndPicker(
-				expensesListPanel, datePicker), "Gastos del día");
-		popup.setVisible(true);
+//		SystemPopup popup = new SystemPopup(joinPanelAndPicker(
+//				expensesListPanel, datePicker), "Gastos del día");
+//		popup.setVisible(true);
 	}
 
 	public void removeAllInformationPanel() {

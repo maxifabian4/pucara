@@ -124,38 +124,39 @@ public class StockController implements Observer {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				VerifyProductValuesRequest productValuesRequest = createRequestForUpdate();
-
-				ProductResponse validatedProductResponse = ProductService
-						.getValidatedProduct(productValuesRequest);
-
-				if (validatedProductResponse.wasSuccessful()) {
-					Product product = validatedProductResponse.getProduct();
-					product.setByPercentage(stockView.isByPercentage());
-					// Call the service.
-					ProductResponse response = ProductService
-							.updateProduct(new UpdateProductRequest(
-									validatedProductResponse.getProduct()));
-
-					if (response.wasSuccessful()) {
-						stockView.closeUpdatePopup();
-						stockView.updateProductsList();
-						stockView
-								.selectProductElementOnList(productValuesRequest
-										.getBarcode());
-						subject.catchUpdate(productValuesRequest.getBarcode());
-					} else {
-						JOptionPane.showMessageDialog(null,
-								"No se ha modificado el producto ...",
-								"Advertencia!", JOptionPane.WARNING_MESSAGE);
-					}
-				} else {
-					stockView.closeUpdatePopup();
-					JOptionPane.showMessageDialog(null,
-							validatedProductResponse.getErrorsMessages().get(0)
-									.getMessage(), "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				// VerifyProductValuesRequest productValuesRequest =
+				// createRequestForUpdate();
+				//
+				// ProductResponse validatedProductResponse = ProductService
+				// .getValidatedProduct(productValuesRequest);
+				//
+				// if (validatedProductResponse.wasSuccessful()) {
+				// Product product = validatedProductResponse.getProduct();
+				// product.setByPercentage(stockView.isByPercentage());
+				// // Call the service.
+				// ProductResponse response = ProductService
+				// .updateProduct(new UpdateProductRequest(
+				// validatedProductResponse.getProduct()));
+				//
+				// if (response.wasSuccessful()) {
+				// stockView.closeUpdatePopup();
+				// stockView.updateProductsList();
+				// stockView
+				// .selectProductElementOnList(productValuesRequest
+				// .getBarcode());
+				// subject.catchUpdate(productValuesRequest.getBarcode());
+				// } else {
+				// JOptionPane.showMessageDialog(null,
+				// "No se ha modificado el producto ...",
+				// "Advertencia!", JOptionPane.WARNING_MESSAGE);
+				// }
+				// } else {
+				// stockView.closeUpdatePopup();
+				// JOptionPane.showMessageDialog(null,
+				// validatedProductResponse.getErrorsMessages().get(0)
+				// .getMessage(), "Error",
+				// JOptionPane.ERROR_MESSAGE);
+				// }
 			}
 		};
 	}
@@ -248,35 +249,36 @@ public class StockController implements Observer {
 		}
 	}
 
-	private VerifyProductValuesRequest createRequestForUpdate() {
-		// Retrieve information from the stock view.
-		List<String> popupComponents = stockView.getPopupComponents();
-		String description, initialCost, finalCost, percentage, minStock, barcode;
-		Category categoryFromView;
-
-		if (stockView.isByPercentage()) {
-			description = popupComponents.get(0);
-			initialCost = popupComponents.get(1);
-			percentage = popupComponents.get(2);
-			minStock = popupComponents.get(3);
-			barcode = stockView.getSelectedBarcode();
-			categoryFromView = stockView.getCategoryFromView();
-
-			return new VerifyProductValuesRequest(barcode, description,
-					initialCost, "0.0", percentage, "0", minStock,
-					categoryFromView);
-		} else {
-			description = popupComponents.get(0);
-			initialCost = popupComponents.get(1);
-			finalCost = popupComponents.get(2);
-			minStock = popupComponents.get(3);
-			barcode = stockView.getSelectedBarcode();
-			categoryFromView = stockView.getCategoryFromView();
-
-			return new VerifyProductValuesRequest(barcode, description,
-					initialCost, finalCost, "0.0", "0", minStock,
-					categoryFromView);
-		}
-	}
+	// private VerifyProductValuesRequest createRequestForUpdate() {
+	// // Retrieve information from the stock view.
+	// // List<String> popupComponents = stockView.getPopupComponents();
+	// String description, initialCost, finalCost, percentage, minStock,
+	// barcode;
+	// Category categoryFromView;
+	//
+	// if (stockView.isByPercentage()) {
+	// description = popupComponents.get(0);
+	// initialCost = popupComponents.get(1);
+	// percentage = popupComponents.get(2);
+	// minStock = popupComponents.get(3);
+	// barcode = stockView.getSelectedBarcode();
+	// // categoryFromView = stockView.getCategoryFromView();
+	//
+	// return new VerifyProductValuesRequest(barcode, description,
+	// initialCost, "0.0", percentage, "0", minStock,
+	// categoryFromView);
+	// } else {
+	// description = popupComponents.get(0);
+	// initialCost = popupComponents.get(1);
+	// finalCost = popupComponents.get(2);
+	// minStock = popupComponents.get(3);
+	// barcode = stockView.getSelectedBarcode();
+	// categoryFromView = stockView.getCategoryFromView();
+	//
+	// return new VerifyProductValuesRequest(barcode, description,
+	// initialCost, finalCost, "0.0", "0", minStock,
+	// categoryFromView);
+	// }
+	// }
 
 }

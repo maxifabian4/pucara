@@ -227,17 +227,17 @@ public class PurchaseView extends ProductView {
 		}
 		byPercentage = selectedProduct.getByPercentage();
 
-		popup = new SystemPopup(textFieldKeysUpdate, values);
-		popup.addKeyListener(purchaseController.createKeyListener());
-		popup.addKeyListenerAllFields(textFieldKeysUpdate,
-				purchaseController.createKeyListener());
-		popup.addComboBox(Utilities.generateArrayCategories(CategoryService
-				.getAllCategories().getAllCategories()), selectedProduct.getCategoryId());
-		popup.addConfirmButton("Actualizar",
-				purchaseController.createUpdateProductListener());
-		popup.setActionListenerToComponent(textFieldKeysUpdate,
-				purchaseController.createUpdateProductListener());
-		popup.setVisible(true);
+//		popup = new SystemPopup(textFieldKeysUpdate, values);
+//		popup.addKeyListener(purchaseController.createKeyListener());
+//		popup.addKeyListenerAllFields(textFieldKeysUpdate,
+//				purchaseController.createKeyListener());
+//		popup.addComboBox(Utilities.generateArrayCategories(CategoryService
+//				.getAllCategories().getAllCategories()), selectedProduct.getCategoryId());
+//		popup.addConfirmButton("Actualizar",
+//				purchaseController.createUpdateProductListener());
+//		popup.setActionListenerToComponent(textFieldKeysUpdate,
+//				purchaseController.createUpdateProductListener());
+//		popup.setVisible(true);
 	}
 
 	public String getSelectedPurchaseBarcode() {
@@ -291,9 +291,9 @@ public class PurchaseView extends ProductView {
 		this.validate();
 	}
 
-	public List<String> getPopupValues() {
-		return popup.getAllTextFieldValues(textFieldKeysUpdate);
-	}
+//	public List<String> getPopupValues() {
+//		return popup.getAllTextFieldValues(textFieldKeysUpdate);
+//	}
 
 	public void updateCostField(double totalCost) {
 		JTextField textField = (JTextField) expenseForm
@@ -305,11 +305,11 @@ public class PurchaseView extends ProductView {
 	public void cleanSummaryLabel() {
 	}
 
-	public Category getCategoryFromView() {
-		JComboBox cb = (JComboBox) popup.getForm().getComponentFormAt(
-				CommonUIComponents.CATEGORY);
-		return (Category) cb.getSelectedItem();
-	}
+	// public Category getCategoryFromView() {
+	// JComboBox cb = (JComboBox) popup.getForm().getComponentFormAt(
+	// CommonUIComponents.CATEGORY);
+	// return (Category) cb.getSelectedItem();
+	// }
 
 	/**
 	 * 

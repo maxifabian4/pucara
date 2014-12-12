@@ -3,57 +3,56 @@ package com.pucara.common;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import com.pucara.persistence.domain.Category;
 
 /**
  * 
  * @author Maximiliano Fabian
  */
 public class SystemPopup extends JFrame {
-
 	private static final long serialVersionUID = 1L;
-	private SystemForm form;
+	public static final int CONFIRMATION = 0;
 
-	/**
-	 * Should be removed ...
-	 * 
-	 * @param keys
-	 * @param values
-	 */
-	public SystemPopup(String[] keys, String[] values) {
-		/**
-		 * Apply properties to the frame.
-		 */
-		applyFrameProperties();
+	// private SystemForm form;
 
-		/**
-		 * Configure a flow layout to the frame.
-		 */
-		configureFrameLayout();
-
-		/**
-		 * Add a simple form to the content panel.
-		 */
-		addComponentsToFrame(keys, values);
-	}
+	// /**
+	// * Should be removed ...
+	// *
+	// * @param keys
+	// * @param values
+	// */
+	// public SystemPopup(String[] keys, String[] values) {
+	// /**
+	// * Apply properties to the frame.
+	// */
+	// applyFrameProperties();
+	//
+	// /**
+	// * Configure a flow layout to the frame.
+	// */
+	// configureFrameLayout();
+	//
+	// /**
+	// * Add a simple form to the content panel.
+	// */
+	// addComponentsToFrame(keys, values);
+	// }
 
 	/**
 	 * Use it as a generic mode.
 	 */
-	public SystemPopup(Component component, String title) {
+	public SystemPopup(Component component, String title, int mode) {
 		/**
 		 * Apply properties to the frame.
 		 */
@@ -64,30 +63,32 @@ public class SystemPopup extends JFrame {
 		 */
 		configureFrameLayout();
 
-		this.getContentPane().add(creatAllStuff(component, title));
+		this.getContentPane().add(createAllStuff(component, title, mode));
 	}
 
-	public void addConfirmButton(String key, ActionListener actionListener) {
-		form.addConfirmButton(key, actionListener);
-	}
+	// public void addConfirmButton(String key, ActionListener actionListener) {
+	// form.addConfirmButton(key, actionListener);
+	// }
 
-	public void addKeyListenerAllFields(String[] keys,
-			KeyListener createKeyListener) {
-		form.addKeyListenerAllFields(keys, createKeyListener);
-	}
+	// public void addKeyListenerAllFields(String[] keys,
+	// KeyListener createKeyListener) {
+	// form.addKeyListenerAllFields(keys, createKeyListener);
+	// }
+	//
+	// public List<String> getAllTextFieldValues(String[] keys) {
+	// return form.getAllTextFieldValues(keys);
+	// }
 
-	public List<String> getAllTextFieldValues(String[] keys) {
-		return form.getAllTextFieldValues(keys);
-	}
+	// public void setActionListenerToComponent(String[] textFieldKeys,
+	// ActionListener listener) {
+	// form.setActionListenerToComponent(textFieldKeys, listener);
+	// }
 
-	public void setActionListenerToComponent(String[] textFieldKeys,
-			ActionListener listener) {
-		form.setActionListenerToComponent(textFieldKeys, listener);
-	}
-
-	public void addComboBox(Category[] categories, Integer selectedCategory) {
-		form.addComboBox(CommonUIComponents.CATEGORY, categories, selectedCategory);
-	}
+	// public void addComboBox(Category[] categories, Integer selectedCategory)
+	// {
+	// form.addComboBox(CommonUIComponents.CATEGORY, categories,
+	// selectedCategory);
+	// }
 
 	/**
 	 * 
@@ -97,17 +98,17 @@ public class SystemPopup extends JFrame {
 	 * @param components
 	 * @param title
 	 */
-	private void addComponentsToFrame(String[] keys, String[] values) {
-		form = new SystemForm(keys, values);
-		this.getContentPane().add(form);
-	}
+	// private void addComponentsToFrame(String[] keys, String[] values) {
+	// form = new SystemForm(keys, values);
+	// this.getContentPane().add(form);
+	// }
 
 	/**
 	 * 
 	 */
 	private void configureFrameLayout() {
 		this.getContentPane().setLayout(new GridBagLayout());
-		this.getContentPane().setBackground(CommonData.BACKGROUND_TABLE_COLOR);
+		this.getContentPane().setBackground(Color.WHITE);
 	}
 
 	/**
@@ -148,17 +149,17 @@ public class SystemPopup extends JFrame {
 		});
 	}
 
-	private Component creatAllStuff(Component component, String title) {
+	private Component createAllStuff(Component component, String title, int mode) {
 		JPanel container = new JPanel();
 		container.setLayout(new BorderLayout());
 
 		JPanel header = new JPanel();
 		header.setLayout(new BorderLayout());
 		header.setBorder(new EmptyBorder(10, 10, 10, 10));
-		header.setBackground(CommonData.BACKGROUND_PANEL_COLOR);
+		header.setBackground(Color.WHITE);
 
 		JLabel titleLabel = new JLabel(title);
-		titleLabel.setForeground(CommonData.LIGHT_FONT_COLOR);
+		titleLabel.setForeground(CommonData.DARK_FONT_COLOR);
 		titleLabel
 				.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD, 17));
 
@@ -167,11 +168,39 @@ public class SystemPopup extends JFrame {
 		container.add(header, BorderLayout.PAGE_START);
 		container.add(component, BorderLayout.CENTER);
 
+		/**
+		 * Add buttons section.
+		 */
+		container.add(createButtonsPanel(mode), BorderLayout.PAGE_END);
+
 		return container;
 	}
 
-	public SystemForm getForm() {
-		return form;
+	private JPanel createButtonsPanel(int mode) {
+		JPanel buttonPanel = new JPanel();
+		// Apply properties to the panel.
+		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		buttonPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		buttonPanel.setBackground(Color.WHITE);
+
+		switch (mode) {
+		case CONFIRMATION:
+			JLabel okLabel = CommonUIComponents.createSystemLabelOne("ACEPTAR");
+			JLabel cancelLabel = CommonUIComponents
+					.createSystemLabelOne("CANCELAR");
+
+			buttonPanel.add(okLabel);
+			buttonPanel.add(CommonUIComponents
+					.createNewHorizontalSeparatorBox(10));
+			buttonPanel.add(cancelLabel);
+
+			break;
+		default:
+			break;
+		}
+
+		return buttonPanel;
 	}
 
 }

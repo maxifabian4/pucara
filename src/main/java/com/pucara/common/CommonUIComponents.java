@@ -17,8 +17,11 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import com.pucara.core.generic.FillPainter;
 
@@ -43,7 +46,7 @@ public class CommonUIComponents {
 	public static final String PURCHASE_DESCRIPTION = "descripci\u00F3n";
 
 	/**
-	 * Creates a new button used by default in the system.
+	 * Creates a new button used by default in the system. REMOVE
 	 * 
 	 * @param text
 	 * @return JButton
@@ -375,4 +378,13 @@ public class CommonUIComponents {
 		return textFieldComponent;
 	}
 
+	public static JLabel createSystemLabelOne(String text) {
+		JLabel defaultLabel = new JLabel(text);
+
+		defaultLabel.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.BOLD,
+				15));
+		defaultLabel.setForeground(CommonData.DEFAULT_SELECTION_COLOR);
+
+		return defaultLabel;
+	}
 }

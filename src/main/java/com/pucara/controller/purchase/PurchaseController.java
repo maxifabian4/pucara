@@ -246,45 +246,45 @@ public class PurchaseController implements Observer {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				VerifyProductValuesRequest productValuesRequest = createRequestForUpdate();
+//				VerifyProductValuesRequest productValuesRequest = createRequestForUpdate();
 
-				ProductResponse validatedProductResponse = ProductService
-						.getValidatedProduct(productValuesRequest);
-
-				if (validatedProductResponse.wasSuccessful()) {
-					// Call the service.
-					Product product = validatedProductResponse.getProduct();
-					product.setByPercentage(purchaseView.isByPercentage());
-					ProductResponse response = ProductService
-							.updateProduct(new UpdateProductRequest(product));
-
-					if (response.wasSuccessful()) {
-						purchaseView.closeUpdatePopup();
-						// Update partial list.
-						purchaseService.updatePartialElement(
-								productValuesRequest.getBarcode(),
-								productValuesRequest.getDescription(),
-								productValuesRequest.getInitialCost(),
-								productValuesRequest.getFinalCost(),
-								productValuesRequest.getPercentage(),
-								productValuesRequest.getMinStock());
-						purchaseView.updateProductsList();
-						purchaseView
-								.selectProductElementOnList(productValuesRequest
-										.getBarcode());
-						subject.catchUpdate(productValuesRequest.getBarcode());
-					} else {
-						JOptionPane.showMessageDialog(null,
-								"No se ha modificado el producto ...",
-								"Advertencia!", JOptionPane.WARNING_MESSAGE);
-					}
-				} else {
-					purchaseView.closeUpdatePopup();
-					JOptionPane.showMessageDialog(null,
-							validatedProductResponse.getErrorsMessages().get(0)
-									.getMessage(), "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				// ProductResponse validatedProductResponse = ProductService
+				// .getValidatedProduct(productValuesRequest);
+				//
+				// if (validatedProductResponse.wasSuccessful()) {
+				// // Call the service.
+				// Product product = validatedProductResponse.getProduct();
+				// product.setByPercentage(purchaseView.isByPercentage());
+				// ProductResponse response = ProductService
+				// .updateProduct(new UpdateProductRequest(product));
+				//
+				// if (response.wasSuccessful()) {
+				// purchaseView.closeUpdatePopup();
+				// // Update partial list.
+				// purchaseService.updatePartialElement(
+				// productValuesRequest.getBarcode(),
+				// productValuesRequest.getDescription(),
+				// productValuesRequest.getInitialCost(),
+				// productValuesRequest.getFinalCost(),
+				// productValuesRequest.getPercentage(),
+				// productValuesRequest.getMinStock());
+				// purchaseView.updateProductsList();
+				// purchaseView
+				// .selectProductElementOnList(productValuesRequest
+				// .getBarcode());
+				// subject.catchUpdate(productValuesRequest.getBarcode());
+				// } else {
+				// JOptionPane.showMessageDialog(null,
+				// "No se ha modificado el producto ...",
+				// "Advertencia!", JOptionPane.WARNING_MESSAGE);
+				// }
+				// } else {
+				// purchaseView.closeUpdatePopup();
+				// JOptionPane.showMessageDialog(null,
+				// validatedProductResponse.getErrorsMessages().get(0)
+				// .getMessage(), "Error",
+				// JOptionPane.ERROR_MESSAGE);
+				// }
 			}
 		};
 	}
@@ -479,35 +479,35 @@ public class PurchaseController implements Observer {
 				&& Utilities.getDoubleValue(expense) > 0;
 	}
 
-	private VerifyProductValuesRequest createRequestForUpdate() {
+//	private VerifyProductValuesRequest createRequestForUpdate() {
 		// Retrieve information from the stock view.
-		List<String> popupComponents = purchaseView.getPopupValues();
-		String description, initialCost, finalCost, percentage, minStock, barcode;
-		Category categoryFromView;
+//		List<String> popupComponents = purchaseView.getPopupValues();
+//		String description, initialCost, finalCost, percentage, minStock, barcode;
+//		Category categoryFromView;
 
-		if (purchaseView.isByPercentage()) {
-			description = popupComponents.get(0);
-			initialCost = popupComponents.get(1);
-			percentage = popupComponents.get(2);
-			minStock = popupComponents.get(3);
-			barcode = purchaseView.getSelectedPurchaseBarcode();
-			categoryFromView = purchaseView.getCategoryFromView();
+//		if (purchaseView.isByPercentage()) {
+//			description = popupComponents.get(0);
+//			initialCost = popupComponents.get(1);
+//			percentage = popupComponents.get(2);
+//			minStock = popupComponents.get(3);
+//			barcode = purchaseView.getSelectedPurchaseBarcode();
+//			categoryFromView = purchaseView.getCategoryFromView();
 
-			return new VerifyProductValuesRequest(barcode, description,
-					initialCost, "0.0", percentage, "0", minStock,
-					categoryFromView);
-		} else {
-			description = popupComponents.get(0);
-			initialCost = popupComponents.get(1);
-			finalCost = popupComponents.get(2);
-			minStock = popupComponents.get(3);
-			barcode = purchaseView.getSelectedPurchaseBarcode();
-			categoryFromView = purchaseView.getCategoryFromView();
+//			return new VerifyProductValuesRequest(barcode, description,
+//					initialCost, "0.0", percentage, "0", minStock,
+//					categoryFromView);
+//		} else {
+//			description = popupComponents.get(0);
+//			initialCost = popupComponents.get(1);
+//			finalCost = popupComponents.get(2);
+//			minStock = popupComponents.get(3);
+//			barcode = purchaseView.getSelectedPurchaseBarcode();
+//			categoryFromView = purchaseView.getCategoryFromView();
 
-			return new VerifyProductValuesRequest(barcode, description,
-					initialCost, finalCost, "0.0", "0", minStock,
-					categoryFromView);
-		}
-	}
+//			return new VerifyProductValuesRequest(barcode, description,
+//					initialCost, finalCost, "0.0", "0", minStock,
+//					categoryFromView);
+//		}
+//	}
 
 }

@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -242,12 +243,8 @@ public class MainViewOne extends JFrame {
 
 			summaryPanel = null;
 
-//			leftPanel.remove(partialProductsList);
-//			leftPanel.revalidate();
-//			leftPanel.repaint();
-//			partialProductsList = null;
 			partialProductsList.populateDataInTheList(new Object[] {});
-			
+
 			inputTextField.requestFocus();
 		} else {
 			partialProductsList.populateDataInTheList(products);
@@ -263,5 +260,10 @@ public class MainViewOne extends JFrame {
 
 	public void selectPartialElement(int index) {
 		partialProductsList.selectItemByIndex(index);
+	}
+
+	public void showError(String message) {
+		JOptionPane.showMessageDialog(null, message, "Error",
+				JOptionPane.ERROR_MESSAGE);
 	}
 }

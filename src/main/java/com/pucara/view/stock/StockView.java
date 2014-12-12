@@ -105,9 +105,9 @@ public class StockView extends ProductView {
 		return tf.getText();
 	}
 
-	public List<String> getPopupComponents() {
-		return popup.getAllTextFieldValues(textFieldKeysUpdate);
-	}
+//	public List<String> getPopupComponents() {
+//		return popup.getAllTextFieldValues(textFieldKeysUpdate);
+//	}
 
 	/**
 	 * 
@@ -169,18 +169,18 @@ public class StockView extends ProductView {
 		}
 		byPercentage = selectedProduct.getByPercentage();
 
-		popup = new SystemPopup(textFieldKeysUpdate, values);
-		popup.addKeyListener(stockController.createKeyListener());
-		popup.addKeyListenerAllFields(textFieldKeysUpdate,
-				stockController.createKeyListener());
-		popup.addComboBox(Utilities.generateArrayCategories(CategoryService
-				.getAllCategories().getAllCategories()), selectedProduct
-				.getCategoryId());
-		popup.addConfirmButton("Actualizar",
-				stockController.createUpdateProductListener());
-		popup.setActionListenerToComponent(textFieldKeysUpdate,
-				stockController.createUpdateProductListener());
-		popup.setVisible(true);
+//		popup = new SystemPopup(textFieldKeysUpdate, values);
+//		popup.addKeyListener(stockController.createKeyListener());
+//		popup.addKeyListenerAllFields(textFieldKeysUpdate,
+//				stockController.createKeyListener());
+//		popup.addComboBox(Utilities.generateArrayCategories(CategoryService
+//				.getAllCategories().getAllCategories()), selectedProduct
+//				.getCategoryId());
+//		popup.addConfirmButton("Actualizar",
+//				stockController.createUpdateProductListener());
+//		popup.setActionListenerToComponent(textFieldKeysUpdate,
+//				stockController.createUpdateProductListener());
+//		popup.setVisible(true);
 	}
 
 	/**
@@ -228,11 +228,11 @@ public class StockView extends ProductView {
 //		listOfProducts.cleanSummaryLabel();
 	}
 
-	public Category getCategoryFromView() {
-		JComboBox cb = (JComboBox) popup.getForm().getComponentFormAt(
-				CommonUIComponents.CATEGORY);
-		return (Category) cb.getSelectedItem();
-	}
+	// public Category getCategoryFromView() {
+	// JComboBox cb = (JComboBox) popup.getForm().getComponentFormAt(
+	// CommonUIComponents.CATEGORY);
+	// return (Category) cb.getSelectedItem();
+	// }
 
 	/**
 	 * Generates the Stock content panel. It includes a list of all products

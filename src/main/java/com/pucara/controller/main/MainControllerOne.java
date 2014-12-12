@@ -1,6 +1,7 @@
 package com.pucara.controller.main;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -12,13 +13,16 @@ import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import com.pucara.common.CommonData;
 import com.pucara.common.CommonMessageError;
+import com.pucara.common.SystemPopup;
 import com.pucara.core.database.MySqlAccess;
 import com.pucara.core.response.Response;
 import com.pucara.core.services.product.ProductService;
@@ -60,12 +64,11 @@ public class MainControllerOne {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getID() == KeyEvent.KEY_PRESSED) {
-					String barcode = mainView.getSelectedProduct();
+				String barcode = mainView.getSelectedProduct();
 
+				if (e.getID() == KeyEvent.KEY_PRESSED
+						&& !barcode.equals(CommonData.EMPTY_STRING)) {
 					if (e.getKeyCode() == KeyEvent.VK_MINUS) {
-
-						// if (!saleView.isFocusOnTextField()) {
 						int numberBeforeChange = SaleService
 								.getNumberOfDistinctProducts();
 
@@ -82,21 +85,21 @@ public class MainControllerOne {
 								&& numberAfterChange != 0) {
 							mainView.selectPartialElement(CommonData.FIRST_ROW);
 						}
+					} else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+						SaleService.removeProductFromList(barcode);
+						mainView.updatePartialElements(SaleService
+								.getPartialList().toArray());
+
+						if (SaleService.getTotalNumberOfProducts() > 0) {
+							mainView.selectPartialElement(CommonData.FIRST_ROW);
+						}
+					} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
+						// if (!barcode.contains("@")) {
+						addProductToPartialList(barcode);
+						mainView.selectPartialElementByBarcode(barcode);
+						// }
 					}
-					// else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					// SaleService.removeProductFromList(barcode);
-					// saleView.updatePartialElements(SaleService
-					// .getPartialList().toArray());
-					//
-					// if (SaleService.getTotalNumberOfProducts() > 0) {
-					// saleView.selectPartialElement(CommonData.FIRST_ROW);
-					// }
-					// } else if (e.getKeyCode() == KeyEvent.VK_ADD) {
-					// if (!barcode.contains("@")) {
-					// addProductToPartialList(barcode);
-					// saleView.selectPartialElementByBarcode(barcode);
-					// }
-					// } else if (e.getKeyCode() == KeyEvent.VK_F5
+					// else if (e.getKeyCode() == KeyEvent.VK_F5
 					// && SaleService.getTotalNumberOfProducts() > 0) {
 					// Object[] options = { "Si", "No" };
 					// int response = JOptionPane.showOptionDialog(null,
@@ -115,39 +118,49 @@ public class MainControllerOne {
 					// // TODO Show a message with the error !!!!
 					// }
 					// }
-					// } else if (e.getKeyCode() == KeyEvent.VK_F6) {
-					// String[] options = { "OK" };
-					// JPanel panel = new JPanel();
-					// JLabel lbl = new JLabel("cantidad de productos: ");
-					// JTextField txt = new JTextField("100");
-					// panel.add(lbl);
-					// panel.add(txt);
-					// int selectedOption = JOptionPane.showOptionDialog(null,
-					// panel, "Ingresar catidad de productos",
-					// JOptionPane.NO_OPTION,
-					// JOptionPane.QUESTION_MESSAGE, null, options,
-					// options[0]);
-					//
-					// if (selectedOption == 0) {
-					// Integer n = Utilities
-					// .getIntegerValue(txt.getText());
-					//
-					// if (n != null) {
-					// Response result = SaleService
-					// .increaseRequiredProduct(barcode, n);
-					//
-					// if (result.wasSuccessful()) {
-					// saleView.updatePartialElements(SaleService
-					// .getPartialList().toArray());
-					// saleView.selectPartialElementByBarcode(barcode);
-					// } else {
-					// saleView.showError(result
-					// .getErrorsMessages().get(0)
-					// .getMessage());
 					// }
-					// }
-					// }
-					// }
+					else if (e.getKeyCode() == KeyEvent.VK_F6) {
+						JPanel panel = new JPanel();
+						panel.setBackground(Color.WHITE);
+						panel.add(new JLabel("Desea confirmar la venta?"));
+
+						SystemPopup popup = new SystemPopup(panel,
+								"Confirmación", SystemPopup.CONFIRMATION);
+						popup.setVisible(true);
+
+						// String[] options = { "OK" };
+						// JPanel panel = new JPanel();
+						// JLabel lbl = new JLabel("cantidad de productos: ");
+						// JTextField txt = new JTextField("100");
+						// panel.add(lbl);
+						// panel.add(txt);
+						// int selectedOption =
+						// JOptionPane.showOptionDialog(null,
+						// panel, "Ingresar catidad de productos",
+						// JOptionPane.NO_OPTION,
+						// JOptionPane.QUESTION_MESSAGE, null, options,
+						// options[0]);
+						//
+						// if (selectedOption == 0) {
+						// Integer n = Utilities
+						// .getIntegerValue(txt.getText());
+						//
+						// if (n != null) {
+						// Response result = SaleService
+						// .increaseRequiredProduct(barcode, n);
+						//
+						// if (result.wasSuccessful()) {
+						// mainView.updatePartialElements(SaleService
+						// .getPartialList().toArray());
+						// mainView.selectPartialElementByBarcode(barcode);
+						// } else {
+						// mainView.showError(result
+						// .getErrorsMessages().get(0)
+						// .getMessage());
+						// }
+						// }
+						// }
+					}
 				}
 			}
 		};
