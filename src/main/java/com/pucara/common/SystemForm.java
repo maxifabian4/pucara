@@ -194,8 +194,8 @@ public class SystemForm extends JPanel {
 		JLabel label = CommonUIComponents.createLabelForm(labelText);
 		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		final JTextField textField = CommonUIComponents.createInputTextField(
-				null, null);
+		final JTextField textField = CommonUIComponents
+				.createInputTextField(null);
 		textField.setText(textFieldText);
 		textField.setAlignmentX(Component.LEFT_ALIGNMENT);
 		textField.addFocusListener(new FocusListener() {

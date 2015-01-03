@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,12 +15,10 @@ import com.pucara.controller.observable.UpdatesSource;
 import com.pucara.core.entities.Product;
 import com.pucara.core.request.NewProductRequest;
 import com.pucara.core.request.SearchProductRequest;
-import com.pucara.core.request.UpdateProductRequest;
 import com.pucara.core.request.VerifyProductValuesRequest;
 import com.pucara.core.response.ProductListResponse;
 import com.pucara.core.response.ProductResponse;
 import com.pucara.core.services.product.ProductService;
-import com.pucara.persistence.domain.Category;
 import com.pucara.view.stock.StockView;
 
 /**

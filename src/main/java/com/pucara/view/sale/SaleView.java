@@ -230,8 +230,7 @@ public class SaleView extends ProductView {
 				0));
 
 		// Add text field for input with custom listeners.
-		inputBarcode = CommonUIComponents.createInputTextField(null,
-				saleController.createInputKeyListener());
+		inputBarcode = CommonUIComponents.createInputTextField(null);
 		inputBarcode.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {

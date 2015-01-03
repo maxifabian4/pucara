@@ -16,8 +16,8 @@ public class CommonData {
 	public static final Color LIGHT_FONT_COLOR = new Color(237, 237, 237);
 	public static final Color GENERAL_BACKGROUND_COLOR = new Color(230, 230,
 			230);
-//	public static final Color GENERAL_BACKGROUND_COLOR = new Color(240, 240,
-//			240);
+	// public static final Color GENERAL_BACKGROUND_COLOR = new Color(240, 240,
+	// 240);
 	// public static final Color GENERAL_BACKGROUND_COLOR = new Color(228, 228,
 	// 228);
 	public static final Color BACKGROUND_TABLE_COLOR = new Color(241, 241, 241);
@@ -131,7 +131,6 @@ public class CommonData {
 	/**
 	 * Database information constants.
 	 */
-	// public static final String DATABASE_NAME = "pucaratest";
 	public static final Object SALE_TABLE = "id";
 	public static final String X_SALE_SALE_DETAIL_TABLE = "x_sale_sale_detail";
 	public static final Object X_SALE_SALE_DETAIL_PRODUCT_TABLE = "x_sale_sale_detail_product";
@@ -151,4 +150,9 @@ public class CommonData {
 	// public static final String REPORT_PROPERTIES_PATH =
 	// "/home/pucara/Programas/pucara/properties/report.properties";
 	public static final String REPORT_PROPERTIES_PATH = "src/main/resources/properties/report.properties";
+	
+	/**
+	 * Properties for components.
+	 */
+	public static final Object PROPERTY_QUANTITY = "quantity_textfield";
 }

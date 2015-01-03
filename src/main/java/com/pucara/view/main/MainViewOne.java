@@ -259,7 +259,9 @@ public class MainViewOne extends JFrame {
 	}
 
 	public void selectPartialElement(int index) {
-		partialProductsList.selectItemByIndex(index);
+		if (partialProductsList != null && index >= 0) {
+			partialProductsList.selectItemByIndex(index);
+		}
 	}
 
 	public void showError(String message) {

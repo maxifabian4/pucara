@@ -358,8 +358,7 @@ public class PurchaseView extends ProductView {
 				.setLayout(new BoxLayout(pageStartPanel, BoxLayout.Y_AXIS));
 
 		// Add text field for input with custom listeners.
-		inputBarcode = CommonUIComponents.createInputTextField(null,
-				purchaseController.createInputKeyListener());
+		inputBarcode = CommonUIComponents.createInputTextField(null);
 		inputBarcode.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {

@@ -1,5 +1,6 @@
 package com.pucara.core.services.sale;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -166,6 +167,10 @@ public class SaleService {
 	 * @return List of PartialElement
 	 */
 	public static List<PartialElement> getPartialList() {
+		if (productsCollection == null) {
+			return new ArrayList<>();
+		}
+
 		return productsCollection.getAllProducts();
 	}
 

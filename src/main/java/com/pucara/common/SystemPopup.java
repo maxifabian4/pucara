@@ -4,13 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,31 +23,9 @@ import javax.swing.border.EmptyBorder;
 public class SystemPopup extends JFrame {
 	private static final long serialVersionUID = 1L;
 	public static final int CONFIRMATION = 0;
-
-	// private SystemForm form;
-
-	// /**
-	// * Should be removed ...
-	// *
-	// * @param keys
-	// * @param values
-	// */
-	// public SystemPopup(String[] keys, String[] values) {
-	// /**
-	// * Apply properties to the frame.
-	// */
-	// applyFrameProperties();
-	//
-	// /**
-	// * Configure a flow layout to the frame.
-	// */
-	// configureFrameLayout();
-	//
-	// /**
-	// * Add a simple form to the content panel.
-	// */
-	// addComponentsToFrame(keys, values);
-	// }
+	public static final int OK = 1;
+	public static final int CANCEL = 0;
+	private JLabel okLabel;
 
 	/**
 	 * Use it as a generic mode.
@@ -66,43 +44,6 @@ public class SystemPopup extends JFrame {
 		this.getContentPane().add(createAllStuff(component, title, mode));
 	}
 
-	// public void addConfirmButton(String key, ActionListener actionListener) {
-	// form.addConfirmButton(key, actionListener);
-	// }
-
-	// public void addKeyListenerAllFields(String[] keys,
-	// KeyListener createKeyListener) {
-	// form.addKeyListenerAllFields(keys, createKeyListener);
-	// }
-	//
-	// public List<String> getAllTextFieldValues(String[] keys) {
-	// return form.getAllTextFieldValues(keys);
-	// }
-
-	// public void setActionListenerToComponent(String[] textFieldKeys,
-	// ActionListener listener) {
-	// form.setActionListenerToComponent(textFieldKeys, listener);
-	// }
-
-	// public void addComboBox(Category[] categories, Integer selectedCategory)
-	// {
-	// form.addComboBox(CommonUIComponents.CATEGORY, categories,
-	// selectedCategory);
-	// }
-
-	/**
-	 * 
-	 * @param values
-	 * @param keys
-	 * @param okAction
-	 * @param components
-	 * @param title
-	 */
-	// private void addComponentsToFrame(String[] keys, String[] values) {
-	// form = new SystemForm(keys, values);
-	// this.getContentPane().add(form);
-	// }
-
 	/**
 	 * 
 	 */
@@ -120,33 +61,8 @@ public class SystemPopup extends JFrame {
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setBackground(new Color(.3f, .3f, .3f, .3f));
 		this.setAlwaysOnTop(true);
-		this.addMouseListener(new MouseListener() {
 
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				SystemPopup.this.dispose();
-			}
-		});
+		this.okLabel = CommonUIComponents.createSystemLabelOne("ACEPTAR");
 	}
 
 	private Component createAllStuff(Component component, String title, int mode) {
@@ -186,9 +102,10 @@ public class SystemPopup extends JFrame {
 
 		switch (mode) {
 		case CONFIRMATION:
-			JLabel okLabel = CommonUIComponents.createSystemLabelOne("ACEPTAR");
 			JLabel cancelLabel = CommonUIComponents
 					.createSystemLabelOne("CANCELAR");
+			cancelLabel
+					.addMouseListener(createNewMouseListenerForCancel(cancelLabel));
 
 			buttonPanel.add(okLabel);
 			buttonPanel.add(CommonUIComponents
@@ -201,6 +118,42 @@ public class SystemPopup extends JFrame {
 		}
 
 		return buttonPanel;
+	}
+
+	private MouseListener createNewMouseListenerForCancel(
+			final JLabel cancelLabel) {
+		return new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				cancelLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				SystemPopup.this.dispose();
+			}
+		};
+	}
+
+	public void addMouseListener(MouseListener listener) {
+		okLabel.addMouseListener(listener);
+	}
+
+	public void setCursorForLabel(Cursor newCursor) {
+		okLabel.setCursor(newCursor);
 	}
 
 }

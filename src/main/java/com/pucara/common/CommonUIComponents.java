@@ -1,5 +1,6 @@
 package com.pucara.common;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -10,18 +11,17 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import com.pucara.core.generic.FillPainter;
 
@@ -240,28 +240,23 @@ public class CommonUIComponents {
 	 * @param keyListener
 	 * @return
 	 */
-	public static JTextField createInputTextField(
-			ActionListener actionListener, KeyListener keyListener) {
+	public static JTextField createInputTextField(ActionListener actionListener) {
 		JTextField textFieldComponent = new JTextField(CommonData.EMPTY_STRING);
 
 		Border empty = new EmptyBorder(0, 0, 7, 0);
-		MatteBorder matteBorder = BorderFactory.createMatteBorder(0, 0, 1, 0,
+		MatteBorder matteBorder = BorderFactory.createMatteBorder(0, 0, 2, 0,
 				Color.LIGHT_GRAY);
 
 		textFieldComponent.setBorder(BorderFactory.createCompoundBorder(empty,
 				matteBorder));
-		textFieldComponent.setBackground(CommonData.GENERAL_BACKGROUND_COLOR);
+		textFieldComponent.setBackground(Color.WHITE);
 		textFieldComponent.setForeground(CommonData.DARK_FONT_COLOR);
 		textFieldComponent.setSelectedTextColor(CommonData.LIGHT_FONT_COLOR);
 		textFieldComponent.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT,
-				Font.PLAIN, CommonData.GENERAL_FONT_SIZE_LABEL));
+				Font.PLAIN, 17));
 
 		if (actionListener != null) {
 			textFieldComponent.addActionListener(actionListener);
-		}
-
-		if (keyListener != null) {
-			textFieldComponent.addKeyListener(keyListener);
 		}
 
 		return textFieldComponent;
@@ -290,18 +285,14 @@ public class CommonUIComponents {
 		try {
 			UIManager
 					.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-
 			UIManager.getLookAndFeelDefaults().put(
 					"ScrollBar:ScrollBarThumb[Enabled].backgroundPainter",
 					new FillPainter(Color.WHITE));
-			// new FillPainter(CommonData.GENERAL_BACKGROUND_COLOR));
 			UIManager.getLookAndFeelDefaults().put(
 					"ScrollBar:ScrollBarThumb[MouseOver].backgroundPainter",
-					// new FillPainter(CommonData.GENERAL_BACKGROUND_COLOR));
 					new FillPainter(Color.WHITE));
 			UIManager.getLookAndFeelDefaults().put(
 					"ScrollBar:ScrollBarTrack[Enabled].backgroundPainter",
-					// new FillPainter(CommonData.GENERAL_BACKGROUND_COLOR));
 					new FillPainter(Color.WHITE));
 			UIManager.getLookAndFeelDefaults().put(
 					"ScrollBar:\"ScrollBar.button\".size", 0);
@@ -386,5 +377,42 @@ public class CommonUIComponents {
 		defaultLabel.setForeground(CommonData.DEFAULT_SELECTION_COLOR);
 
 		return defaultLabel;
+	}
+
+	public static JPanel createInformationPanel(String text) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		panel.setBackground(Color.WHITE);
+
+		JLabel label = new JLabel(text);
+		label.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 15));
+		label.setForeground(Color.DARK_GRAY);
+
+		panel.add(label);
+
+		return panel;
+	}
+
+	public static JPanel createPanelForProductQuantity(String text) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		panel.setBackground(Color.WHITE);
+
+		JLabel label = new JLabel(text);
+		label.setFont(new Font(CommonData.ROBOTO_LIGHT_FONT, Font.PLAIN, 15));
+		label.setForeground(Color.DARK_GRAY);
+		label.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+		panel.add(label);
+		panel.add(createNewVerticalSeparatorBox(10));
+
+		JTextField textField = createInputTextField(null);
+		panel.add(textField);
+
+		panel.putClientProperty(CommonData.PROPERTY_QUANTITY, textField);
+
+		return panel;
 	}
 }
